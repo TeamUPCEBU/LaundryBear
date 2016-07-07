@@ -267,9 +267,9 @@ class OrderSummaryView(ClientLoginRequiredMixin, DetailView):
 #Inherits CBV "View"
 class CreateTransactionView(ClientLoginRequiredMixin, View):
 
-    #@method_decorator(csrf_exempt)
-    #def dispatch(self, request, *args, **kwargs):
-    #    return super(CreateTransactionView, self).dispatch(request, *args, **kwargs)
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super(CreateTransactionView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         return HttpResponse(status=400)

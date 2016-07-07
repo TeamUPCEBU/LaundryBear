@@ -19,6 +19,7 @@ from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib import admin
 from rest_framework import routers #
+from rest_framework.authtoken import views as rest_views
 
 import client
 import management
@@ -35,11 +36,11 @@ router.register(r'orders', views.OrderViewSet)
 router.register(r'prices', views.PriceViewSet)
 router.register(r'services', views.ServiceViewSet)
 
-
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^management/', include('management.urls', namespace='management')),
     url(r'^', include('client.urls', namespace='client')),
     url(r'^api/', include(router.urls)),
-    url(r'^api/auth/', include('rest_framework.urls', namespace='rest_framework'))
+    url(r'^api/auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^api-token-auth/', rest_views.obtain_auth_token),
 ]
