@@ -19,6 +19,7 @@ from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib import admin
 from rest_framework.authtoken import views as rest_views
+from api.views import obtain_auth_token
 
 import api
 import client
@@ -30,5 +31,6 @@ urlpatterns = [
     url(r'^', include('client.urls', namespace='client')),
     url(r'^api/', include('api.urls')),
     url(r'^api/auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^api-token-auth/', rest_views.obtain_auth_token),
+    #url(r'^api-token-auth/', rest_views.obtain_auth_token),
+    url(r'^api-token-auth$', api.views.obtain_auth_token),
 ]

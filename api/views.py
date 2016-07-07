@@ -2,6 +2,7 @@ from django.contrib.auth.models import User, Group
 from database.models import *
 from rest_framework import viewsets
 from api.serializers import *
+from rest_framework.authtoken import views as rest_views
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -66,3 +67,8 @@ class ServiceViewSet(viewsets.ModelViewSet):
     """
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
+
+
+def obtain_auth_token(request):
+    print request.POST
+    return rest_views.obtain_auth_token(request)
