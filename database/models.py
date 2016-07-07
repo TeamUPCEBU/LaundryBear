@@ -6,9 +6,15 @@ from django.contrib.sites.models import Site
 from datetime import timedelta
 from django.core.validators import RegexValidator
 
+#from rest_framework.authtoken.models import Token
 #Models are also known as tables
 #Each field is an attribute of the table
 #Models are still classes and can have methods within
+
+
+#Generate tokens for all existing users
+#for user in User.objects.all():
+#    Token.objects.get_or_create(user=user)
 
 contactNumberValidator = RegexValidator(r'^\+?([\d][\s-]?){10,13}$', 'Invalid input!')
 class UserProfile(models.Model):
@@ -87,7 +93,7 @@ class LaundryShop(models.Model):
         if not total:
             return 0
         return total
-    
+
 
     def __unicode__(self):
         return self.name
@@ -121,7 +127,7 @@ def default_date():
 
 class Transaction(models.Model):
     class Meta:
-        get_latest_by = 'request_date'    
+        get_latest_by = 'request_date'
 
     TRANSACTION_STATUS_CHOICES = (
         (1, 'Pending'),
