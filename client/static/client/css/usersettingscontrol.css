@@ -1,0 +1,102 @@
+.row.wide {
+  max-width: rem-calc(1200); }
+
+.contact-footer {
+  background-color: #372846;
+  padding: 3.5rem 0; }
+  .contact-footer .round-inputs input {
+    border-radius: 1000px;
+    background-color: #4B3D58;
+    height: 3.3125rem;
+    text-align: center; }
+  .contact-footer .round-inputs textarea {
+    border-radius: 30px;
+    background-color: #4B3D58;
+    height: 8rem;
+    text-align: center; }
+  .contact-footer h4 {
+    color: #e5e5e5;
+    font-weight: 100;
+    margin-bottom: 0.25rem; }
+  .contact-footer h4.phone {
+    margin-bottom: 3rem; }
+    .contact-footer h4.phone:before {
+      font-family: "foundation-icons";
+      content: "\f1f8";
+      font-weight: 300;
+      padding-top: 0.2rem;
+      font-size: 2rem;
+      color: #a9a9a9;
+      padding-left: 0.5rem;
+      padding-right: 1.65rem;
+      -webkit-text-fill-color: transparent;
+      /* Will override color (regardless of order) */
+      -webkit-text-stroke-width: 1px;
+      -webkit-text-stroke-color: #a9a9a9; }
+    @media only screen and (max-width: 40em) {
+      .contact-footer h4.phone {
+        font-size: 0.875rem; } }
+  .contact-footer h4.email:before {
+    font-family: "foundation-icons";
+    content: "\f16d";
+    font-weight: 300;
+    padding-top: 0.5rem;
+    font-size: 2rem;
+    color: #a9a9a9;
+    padding-left: 0.5rem;
+    padding-right: 1.55rem;
+    -webkit-text-fill-color: transparent;
+    /* Will override color (regardless of order) */
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: #a9a9a9; }
+  .contact-footer h4.address:before {
+    font-family: "foundation-icons";
+    content: "\f172";
+    font-weight: 300;
+    padding-top: 0.2rem;
+    font-size: 2rem;
+    color: #a9a9a9;
+    padding-left: 0.5rem;
+    padding-right: 1.85rem;
+    -webkit-text-fill-color: transparent;
+    /* Will override color (regardless of order) */
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: #a9a9a9; }
+  .contact-footer p {
+    color: #a9a9a9;
+    font-weight: 100;
+    font-size: 0.875rem;
+    margin-bottom: 3rem;
+    margin-left: 3.5rem; }
+  .contact-footer h5.form-lead {
+    font-weight: 200;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    margin-left: 0; }
+  .contact-footer .social i {
+    font-size: 1.8rem;
+    font-weight: 300;
+    color: #E87E04;
+    margin: 0;
+    padding: 4px 8px 4px 8px;
+    border: 2px solid #E87E04;
+    border-radius: 50%; }
+  @media only screen and (max-width: 40em) {
+    .contact-footer .social i {
+      font-size: 2rem;
+      margin-right: 0.5rem; } }
+  .contact-footer .inline-list {
+    margin: 0 0 0.5rem -0.3rem; }
+    .contact-footer .inline-list > li {
+      margin-left: 0.5rem; }
+  @media only screen and (max-width: 40em) {
+    .contact-footer .inline-list > li {
+      margin-bottom: 0.875rem; } }
+  .contact-footer .button {
+    background: transparent;
+    border: 2px solid #E87E04;
+    color: #a9a9a9; }
+    .contact-footer .button:hover {
+      background: #E87E04;
+      border: 2px solid #a9a9a9;
+      color: #fff; }

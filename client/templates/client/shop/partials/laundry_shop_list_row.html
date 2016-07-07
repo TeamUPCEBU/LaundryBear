@@ -1,0 +1,8 @@
+{% load staticfiles %}
+<tr onclick="document.location.href='{% url "client:order" shop.pk %}'">
+  <td>
+    {{ shop.name }}
+  </td>
+  <td>{{ shop.location }}</td>
+  <td><div class="paw-container" style="width: {% widthratio shop.average_rating 5 150 %}px;"><img src="{% static "management/icons/star.png" %}" /></div></td>
+</tr>

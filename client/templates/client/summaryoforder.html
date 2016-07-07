@@ -1,0 +1,100 @@
+{% extends 'client/base.html' %}
+{% load staticfiles %}
+{% load custom_math %}
+
+{% block title %} Order: Summary | LaundryBear {% endblock %}
+
+{% block body %}
+{% csrf_token %}
+<div class="row">
+    <div class="large-8 large-offset-2 columns">
+        <div class="panel small-centered">
+            <h3 style="text-align:center">Summary</h3>
+            <h5 style="text-align:center">{{ shop.name }}</h5>
+            <table style="margin:auto">
+                <thead>
+                <th>Service</th>
+                <th>Number of Items</th>
+                <th>Estimated Price</th>
+                </thead>
+                <tbody id="table-body">
+
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="large-2 columns"></div>
+                <div class="large-10 large-offset-2 columns">
+                    <br>
+                    <strong>Subtotal:</strong> <span id="subtotal">0.00</span>
+                    <br>
+                    <strong>+ {{ fees.service_charge|multiply:100|floatformat:"-2" }}% Service charge:</strong> <span id="servicecharge">0.00</span>
+                    <br>
+                    <strong>+ Delivery fee:</strong> <span id="deliveryfee">{{ fees.delivery_fee }}</span>
+                    <hr>
+                    <strong>GRAND TOTAL: <span id="total">0.00</span></strong>
+                    <input type="hidden" name="price" id="price_field">
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="small-4">
+                <h4>Date of delivery: </h4>
+                <input type="date" min="{{ delivery_date }}" style="width: 280px;" value="{{ delivery_date }}" max="{{ delivery_date_max }}" name="delivery_date">
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <h4>Delivery Address</h4>
+            <div class="small-6">
+                <label>{{ address_form.building.label }}:{{ address_form.building }}</label>
+                <label>{{ address_form.street.label }}:{{ address_form.street }}</label>
+                <label>{{ address_form.barangay.label }}:{{ address_form.barangay }}</label>
+                <label>{{ address_form.city.label }}:{{ address_form.city }}</label>
+                <label>{{ address_form.province.label }}:{{ address_form.province }}</label>
+            </div>
+        </div>
+        <br>
+        <a href="javascript:history.go(-1)" style="margin-right:10px; margin-left:-15px;" class="button left">Back</a>
+        <a href="#" data-reveal-id="confirmModal" class="button success left">Order</a>
+        <!-- Are you sure? -->
+        <div id="confirmModal" class="reveal-modal tiny" data-reveal aria-labelledby="firstModalTitle" aria-hidden="true" role="dialog">
+            <h4 id="firstModalTitle" style="text-align:center;">Are you sure?</h4>
+            <a href="#" id="confirm" style="postion:relative; left:38%" data-reveal-id="sendModal" class="button success small">Yes</a>
+            <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+        </div>
+        <!--your request has been processed. please wait for futher announcements-->
+        <div id="sendModal" class="reveal-modal" data-reveal aria-labelledby="firstModalTitle" aria-hidden="true" role="dialog">
+            <h5 id="firstModalTitle">Your request has been received. A confirmation message will be sent to you in a while. You will be redirected shortly.</h5>
+        </div>
+
+    </div>
+    <div class="large-2 columns"></div>
+</div>
+
+<template id="row-template">
+    <tr data-price="__price__">
+        <td>__servicename__</td>
+        <td>
+            __pieces__
+        </td>
+        <td align="center">__price__</td>
+    </tr>
+</template>
+
+<form class="hidden" method="post"></form>
+
+
+{% endblock %}
+{% block javascripts %}
+<script type="text/javascript">
+            $(document).foundation({
+                reveal : {
+                    multiple_opened:false
+                }
+            });
+			var transactionUrl = "{% url "client:create-transaction" %}";
+			var serviceRate = {{ fees.service_charge }};
+        </script>
+<script src="{% static "client/js/summary.js" %}"></script>
+    {% endblock %}

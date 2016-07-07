@@ -1,0 +1,116 @@
+{% extends 'management/base.html' %}
+{% load staticfiles %}
+{% load custom_math %}
+
+{% block title %} Edit Transaction | LaundryBear {% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{% static "LaundryBear/css/clickyTable.css" %}">
+<link rel="stylesheet" href="{% static "LaundryBear/jquery-ui-1.11.4/jquery-ui.min.css" %}">
+{% endblock%}
+
+{% block body %}
+<div class="row">
+    <div class="large-2 columns"></div>
+    <div class="large-8 large-offset-2 columns">
+        <div class="panel">
+            <form method="post">
+                {% csrf_token %}
+                <div class="large-1 columns"></div>
+                <div class="large-10  large-offset-1 columns">
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <h6 style="text-align: right">Date Requested: {{ transaction.request_date }}</h6>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <h4>Client Details</h4>
+                            <strong>Name: </strong> {{ transaction.client.client.get_full_name }}
+                            <br>
+                            <strong>Address: </strong> {{ transaction.location }}
+                            <br>
+                            <strong>Contact Number: </strong> {{ transaction.client.contact_number }}
+                            <br>
+                            <strong>Email: </strong> {{ transaction.client.client.email }}
+                            <br>
+                            <h4 style="text-align:center"> Orders </h4>
+                            <table style="margin:auto">
+                                <thead>
+                                <th>Service</th>
+                                <th>Price/Kilo</th>
+                                <th>Pieces</th>
+                                <th>Estimated Total</th>
+                                </thead>
+                                <tbody>
+                                {% for order in transaction.order_set.all %}
+                                {% include "management/transactions/partials/update_transaction_row.html" %}
+                                {% endfor %}
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Subtotal</td>
+                                    <td id="subtotal">0.00</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td>+ {{ fees.service_charge|multiply:100|floatformat:"-2" }}%<br>Service Charge</td>
+                                    <td id="servicecharge">0.00</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td>+ Delivery Fee</td>
+                                    <td id="deliveryfee">{{ fees.delivery_fee }}</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Total</td>
+                                    <td id="total">0.00</td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="large-1 columns">
+                </div>
+                <hr>
+
+                <br>
+
+                <strong>Delivery Date:</strong> <input type="date" id="date" name="delivery_date" value="{{ transaction.delivery_date|date:"o-m-d" }}">
+                <hr>
+                <div class="row">
+                    <div class="large-2 columns"></div>
+                    <div class="large-8 large-offset-2 columns">
+                        <center>
+                            <input type="submit" class="button" value="Approve" name="approve" />
+                            <input type="submit" class="button alert" value="Reject" name="reject" />
+                        </center>
+                        <center><a href="{% url "management:pending-transactions" %}"><u>Back</u></a></center>
+                    </div>
+                    <div class="large-2 columns"></div>
+                </div>
+                <div class="large-1 columns"></div>
+
+            </form>
+        </div>
+    </div>
+    <div class="large-2 columns"></div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script src="{% static "LaundryBear/jquery-ui-1.11.4/jquery-ui.min.js" %}"></script>
+<script>
+$("#date").datepicker({dateFormat: "yy-mm-dd", minDate: {{ transaction.order_set.first.price.duration }}, maxDate: {{ transaction.order_set.first.price.duration }} + 7});
+var serviceRate = {{ fees.service_charge }};
+</script>
+<script src="{% static "management/js/totals.js" %}"></script>
+{% endblock%}

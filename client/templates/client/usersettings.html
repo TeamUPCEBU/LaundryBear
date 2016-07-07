@@ -1,0 +1,84 @@
+{% extends 'client/base.html' %}
+{% load staticfiles %}
+
+<link rel="stylesheet" href="{% static "LaundryBear/client/static/css/usersettingscontrol" %}"/>
+
+
+
+{% block title %} Settings | LaundryBear{% endblock %}
+
+{%block body%}
+
+<section class="contact-footer">
+  <div class="row wide">
+    <div class="medium-6 columns">
+      <div class="row">
+        <div class="small-6 medium-12 columns">
+          <h4 class="name">{{ userprofile }}</h4>
+          <p>{{ userprofile.location }}</p>
+
+          <h4 class="phone">{{ userprofile.contact_number }}</h4>
+        </div>
+        <div class="small-6 medium-12 columns">
+          <h4 class="email">Email</h4>
+          <p>{{ userprofile.client.email }}</p>
+
+
+        </div>
+      </div>
+    </div>
+    <div class="medium-6 columns">
+      <span class="info label">Fill any field below to change account information</span></br>
+      <form class="round-inputs" method="post">
+        {% csrf_token %}
+        <div class="row">
+
+          <div class="large-12 columns">
+            <hr>
+            <h6>Address
+                  <span data-tooltip aria-haspopup="true" class="warning label has-tip tip-right radius round"
+                        title="All three(3) fields must be filled if you wish to change your address">
+                    All fields must be filled</span></h6>
+            <label>Barangay {{ userprofileform.barangay }}</label>
+            <label>City {{ userprofileform.city }} </label>
+            <label>Province {{ userprofileform.province }}</label>
+            <hr>
+          </div>
+          <div class="large-12 columns">
+            <h6>Name
+                  <span data-tooltip aria-haspopup="true" class="warning label has-tip tip-right radius round"
+                        title="All two(2) fields must be filled if you wish to change your name">
+                    All fields must be filled</span></h6>
+            <label>First Name {{ userform.first_name }}</label>
+            <label>Last Name {{ userform.last_name }}</label>
+            <hr>
+          </div>
+          <div class="large-12 columns">
+            <label>Contact number {{ userprofileform.contact_number }}</label>
+          </div>
+          <div class="large-12 columns">
+            <label>Email {{ userform.email }}</label>
+          </div>
+          <div class="large-12 columns">
+            <label>Username {{ usernameform.username }}</label>
+          </div>
+          <div class="large-12 columns">
+            <label>Type Old Password {{ passwordform.old_password }}</label>
+          </div>
+          <div class="large-12 columns">
+            <label>Password {{ passwordform.new_password1 }}</label>
+          </div>
+          <div class="large-12 columns">
+            <label>Re-type Password {{ passwordform.new_password2 }}</label>
+          </div>
+          <div class="large-12 columns">
+            <button type="submit" class="success button round">Save Changes</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+
+{% endblock %}

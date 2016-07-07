@@ -1,0 +1,56 @@
+{% extends 'management/base.html' %}
+
+{% block title %} History of Transactions | LaundryBear {% endblock %}
+
+
+{% block body %}
+
+<div class="row">
+    <div class="large-2 columns"></div>
+    <div class="large-8 large-offset-2 columns">
+        <h3 style="text-align:center"><b>History of Transactions</b></h3>
+
+        <form method="get">
+            {%csrf_token%}
+            <div class="row">
+                <div class="large-12 columns">
+                    <dl id="filter" class="sub-nav inline">
+                        <dt>Filter:</dt>
+                        <dd{% if query_type == "client name" %} class="active"{% endif %}><a href="#">Client Name</a></dd>
+                        <dd{% if query_type == "laundry shop" %} class="active"{% endif %}><a href="#">Laundry Shop</a></dd>
+                    </dl>
+                    <div class="row collapse">
+                        <div class="small-2 columns">
+                        </div>
+                        <div class="small-7 small-offset-2 columns">
+                            <input name="{{ query_type }}" id="search" type="text" placeholder="Search Client">
+                        </div>
+                        <div class="small-1 columns">
+                            <button type="submit" class="button postfix">Go</button>
+                        </div>
+                        <div class="small-2 columns">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <table id='clickytable' style="margin:auto">
+            <thead>
+            <th>Client Name</th>
+            <th>Laundry Shop</th>
+            <th>Date Requested</th>
+            <th>Time Requested</th>
+            <th>Status</th>
+            </thead>
+            <tbody>
+            {% for transaction in history_transaction_list %}
+            {% include "management/transactions/partials/history_transaction_row.html" %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="large-2 columns"></div>
+</div>
+
+
+{% endblock %}

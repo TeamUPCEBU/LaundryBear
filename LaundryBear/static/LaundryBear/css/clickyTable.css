@@ -1,0 +1,7 @@
+#clicky-table tbody tr {
+  cursor: pointer;
+}
+
+#clicky-table tbody tr:hover {
+  background-color: rgba(90, 200, 250, 0.2) !important;
+}

@@ -1,0 +1,74 @@
+{% extends 'management/base.html' %}
+{% load staticfiles %}
+{% block title %}View Laundry Shops | LaundryBear{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" type="text/css" href="{% static "LaundryBear/css/clickyTable.css" %}">
+{% endblock %}
+
+{% block body %}
+
+<form method="get">
+    {% csrf_token %}
+    <div class="large-12 columns">
+        <div class="small-8 small-offset-2 columns">
+            <dl class="sub-nav inline">
+                <dt>Search Shops By:</dt>
+                <dd {% if query_type == "name" %} class="active"{% endif %}><a href="#">Name</a></dd>
+                <dd {% if query_type == "city" %} class="active"{% endif %}><a href="#">City</a></dd>
+                <dd {% if query_type == "barangay" %} class="active"{% endif %}><a href="#">Barangay</a></dd>
+                <dd {% if query_type == "province" %} class="active"{% endif %}><a href="#">Province</a></dd>
+            </dl>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="large-12 columns">
+            <div class="row collapse">
+
+                <div class="small-2 columns">
+                </div>
+                <div class="small-7 small-offset-2 columns">
+                    <input name="{{ query_type }}" id="search" type="text" placeholder="Search Laundry Shop">
+                </div>
+                <div class="small-1 columns">
+                    <button type="submit" class="button postfix">Go</button>
+                </div>
+                <div class="small-2 columns">
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<table style="margin:auto" id="clicky-table">
+    <thead>
+    <tr>
+        <th width="200">Name</th>
+        <th>Address</th>
+        <th>Rating</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for shop in shop_list %}
+    {% include "management/shop/partials/laundry_shop_list_row.html" %}
+    {% endfor %}
+    </tbody>
+</table>
+<div class="row">
+    <div class="small-6 small-centered columns">
+        {% if page_obj.has_next %}
+        <a class="button right" href="?page={{ page_obj.next_page_number }}">Next <i class="fi-arrow-right"></i></a>
+        {% endif %}
+        {% if page_obj.has_previous %}
+        <a class="button left" href="?page={{ page_obj.previous_page_number }}">Previous <i class="fi-arrow-left"></i></a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+{% block footer %}
+<br>
+{% endblock %}

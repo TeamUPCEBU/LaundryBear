@@ -1,0 +1,27 @@
+@charset "utf-8";
+/* CSS Document */
+.services{
+    margin-top: 50px;
+  }
+   h2{
+      text-align: center;
+    }
+    form.custom .custom.dropdown{
+      height: 45px;
+    }
+    label{
+      margin-bottom: 10px;
+    }
+    form.custom .custom.dropdown{
+      padding-top: 5px;
+    }
+    form.custom .custom.dropdown .selector{
+      top: 5px;
+    }
+    .button{
+      height: 45px;
+      margin-top:25px; 
+    }
+    body{
+        background: url("/static/client/icons/back.jpg") no-repeat center;
+    }

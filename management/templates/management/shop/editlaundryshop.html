@@ -1,0 +1,390 @@
+{%extends 'management/base.html'%}
+{% load staticfiles %}
+
+{% block title %}Edit Laundry Shop | LaundryBear{% endblock %}
+
+{%block body%}
+<div class="row">
+    <div class="large-8 large-offset-2 columns">
+        <h3 align="center"><strong>Edit Laundry Shop</strong></h3>
+        <!--forms-->
+        <form method="post">
+            {% csrf_token %}
+            <div id="contain">
+                <div id="contained" class="large-12 columns">
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label>Name
+                                <div>
+                                    <span id="required" class="warning label right">Required field</span>
+                                    {{ form.name }}
+                                    {% if form.name.errors %}
+                    <span class="error label center">
+                    {{ form.name.errors | striptags }}
+                    </span>
+                                    {% endif %}
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label>Province
+                                <div>
+                                    <span id="required" class="warning label right">Required field</span>
+                                    {{ form.province }}
+                                    {% if form.province.errors %}
+                    <span class="error label center">
+                    {{ form.province.errors | striptags  }}
+                    </span>
+                                    {% endif %}
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label>City
+                                <div>
+                                    {{ form.city }}
+                                    {% if form.city.errors %}
+                    <span class="error label center">
+                    {{ form.city.errors | striptags }}
+                    </span>
+                                    {% endif %}
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label>Barangay
+                                <div>
+                                    <span id="required" class="warning label right">Required field</span>
+                                    {{ form.barangay }}
+                                    {% if form.barangay.errors %}
+                    <span class="error label center">
+                    {{ form.barangay.errors | striptags }}
+                    </span>
+                                    {% endif %}
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label>Street
+                                <div>
+                                    {{ form.street }}
+                                    {% if form.street.errors %}
+                    <span class="error label center">
+                    {{ form.street.errors | striptags }}
+                    </span>
+                                    {%endif %}
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label>Building
+                                <div>
+                                    {{ form.building }}
+                                    {% if form.building.errors %}
+                    <span class="error label center">
+                    {{ form.building.errors | striptags }}
+                    </span>
+                                    {% endif %}
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label>Contact number
+                                <div>
+                                    <span id="required" class="warning label right">Required field</span>
+                                    {{ form.contact_number }}
+                                    {% if form.contact_number.errors %}
+                    <span class="error label center">
+                    {{ form.contact_number.errors | striptags }}
+                    </span>
+                                    {% endif %}
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label>Email
+                                <div>
+                                    {{ form.email }}
+                                    {% if form.email.errors %}
+                            <span class="error label center">
+                            {{ form.email.errors | striptags }}
+                            </span>
+                                    {% endif %}
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <label>Website
+                                {{ form.website }}
+                                {% if form.website.errors %}
+                      <span class="error label center">
+                      {{ form.website.errors | striptags }}
+                      </span>
+                                {% endif %}
+                            </label>
+                            <hr>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="large-12 columns">
+                            {% if form.hours_open.errors %}
+                <span class="error label">
+                             {{ form.hours_open.errors | striptags }}
+                             </span>
+                            {% endif %}
+                            <div class="hide">{{ form.hours_open }}</div>
+                            <div class="row">
+                                <span id="required" class="warning label">Required field</span>
+
+                                <div class="large-4 columns">
+                                    <label>Opening Time
+                                        <select id="open-time">
+                                            <option value="null">---------</option>
+                                            <option value="12:00 AM">12:00 AM</option>
+                                            <option value="1:00 AM">1:00 AM</option>
+                                            <option value="2:00 AM">2:00 AM</option>
+                                            <option value="3:00 AM">3:00 AM</option>
+                                            <option value="4:00 AM">4:00 AM</option>
+                                            <option value="5:00 AM">5:00 AM</option>
+                                            <option value="6:00 AM">6:00 AM</option>
+                                            <option value="7:00 AM">7:00 AM</option>
+                                            <option value="8:00 AM">8:00 AM</option>
+                                            <option value="9:00 AM">9:00 AM</option>
+                                            <option value="10:00 AM">10:00 AM</option>
+                                            <option value="11:00 AM">11:00 AM</option>
+                                            <option value="12:00 PM">12:00 PM</option>
+                                            <option value="1:00 PM">1:00 PM</option>
+                                            <option value="2:00 PM">2:00 PM</option>
+                                            <option value="3:00 PM">3:00 PM</option>
+                                            <option value="4:00 PM">4:00 PM</option>
+                                            <option value="5:00 PM">5:00 PM</option>
+                                            <option value="6:00 PM">6:00 PM</option>
+                                            <option value="7:00 PM">7:00 PM</option>
+                                            <option value="8:00 PM">8:00 PM</option>
+                                            <option value="9:00 PM">9:00 PM</option>
+                                            <option value="10:00 PM">10:00 PM</option>
+                                            <option value="11:00 PM">11:00 PM</option>
+                                        </select>
+                                    </label>
+                                </div>
+
+                                <div class="large-4 columns">
+                                    <label>Closing Time
+                                        <select id="close-time">
+                                            <option value="null">---------</option>
+                                            <option value="12:00 AM">12:00 AM</option>
+                                            <option value="1:00 AM">1:00 AM</option>
+                                            <option value="2:00 AM">2:00 AM</option>
+                                            <option value="3:00 AM">3:00 AM</option>
+                                            <option value="4:00 AM">4:00 AM</option>
+                                            <option value="5:00 AM">5:00 AM</option>
+                                            <option value="6:00 AM">6:00 AM</option>
+                                            <option value="7:00 AM">7:00 AM</option>
+                                            <option value="8:00 AM">8:00 AM</option>
+                                            <option value="9:00 AM">9:00 AM</option>
+                                            <option value="10:00 AM">10:00 AM</option>
+                                            <option value="11:00 AM">11:00 AM</option>
+                                            <option value="12:00 PM">12:00 PM</option>
+                                            <option value="1:00 PM">1:00 PM</option>
+                                            <option value="2:00 PM">2:00 PM</option>
+                                            <option value="3:00 PM">3:00 PM</option>
+                                            <option value="4:00 PM">4:00 PM</option>
+                                            <option value="5:00 PM">5:00 PM</option>
+                                            <option value="6:00 PM">6:00 PM</option>
+                                            <option value="7:00 PM">7:00 PM</option>
+                                            <option value="8:00 PM">8:00 PM</option>
+                                            <option value="9:00 PM">9:00 PM</option>
+                                            <option value="10:00 PM">10:00 PM</option>
+                                            <option value="11:00 PM">11:00 PM</option>
+                                        </select>
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <hr>
+
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <span id="required" class="warning label right">Required field</span>
+                            <label><h5>Days Open</h5>
+                                {% if form.days_open.errors %}
+                      <span class="error label ">
+                      {{ form.days_open.errors | striptags }}
+                      </span>
+                                {% endif %}
+                                <div class="hide">{{ form.days_open }}</div>
+                                <div class="large-12 columns" id="days-container">
+                                    <div><input id="sunday" type="checkbox"><label for="sunday">Sunday</label></div>
+                                    <div><input id="monday" type="checkbox"><label for="monday">Monday</label></div>
+                                    <div><input id="tuesday" type="checkbox"><label for="tuesday">Tuesday</label></div>
+                                    <div><input id="wednesday" type="checkbox"><label for="wednesday">Wednesday</label></div>
+                                    <div><input id="thursday" type="checkbox"><label for="thursday">Thursday</label></div>
+                                    <div><input id="friday" type="checkbox"><label for="friday">Friday</label></div>
+                                    <div><input id="saturday" type="checkbox"><label for="saturday">Saturday</label></div>
+                                </div>
+                            </label>
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <h4>Services</h4>
+                            <div class="large-12 columns">
+
+                                <div class="row">
+                                    <div class="medium-6 columns">
+                                        <label>Service
+                                            <select id="service-input">
+                                                <option value="null">---------</option>
+                                                {%for service in service_list%}
+                                                <option id = "services" value="{{ service.pk }}" data-service-description="{{ service.description }}" data-service-name="{{ service.name }}">{{ service.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </label>
+                                    </div>
+                                    <div class="medium-2 columns">
+                                        <label>Price
+                                            <input type="number" id="price-input" min="1" />
+                                        </label>
+                                    </div>
+                                    <div class="medium-2 columns">
+                                        <label>Duration
+                                            <input type="number" id="duration-input" min="1" />
+                                        </label>
+                                    </div>
+                                    <div class="medium-2 columns" id="set-service-button-container">
+                                        <a href="#" class="button medium" id="set-service-button"><i class="fi-plus"></i></a>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="medium-4 columns" id="add-service-button-container">
+                                        <a href="#" data-reveal-id="firstModal">Add Service...</a>
+                                        <div id="firstModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog" style="width:500px; height: 450px;">
+                                            <iframe src="{%url 'management:create-service' %}" style="width:100%; height:100%; border:0;" seamless="seamless" scrolling="no"></iframe>
+                                            <a id="new-service-modal-close-reveal" class="close-reveal-modal" aria-label="Close">&#215;</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <table style="margin:auto;">
+                                <thead>
+                                <tr>
+                                    <th>Service Name</th>
+                                    <th>Description</th>
+                                    <th>Price</th>
+                                    <th>Duration</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody id="service-table-body">
+                                </tbody>
+                            </table>
+
+                            {{ price_formset.management_form }}
+                            <div class="hide" id="price-formset-container" data-edit-pk="None">
+                                {% for price_form in price_formset %}
+                                <div data-item="{{ forloop.counter0 }}" data-pk="{{ price_form.service.value }}">
+                                    {{ price_form.id }}
+                                    {{ price_form.service }}
+                                    {{ price_form.price }}
+                                    {{ price_form.duration }}
+                                    {{ price_form.DELETE }}
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <template id="formset-form-template">
+                                <div data-item="__prefix__">
+                                    {{ price_formset.empty_form.id }}
+                                    {{ price_formset.empty_form.service }}
+                                    {{ price_formset.empty_form.price }}
+                                    {{ price_formset.empty_form.duration }}
+                                    {{ price_formset.empty_form.DELETE }}
+                                </div>
+                            </template>
+                            <template id="table-row-template">
+                                <tr data-service-pk="__pk__" data-service-name="__service-name__" data-service-price="__price__" data-service-description="__description__" data-service-duration="__duration__">
+                                    <td>__service-name__</td>
+                                    <td>__description__</td>
+                                    <td>__price__</td>
+                                    <td>__duration__</td>
+                                    <td><a href="#" class="button secondary tiny edit-service-button">Edit</a> <a href="#" class="button secondary tiny delete-service-button">Delete</a> </td>
+                                </tr>
+                            </template>
+                            <template id="option-template">
+                                <option value="__value__" data-service-name="__optionname__" data-service-description="__description__">__optionname__</option>
+                            </template>
+                            <template id="service-list-template">
+                                <i data-pk="__pk__" data-service-description="__description__" data-service-name="__name__" data-service-duration="__duration__"></i>
+                            </template>
+                            <div class="hide" id="services-list">
+                                {% for service in service_list %}
+                                <i data-pk="{{ service.pk }}" data-service-description="{{ service.description }}" data-service-name="{{ service.name }}" data-service-duration="{{service.duration}}"></i>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <template id="table-row-template">
+                        <tr data-service-pk="__pk__" data-service-name="__service-name__" data-service-price="__price__" data-service-description="__description__" data-service-duration="__duration__">
+                            <td>__service-name__</td>
+                            <td>__description__</td>
+                            <td>__price__</td>
+                            <td>__duration__</td>
+                            <td><a href="#" class="button secondary tiny edit-service-button">Edit</a> <a href="#" class="button secondary tiny delete-service-button">Delete</a> </td>
+                        </tr>
+                    </template>
+                    <template id="option-template">
+                        <option value="__value__" data-service-name="__optionname__" data-service-description="__description__">__optionname__</option>
+                    </template>
+                    <template id="service-list-template">
+                        <i data-pk="__pk__" data-service-description="__description__" data-service-name="__name__" data-service-duration="__duration__"></i>
+                    </template>
+                    <div class="hide" id="services-list">
+                        {% for service in service_list %}
+                        <i data-pk="{{ service.pk }}" data-service-description="{{ service.description }}" data-service-name="{{ service.name }}" data-service-duration="{{service.duration}}"></i>
+                        {% endfor %}
+                    </div>
+
+
+                    <hr>
+                    <button type="submit" class="button small" id="save-button">Save</button>
+                    <a href="javascript:history.go(-1);" class="warning button small">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script src="{% static "management/js/services.js" %}"></script>
+  {% endblock %}

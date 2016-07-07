@@ -1,0 +1,44 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<link rel="stylesheet" type="text/css" href="{% static "LaundryBear/css/foundation.min.css" %}">
+	    <style>
+	    body {
+	        background-color: #5EB1E7;
+	    }
+
+	    .panel-404 {
+	        margin-top: 3%;
+	        background-color: #1982C6;
+	    }
+
+	    h1 {
+	        color: #ffffff;
+	    }
+
+	    </style>
+	    <title>404!</title>
+	</head>
+
+	<body>
+		<div class="row">
+
+			<div class="small-2 columns"></div>
+
+			<div class="small-8  small-offset-2 columns">
+			    <div class="panel-404" align="center">
+			        <h1>Error: 404</h1>
+			        <img src="../static/LaundryBear/images/logologin.png"/>
+			        <br><br>
+			        <a href="{% url "client:login" %}" class="secondary button">Return to Home</a>
+			    </div>
+	    	</div>
+
+		    <div class="small-2 columns"></div>
+
+	    </div>
+	</body>
+
+</html>

@@ -1,0 +1,29 @@
+{% load staticfiles %}
+<tr>
+  <td>
+    <a href="#" data-reveal-id="profilemodal{{ profile.pk }}">{{ profile.client.get_full_name }}</a>
+    <div id="profilemodal{{ profile.pk }}" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+      <table style="margin:auto">
+        <thead>
+        <tr>
+          <th width="200">Name</th>
+          <th width="500">Address</th>
+          <th width="150">Contact Information</th>
+          <th>Email</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>{{ profile.client.get_full_name }}</td>
+          <td>{{ profile.location }}</td>
+          <td>{{ profile.contact_number }}</td>
+          <td>{{ profile.client.email }}</td>
+        </tbody>
+      </table>
+      <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+    </div>
+  </td>
+  <td>{{ profile.location }}</td>
+  </div>
+  </td>
+</tr>

@@ -1,0 +1,74 @@
+{% extends 'client/base.html'%}
+{% load staticfiles %}
+{% load custom_math %}
+{% block title %} Dashboard | LaundryBear {% endblock %} {%block body%}
+<div class="row" xmlns:client="http://www.w3.org/1999/xhtml">
+    <div class="large-1 columns"></div>
+    <div class="large-9 large-offset-1 columns">
+        <div class="panel">
+            {% if transaction_list %}
+            <h4 style="text-align:center"><b>My Laundry Requests</b></h4><br>
+            <table align="center" style="margin:auto">
+                <thead>
+                <th>Date Requested</th>
+                <th>Price</th>
+                <th>Laundry Shop</th>
+                <th width="140px">Average Rating</th>
+                <th>Status</th>
+                <th>Your Rating</th>
+                </thead>
+                <tbody>
+                {% for transaction in transaction_list %}
+                <tr>
+                    <td>{{transaction.request_date}}</td>
+                    <td>
+                        {{ transaction.price }}
+                    </td>
+                    <td>{{transaction.order_set.first.price.laundry_shop}}</td>
+                    <td>
+                        <div class="raty-rating" data-value="{{ transaction.order_set.first.price.laundry_shop.average_rating }}" id="{{ transaction.id }}">
+                        </div>
+                    </td>
+                    <td>
+                        <center>
+                            {%if transaction.get_choice_name == "Done" %}
+                            <span class="success label">{{ transaction.get_choice_name | striptags }}</span>
+                            {% elif  transaction.get_choice_name == "Pending" %}
+                            <span class="label" style="background-color:#f1c40f">{{ transaction.get_choice_name | striptags }}</span>
+                            {% elif  transaction.get_choice_name == "Ongoing" %}
+                            <span class="default label">{{ transaction.get_choice_name | striptags }}</span>
+                            {% elif  transaction.get_choice_name == "Rejected" %}
+                            <span class="alert label">{{ transaction.get_choice_name | striptags }}</span>
+                            {%endif%}
+                        </center>
+                    </td>
+                    <td>
+                        {% if transaction.paws %}
+                        {{ transaction.paws }}
+                        {% elif transaction.get_choice_name == "Done" or transaction.get_choice_name == "Rejected" %}
+                        <form action="{% url "client:rate" transaction.pk %}" method="post" charset="UTF-8">
+                        {% csrf_token %}
+                        <div id="paws"><a class="raty-click"
+                                          id="{{ transaction.id }}">Imprint this Laundry Shop</a></div>
+                        </form>
+                        {% else %}
+                        Not yet available
+                        {% endif %}
+
+                    </td>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <h3 style="text-align:center">Welcome, <b>{{ userprofile.client.username }}!</b></h3>
+            <h6 style="text-align:center">You have no existing laundry requests</h6>
+            {% endif %}
+            <center>
+                <br>
+                <a href="{% url "client:view-shops" %}" class="radius small button"><strong>Make a Request</strong></a>
+            </center>
+        </div>
+    </div>
+    <div class="large-1 columns"></div>
+</div>
+{% endblock %}

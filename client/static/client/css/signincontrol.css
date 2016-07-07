@@ -1,0 +1,97 @@
+@import "compass/css3";
+
+body {
+	background-position: center;
+}
+      
+.slider{
+  width: auto;
+  margin: none;
+  background-color: white;
+  text-align: center;
+}
+
+h2{
+  margin-top: -100px;
+}
+
+
+img#logo {
+
+	width: 120px;
+	height: 187.5px;
+	display:block;
+	margin-left:auto;
+	margin-right:auto;
+	margin-bottom: 5%;
+}
+.login-box {
+  background-color: transparent;
+  border: 2px solid transparent;
+  margin-top: 2%;
+  padding: 40px 20px 0 20px;
+}
+
+div#logos img {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    margin-top: -40px;
+}
+
+#separate{
+  margin-top: -30px;
+}
+
+#copy{
+  margin-top: -50px;
+}
+
+#info{
+  margin-top: 2%;
+  margin-left: -100px;
+  background: #87C7F1;
+  border-radius: 8px;
+  box-shadow: 3px 3px 1px #778899;
+}
+
+div#logos:after {
+    content: '';
+    display: inline-block;
+    width: 100%;
+}
+.header {
+  text-align: center;
+  background-color: white;
+  background-size: cover;
+  padding: 1rem; }
+  .header .main-header {
+    color: #000; }
+
+.header-subnav {
+  float: none;
+  position: relative;
+  top: 1rem;
+  text-align: center;
+  margin-bottom: 0; }
+  .header-subnav li {
+    float: none;
+    display: inline-block; }
+    .header-subnav li a {
+      padding: 0.9rem 1rem 0.75rem;
+      font-size: 0.875rem;
+      color: black;
+      text-transform: uppercase;
+      display: block;
+      font-weight: bold;
+      letter-spacing: 1px; }
+      .header-subnav li a.is-active {
+        background: rgba(250, 250, 250, 0.7);
+        color: #333; }
+      .header-subnav li a:hover {
+        background: rgba(250, 250, 250, 0.7);
+        color: #333;
+        transition: all .25s ease-in-out;
+		}
+
+ 

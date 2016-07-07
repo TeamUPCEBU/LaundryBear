@@ -1,0 +1,38 @@
+{% load staticfiles %}
+<div class="row">
+	<div class="large-1 column">
+		<img src="{% static "management/icons/steps.png" %}" />
+	</div>
+
+	<div class="large-9 columns">
+		<span id="days" data-tooltip aria-haspopup="true" class="has-tip" title="Added {{ shop.creation_date|date:"l, F j o" }} at {{ shop.creation_date|time:"h:i A" }}">
+			<h5>
+				<a href="#" data-reveal-id="shopmodal{{ shop.pk }}">{{ shop.name }}</a>
+				<div id="shopmodal{{ shop.pk }}" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+					<table style="margin:auto">
+						<thead>
+							<tr>
+								<th width="200">Name</th>
+								<th width="500">Address</th>
+								<th width="150">Contact Information</th>
+								<th>Rating</th>
+								<th>Operating Hours</th>
+								<th>Email</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>{{ shop.name }}</td>
+								<td>{{ shop.location }}</td>
+								<td>{{ shop.contact_number }}</td>
+								<td><div class="paw-container" style="width: {% widthratio shop.average_rating 5 150 %}px;"><img src="{% static "management/icons/star.png" %}" /></div></td>
+								<td>{{ shop.days_open }}, {{ shop.hours_open }}</td>
+								<td>{{ shop.email }}</td>
+						</tbody>
+					</table>
+					<a class="close-reveal-modal" aria-label="Close">&#215;</a>
+				</div>
+			</h5>
+		</span>
+	</div>
+</div>

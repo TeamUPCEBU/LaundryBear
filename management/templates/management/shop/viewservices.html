@@ -1,0 +1,75 @@
+{% extends 'management/base.html' %}
+{% load staticfiles %}
+{% block title %}View Services | LaundryBear{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" type="text/css" href="{% static "LaundryBear/css/clickyTable.css" %}">
+{% endblock %}
+
+{% block body %}
+
+<form method="get">
+    {%csrf_token%}
+
+    <div class="row">
+        <div class="large-12 columns">
+            <dl class="sub-nav inline">
+                <dt>Filter:</dt>
+                <dd {% if query_type == "name" %} class="active"{% endif %}>
+                <a href="#">Name</a></dd>
+                <dd {% if query_type == "description" %} class="active"{% endif %}>
+                <a href="#">Description</a></dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="large-12 columns">
+            <div class="row collapse">
+
+                <div class="small-2 columns">
+                </div>
+                <div class="small-7 small-offset-2 columns">
+                    <input name="{{ query_type }}" id="search" type="text" placeholder="Search Services">
+                </div>
+                <div class="small-1 columns">
+                    <button type="submit" class="button postfix">Go</button>
+                </div>
+                <div class="small-2 columns">
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+<table style="margin:auto" id="clicky-table">
+    <thead>
+    <tr>
+        <th width="200">Name</th>
+        <th>Description</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for service in service_list %}
+    {% include "management/shop/partials/services_list_row.html" %}
+    {% endfor %}
+    </tbody>
+</table>
+<div class="row">
+    <div class="small-6 small-centered columns">
+        {% if page_obj.has_next %}
+        <a class="button right" href="?page={{ page_obj.next_page_number }}">Next <i class="fi-arrow-right"></i></a>
+        {% endif %}
+        {% if page_obj.has_previous %}
+        <a class="button left" href="?page={{ page_obj.previous_page_number }}">Previous <i class="fi-arrow-left"></i></a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+{% block footer %}
+<br>
+
+{% endblock %}

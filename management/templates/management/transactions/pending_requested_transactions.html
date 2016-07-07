@@ -1,0 +1,33 @@
+{% extends 'management/base.html' %}
+{% load staticfiles %}
+{% block title %} Pending Requested Transactions | LaundryBear {% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{% static "LaundryBear/css/clickyTable.css" %}">
+{% endblock %}
+
+{% block body %}
+
+<div class="row">
+    <div class="large-2 columns"></div>
+    <div class="large-8 large-offset-2 columns">
+        <h3 style="text-align:center"><b>Pending Requested Transactions</b></h3>
+        <table id="clicky-table" style="margin:auto">
+            <thead>
+            <th>Name of Client</th>
+            <th>Laundry Shop</th>
+            <th>Date Requested</th>
+            <th>Time Requested</th>
+            </thead>
+            <tbody>
+            {% for transaction in pending_transaction_list %}
+            {% include "management/transactions/partials/pending_transaction_row.html" %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="large-2 columns"></div>
+</div>
+
+
+{% endblock %}

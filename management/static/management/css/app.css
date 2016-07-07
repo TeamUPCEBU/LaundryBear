@@ -1,0 +1,63 @@
+html, body {
+   margin:0;
+   padding:0;
+}
+
+#container {
+   height:100%;
+   min-height:100%;
+   position:relative;
+}
+
+#header {
+
+}
+
+#body {
+   padding:10px;
+   padding-bottom:60px;
+}
+
+#footer {
+
+}
+
+img#logo {
+	width: 4%;
+	height: 3%;
+	margin-left: -12px;
+	margin-top: -3px;
+}
+
+img#writtenlogo {
+	width: 15%;
+	height: 10%;
+	margin-top: 2%;
+	margin-left:1%;
+}
+
+div.paw-container {
+  overflow: hidden;
+}
+
+div.paw-container > img {
+  max-width: none !important;
+}
+
+#set-service-button-container {
+  position: relative;
+  top: 8px;
+}
+
+#add-service-button-container {
+  position: relative;
+  bottom: 15px;
+  font-size: 13px;
+  font-weight: bold;
+
+.login-box {
+  background: #fff;
+  border: 1px solid #ddd;
+  margin: 100px 0;
+  padding: 10px 10px 0 10px;
+}
