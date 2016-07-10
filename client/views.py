@@ -275,7 +275,6 @@ class CreateTransactionView(ClientLoginRequiredMixin, View):
         return HttpResponse(status=400)
 
     def post(self, request, *args, **kwargs):
-        print request.POST['csrftoken']
         if request.is_ajax():
             services = request.POST['selectedServices']
             services = json.loads(services)
@@ -290,8 +289,6 @@ class CreateTransactionView(ClientLoginRequiredMixin, View):
                 pricePk = service['pk']
                 price = Price.objects.get(pk=pricePk)
                 Order.objects.create(price=price, pieces=service['pieces'], transaction=transaction)
-            print 'yes'
-            # return HttpResponse(status=200)
             return HttpResponse(reverse('client:view-shops'))
         else:
             return HttpResponse(status=400)

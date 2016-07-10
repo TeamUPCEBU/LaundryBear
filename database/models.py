@@ -5,8 +5,9 @@ from django.utils import timezone
 from django.contrib.sites.models import Site
 from datetime import timedelta
 from django.core.validators import RegexValidator
+from django.core import serializers as serial
 
-#from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.models import Token
 #Models are also known as tables
 #Each field is an attribute of the table
 #Models are still classes and can have methods within
@@ -18,13 +19,14 @@ from django.core.validators import RegexValidator
 
 contactNumberValidator = RegexValidator(r'^\+?([\d][\s-]?){10,13}$', 'Invalid input!')
 class UserProfile(models.Model):
-    client = models.OneToOneField(User)
+    client = models.OneToOneField(User, related_name='client')
     province = models.CharField(max_length=50, blank=False)
     city = models.CharField(max_length=50, blank=True)
     barangay = models.CharField(max_length=50, blank=False)
     street = models.CharField(max_length=50, blank=True)
     building = models.CharField(max_length=50, blank=True)
-    contact_number = models.CharField(max_length=30, blank=False,  validators=[contactNumberValidator])
+    contact_number = models.CharField(max_length=30, blank=False,
+                                validators=[contactNumberValidator])
 
     def __unicode__(self): #Default return value of the UserProfile
         return self.client.get_full_name()
@@ -94,6 +96,10 @@ class LaundryShop(models.Model):
             return 0
         return total
 
+    @property
+    def the_services(self):
+        return serial.serializers('json', self.services.all())
+
 
     def __unicode__(self):
         return self.name
@@ -110,15 +116,16 @@ class Service(models.Model):
 
 
 class Price(models.Model):
-    laundry_shop = models.ForeignKey('LaundryShop', on_delete=models.CASCADE)
+    laundry_shop = models.ForeignKey('LaundryShop', on_delete=models.CASCADE,
+                                     related_name='prices')
     service = models.ForeignKey('Service', on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=10, decimal_places=2, blank=False)
     duration = models.IntegerField()
 
 
 class Order (models.Model):
-    price = models.ForeignKey('Price')
-    transaction = models.ForeignKey('Transaction')
+    price = models.ForeignKey('Price', related_name='orders')
+    transaction = models.ForeignKey('Transaction', related_name='orders')
     pieces = models.IntegerField(default=0)
 
 def default_date():
@@ -139,7 +146,7 @@ class Transaction(models.Model):
     def get_choice_name(self):
         return self.TRANSACTION_STATUS_CHOICES[self.status - 1][1]
 
-    client = models.ForeignKey('UserProfile')
+    client = models.ForeignKey('UserProfile', related_name='transactions')
     paws = models.IntegerField(blank=True, null=True)
     status = models.IntegerField(choices=TRANSACTION_STATUS_CHOICES, default=1)
     request_date = models.DateTimeField(auto_now_add=True)

@@ -45,7 +45,8 @@ INSTALLED_APPS = (
     'database',
     'management',
     'client',
-    'api'
+    'api',
+    'django_filters'
 )
 
 REST_FRAMEWORK = {
@@ -59,10 +60,12 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
-    )
+    ),
+    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
 }
 
 CORS_ORIGIN_ALLOW_ALL = True
+APPEND_SLASH = False
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
