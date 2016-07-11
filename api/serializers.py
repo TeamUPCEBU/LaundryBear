@@ -5,7 +5,8 @@ from database.models import *
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('url', 'username', 'email', 'groups')
+        fields = ('url', 'username', 'last_name',
+                  'first_name', 'email', 'groups')
 
 
 class GroupSerializer(serializers.ModelSerializer):
@@ -39,21 +40,32 @@ class LaundryShopSerializer(serializers.ModelSerializer):
                   'hours_open', 'days_open', 'prices')
 
 
+class OrderSerializer(serializers.ModelSerializer):
+    price = PriceSerializer()
+    class Meta:
+        model = Order
+        fields = ('price', 'transaction','pieces')
+
+
+class FeesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Fees
+        fields = ('delivery_fee', 'service_charge',)
+
+
 class TransactionSerializer(serializers.ModelSerializer):
+    order_set = OrderSerializer(many=True)
     class Meta:
         model = Transaction
         fields = ('url', 'paws', 'status', 'request_date', 'delivery_date',
                   'province', 'city', 'barangay', 'street', 'building',
-                  'price', 'client', 'orders')
+                  'price', 'client', 'order_set',)
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    client = UserSerializer()
     class Meta:
         model = UserProfile
-        fields = ('client__username','province', 'city', 'barangay', 'street',
+        # depth = 1
+        fields = ('client', 'province', 'city', 'barangay', 'street',
                   'building', 'contact_number')
-
-
-class OrderSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Order

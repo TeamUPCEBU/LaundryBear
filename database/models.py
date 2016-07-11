@@ -19,7 +19,7 @@ from rest_framework.authtoken.models import Token
 
 contactNumberValidator = RegexValidator(r'^\+?([\d][\s-]?){10,13}$', 'Invalid input!')
 class UserProfile(models.Model):
-    client = models.OneToOneField(User, related_name='client')
+    client = models.OneToOneField(User, related_name='userprofile')
     province = models.CharField(max_length=50, blank=False)
     city = models.CharField(max_length=50, blank=True)
     barangay = models.CharField(max_length=50, blank=False)
@@ -68,7 +68,7 @@ class LaundryShop(models.Model):
     @property
     def average_rating(self):
         average = 0.0
-        price_pk = [price.pk for price in self.price_set.all()]
+        price_pk = [price.pk for price in self.prices.all()]
         orders = Order.objects.filter(price__pk__in=price_pk)
         total = 0
         order_pk = [order.pk for order in orders]
@@ -84,7 +84,7 @@ class LaundryShop(models.Model):
 
     @property
     def raters(self):
-        price_pk = [price.pk for price in self.price_set.all()]
+        price_pk = [price.pk for price in self.prices.all()]
         orders = Order.objects.filter(price__pk__in=price_pk)
         total = 0
         order_pk = [order.pk for order in orders]
@@ -125,7 +125,7 @@ class Price(models.Model):
 
 class Order (models.Model):
     price = models.ForeignKey('Price', related_name='orders')
-    transaction = models.ForeignKey('Transaction', related_name='orders')
+    transaction = models.ForeignKey('Transaction',)
     pieces = models.IntegerField(default=0)
 
 def default_date():

@@ -106,19 +106,19 @@ class GetAuthToken(ObtainAuthToken):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
-        print user.client
+        print user.userprofile
         context = {}
         context['token'] = token.key
         context['username'] = user.username
         context['first_name'] = user.first_name
         context['last_name'] = user.last_name
         context['email'] = user.email
-        context['province'] = user.client.province
-        context['city'] = user.client.city
-        context['barangay'] = user.client.barangay
-        context['street'] = user.client.street
-        context['building'] = user.client.building
-        context['contact_number'] = user.client.contact_number
-        context['id'] = user.client.id
+        context['province'] = user.userprofile.province
+        context['city'] = user.userprofile.city
+        context['barangay'] = user.userprofile.barangay
+        context['street'] = user.userprofile.street
+        context['building'] = user.userprofile.building
+        context['contact_number'] = user.userprofile.contact_number
+        context['id'] = user.userprofile.id
         #return Response({'token': token.key, 'name': user})
         return Response(context)
