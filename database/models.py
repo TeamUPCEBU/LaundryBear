@@ -178,5 +178,4 @@ class Fees(models.Model):
     name = models.CharField(blank=False, max_length=100)
 
     def __unicode__(self):
-        return (self.name + "|" + str(self.delivery_fee) +
-         " " + str(self.service_charge))
+        return (self.name)

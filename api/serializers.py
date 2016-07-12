@@ -5,7 +5,7 @@ from database.models import *
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('url', 'username', 'last_name',
+        fields = ('id', 'username', 'last_name',
                   'first_name', 'email', 'groups')
 
 
@@ -24,7 +24,7 @@ class ServiceSerializer(serializers.ModelSerializer):
 
 
 class LaundryShopSerializer(serializers.ModelSerializer):
-    services = ServiceSerializer(many=True)
+    services = ServiceSerializer(many=True, read_only=True)
     class Meta:
         model = LaundryShop
         depth = 1
@@ -33,31 +33,30 @@ class LaundryShopSerializer(serializers.ModelSerializer):
                   'opening_time', 'closing_time', 'services')
 
 class OrderSerializer(serializers.ModelSerializer):
-    service = ServiceSerializer()
+    service = ServiceSerializer(read_only=True)
     class Meta:
         model = Order
-        fields = ('service', 'transaction','pieces')
+        fields = ('id', 'service', 'transaction','pieces')
 
 
 class FeesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Fees
-        fields = ('delivery_fee', 'service_charge',)
+        fields = ('id', 'delivery_fee', 'service_charge', 'name')
 
 
 class TransactionSerializer(serializers.ModelSerializer):
-    orders = OrderSerializer(many=True)
+    orders = OrderSerializer(many=True, read_only=True)
     class Meta:
         model = Transaction
-        fields = ('url', 'paws', 'status', 'request_date', 'delivery_date',
+        fields = ('id', 'paws', 'status', 'request_date', 'delivery_date',
                   'province', 'city', 'barangay', 'street', 'building',
-                  'price', 'client', 'orders',)
+                  'price', 'client', 'orders', 'fee')
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
-    client = UserSerializer()
+    client = UserSerializer(read_only=True)
     class Meta:
         model = UserProfile
-        # depth = 1
-        fields = ('client', 'province', 'city', 'barangay', 'street',
+        fields = ('id', 'client', 'province', 'city', 'barangay', 'street',
                   'building', 'contact_number')

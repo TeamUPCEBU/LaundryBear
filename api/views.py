@@ -19,21 +19,7 @@ from api.models import *
 
 import json
 
-class UserViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows users to be viewed or edited.
-    """
-    queryset = User.objects.all().order_by('-date_joined')
-    serializer_class = UserSerializer
-
-
-class GroupViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows groups to be viewed or edited.
-    """
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
-
+################# Shops #################
 
 class LaundryShopViewSet(viewsets.ModelViewSet):
     """
@@ -47,14 +33,21 @@ class LaundryShopViewSet(viewsets.ModelViewSet):
 
 
 
-class NearbyLaundryShopViewSet(LaundryShopViewSet):
-    """
-    API endpoint that allows shops to be viewed or edited.
-    """
-
+class ActiveLaundryShopViewSet(LaundryShopViewSet):
     def get_queryset(self):
-        return LaundryShop.objects.filter(admin__barangay=self.request.user.userprofile.barangay)
+        return LaundryShop.objects.filter(status=2)
 
+
+
+class NearbyLaundryShopViewSet(LaundryShopViewSet):
+    def get_queryset(self):
+        return LaundryShop.objects.filter(
+                admin__barangay=self.request.user.userprofile.barangay,
+                status=2)
+
+
+
+################# Transactions #################
 
 class TransactionViewSet(viewsets.ModelViewSet):
     """
@@ -69,9 +62,6 @@ class TransactionViewSet(viewsets.ModelViewSet):
 
 
 class ClientTransactionViewSet(TransactionViewSet):
-    """
-    API endpoint that allows transactions to be viewed or edited.
-    """
     def get_queryset(self):
         return self.request.user.userprofile.transactions.all()
 
@@ -79,15 +69,8 @@ class ClientTransactionViewSet(TransactionViewSet):
 class ShopTransactionViewSet(TransactionViewSet):
     def get_queryset(self):
         admin = self.request.user.userprofile
-        return  Transaction.objects.filter(orders__service__laundry_shop=admin.laundry_shop)
-
-
-class UserProfileViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows transactions to be viewed or edited.
-    """
-    queryset = UserProfile.objects.all()
-    serializer_class = UserProfileSerializer
+        return Transaction.objects.filter(
+                orders__service__laundry_shop=admin.laundry_shop)
 
 
 
@@ -107,8 +90,48 @@ class ServiceViewSet(viewsets.ModelViewSet):
     serializer_class = ServiceSerializer
 
 
+################# Users #################
+
+class UserViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = User.objects.all().order_by('-date_joined')
+    serializer_class = UserSerializer
+
+
+class UserProfileViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows transactions to be viewed or edited.
+    """
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
+
+
+class CustomerUserProfileViewSet(UserProfileViewSet):
+    def get_queryset(self):
+        return UserProfile.objects.filter(account_type=1)
+
+class ShopAdminUserProfileViewSet(UserProfileViewSet):
+    def get_queryset(self):
+        return UserProfile.objects.filter(account_type=2)
+
+
+class LaundryBearAdminUserProfileViewSet(UserProfileViewSet):
+    def get_queryset(self):
+        return UserProfile.objects.filter(account_type=3)
+
+
+class GroupViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
+
+
 class GetAuthToken(ObtainAuthToken):
-    @method_decorator(csrf_exempt)
+    #@method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super(ObtainAuthToken, self).dispatch(request, *args, **kwargs)
 
@@ -131,5 +154,4 @@ class GetAuthToken(ObtainAuthToken):
         context['building'] = user.userprofile.building
         context['contact_number'] = user.userprofile.contact_number
         context['id'] = user.userprofile.id
-        #return Response({'token': token.key, 'name': user})
         return Response(context)
