@@ -80,14 +80,6 @@ class ServiceViewSet(viewsets.ModelViewSet):
     serializer_class = ServiceSerializer
 
 
-#@csrf_exempt
-#def obtain_auth_token(request):
-#    req = json.loads(request.body)
-#    print req['username']
-#    print req['password']
-#    rest_views.obtain_auth_token(request)
-#    return Response(req)
-
 class GetAuthToken(ObtainAuthToken):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):

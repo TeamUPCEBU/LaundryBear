@@ -266,6 +266,7 @@ class ServicesListView(AdminLoginRequiredMixin, ListView):
     def get_service_by_description(self, description_query):
         return Service.objects.filter(description__icontains=description_query)
 
+
 class ServicesDeleteView(AdminLoginRequiredMixin, DeleteView):
     """ A view to delete a service. """
     model = Service

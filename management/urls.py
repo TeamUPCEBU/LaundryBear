@@ -6,11 +6,6 @@ admin.autodiscover()
 
 from . import views
 
-#Urls used for client side
-#Needs: RegEx, View to inherit, Name
-#RegEx: r'^(name of url)$
-#View: Which view to show
-#Name: Used in views and template tags
 urlpatterns = [
     url(r'^menu$', views.LaundryMenuView.as_view(), name='menu'),
     url(r'^shops/add$', views.LaundryCreateView.as_view(), name='add-shop'),
