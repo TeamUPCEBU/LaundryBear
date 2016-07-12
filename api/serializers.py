@@ -32,7 +32,6 @@ class LaundryShopSerializer(serializers.ModelSerializer):
                   'building', 'contact_number', 'email', 'website',
                   'hours_open', 'days_open', 'service_set')
 
-
 class OrderSerializer(serializers.ModelSerializer):
     service = ServiceSerializer()
     class Meta:
