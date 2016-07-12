@@ -1,6 +1,0 @@
-<tr onclick="document.location.href='{% url "management:update-transaction" transaction.pk %}';">
-	<td>{{transaction.client}}</td>
-	<td>{{transaction.order_set.first.price.laundry_shop}}</td>
-	<td>{{transaction.request_date|date:'F d, o'}}</td>
-	<td>{{transaction.request_date|time:'h:i A'}}</td>
-</tr>

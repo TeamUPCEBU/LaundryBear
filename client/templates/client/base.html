@@ -31,15 +31,10 @@
 
     <section class="top-bar-section">
       <ul class="right">
-
-        <li class="divider"></li>
-        <li><a href="{% url "client:menu" %}">Orders</a></li>
         <li class="divider"></li>
         <li class="has-dropdown">
           <a href="#">Hi, {{user.username}}</a>
           <ul class="dropdown">
-            <li><a href="{%url "client:usersettings"%}">Edit Profile</a></li>
-            <li class="divider"></li>
             <li><a href="{%url "client:logout"%}">Sign Out →</a></li>
           </ul>
         </li>
@@ -70,10 +65,6 @@
 <script src="{%static "client/js/app.js"%}"></script>
     <script src="{% static "LaundryBear/js/jquery.raty.js" %}"></script>
 <script src="{% static "LaundryBear/js/labs.js" %}"></script>
-    <script>
-        $.fn.raty.defaults.path = "{% static "LaundryBear/images" %}";
-    </script>
-<script src="{% static "client/js/ratings.js" %}"></script>
     {%block javascripts%} {% endblock %}
   </body>
 </html>
