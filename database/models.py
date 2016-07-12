@@ -13,7 +13,15 @@ from rest_framework.authtoken.models import Token
 
 
 contactNumberValidator = RegexValidator(r'^\+?([\d][\s-]?){10,13}$', 'Invalid input!')
+days_open_validator = RegexValidator(r'([0]|[1]){7,7}$', 'Invalid input!')
 class UserProfile(models.Model):
+    ACCOUNT_TYPE_CHOICES = (
+        (1, 'Customer'),
+        (2, 'Shop Administrator'),
+        (3, 'Laundry Bear Administrator'),
+    )
+
+    account_type = models.IntegerField(choices=ACCOUNT_TYPE_CHOICES, default=1)
     client = models.OneToOneField(User, related_name='userprofile')
     province = models.CharField(max_length=50, blank=False)
     city = models.CharField(max_length=50, blank=True)
@@ -46,25 +54,41 @@ class LaundryShop(models.Model):
         (4, 'Rejected')
     )
 
-    admin = models.OneToOneField(User, related_name='admin')
+    admin = models.OneToOneField(UserProfile, related_name='admin')
     status = models.IntegerField(choices=LAUNDRY_SHOP_STATUS_CHOICES, default=1)
     name = models.CharField(max_length=50, blank=False)
-    province = models.CharField(max_length=50, blank=False)
-    city = models.CharField(max_length=50, blank=True)
-    barangay = models.CharField(max_length=50, blank=False)
-    street = models.CharField(max_length=50, blank=True)
-    building = models.CharField(max_length=50, blank=True)
     contact_number = models.CharField(max_length=30, blank=False, validators=[contactNumberValidator])
-    email = models.EmailField(blank=True)
     website = models.URLField(blank=True)
-    hours_open = models.CharField(max_length=100, blank=False)
-    days_open = models.CharField(max_length=100, blank=False)
+    opening_time = models.TimeField(blank=False, auto_now=False, auto_now_add=False)
+    closing_time = models.TimeField(blank=False, auto_now=False, auto_now_add=False)
+    days_open = models.CharField(max_length=100, blank=False,
+                                 validators=[days_open_validator])
     creation_date = models.DateTimeField(auto_now_add=True)
 
     @property
+    def building(self):
+        return self.admin.building
+
+    @property
+    def street(self):
+        return self.admin.street
+
+    @property
+    def barangay(self):
+        return self.admin.barangay
+
+    @property
+    def city(self):
+        return self.admin.city
+
+    @property
+    def province(self):
+        return self.admin.province
+
+    @property
     def location(self):
-        address = [self.building, self.street, self.barangay, self.city,
-    		self.province]
+        address = [self.admin.building, self.admin.street, self.admin.barangay,
+            self.admin.city, self.province]
         while '' in address:
             address.remove('')
 
@@ -78,6 +102,12 @@ class LaundryShop(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if self.opening_time < self.closing_time:
+            super(LaundryShop, self).save(*args, **kwargs)
+        self.admin.account_type = 2
+        self.admin.save()
 
 
 class Service(models.Model):
@@ -95,6 +125,9 @@ class Order (models.Model):
     transaction = models.ForeignKey('Transaction')
     service = models.ForeignKey('Service')
     pieces = models.IntegerField(default=0)
+
+    def __unicode__(self):
+        return str(self.transaction) + " " + str(self.service) + " " + str(self.pieces)
 
 def default_date():
     return timezone.now()+timedelta(days=3)
@@ -131,11 +164,7 @@ class Transaction(models.Model):
 
     @property
     def location(self):
-    	address = [self.building, self.street, self.barangay, self.city,
-    		self.province]
-        while '' in address:
-        	address.remove('')
-        return ', '.join(address)
+    	return self.admin.location
 
     def __unicode__(self):
         return "{0}".format(unicode(self.request_date))
@@ -149,4 +178,5 @@ class Fees(models.Model):
     name = models.CharField(blank=False, max_length=100)
 
     def __unicode__(self):
-        return self.name + "|" + self.delivery_fee + " " + self.service_charge
+        return (self.name + "|" + str(self.delivery_fee) +
+         " " + str(self.service_charge))

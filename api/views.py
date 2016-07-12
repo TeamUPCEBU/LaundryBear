@@ -42,7 +42,7 @@ class LaundryShopViewSet(viewsets.ModelViewSet):
     serializer_class = LaundryShopSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     fields = ('name', 'barangay', 'province', 'city',
-                     'street', 'building', 'the_services')#'services')
+                     'street', 'building', 'the_services')
 
 
 class TransactionViewSet(viewsets.ModelViewSet):
@@ -55,6 +55,10 @@ class TransactionViewSet(viewsets.ModelViewSet):
     filter_fields = ('barangay', 'province', 'paws', 'status', 'request_date',
                      'delivery_date', 'city', 'street', 'building', 'price',
                      'client')
+
+    def get_queryset(self):
+        user = self.request.user
+        return self.request.user.userprofile.transactions.all()
 
 class UserProfileViewSet(viewsets.ModelViewSet):
     """

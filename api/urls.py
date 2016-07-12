@@ -9,7 +9,6 @@ router.register(r'groups', views.GroupViewSet)
 router.register(r'shops', views.LaundryShopViewSet)
 router.register(r'transactions', views.TransactionViewSet)
 router.register(r'orders', views.OrderViewSet)
-router.register(r'prices', views.PriceViewSet)
 router.register(r'services', views.ServiceViewSet)
 
 urlpatterns = [

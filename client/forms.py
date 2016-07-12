@@ -18,29 +18,3 @@ class ProfileForm(ModelForm): #Used in creating a user profile, or updating info
     class Meta:
         model = UserProfile
         exclude = ['client'] #exclude client because it has a different specific form
-
-
-class OrderForm(ModelForm): #Used in creating or modifying an Order
-    class Meta:
-        model = Order
-        fields = ['transaction', 'pieces']
-
-
-class TransactionForm(ModelForm): #Used in creating or modifying a transaction
-    class Meta:
-        model = Transaction
-        exclude = ['status', 'client', 'request_date', 'paws']
-
-
-class AddressForm(Form): #Used in modification of delivery address
-    province = forms.CharField(max_length=50)
-    city = forms.CharField(max_length=50, required=True)
-    barangay = forms.CharField(max_length=50)
-    street = forms.CharField(max_length=50, required=True)
-    building = forms.CharField(max_length=50, required=True)
-
-
-class ChangeUsernameForm(ModelForm): #Used in modification of user's username
-    class Meta:
-        model = User
-        fields = ['username']
