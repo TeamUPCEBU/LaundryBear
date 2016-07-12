@@ -461,8 +461,8 @@ class AdminSettingsView(AdminLoginRequiredMixin, TemplateView):
         context = super(AdminSettingsView, self).get_context_data(**kwargs)
         context['usernameform'] = forms.ChangeUsernameForm(data=self.request.POST or None, instance=self.request.user)
         context['passwordform'] = PasswordChangeForm(data=self.request.POST or None, user=self.request.user)
-        # site = Site.objects.get_current()
-        site = Site.objects.get_or_create(domain='laundrybear.pythonanywhere.com')[0].fees
+        site = Site.objects.get_current()
+        #site = Site.objects.get_or_create(domain='laundrybear.pythonanywhere.com')[0].fees
         context['fees_form'] = forms.FeesForm(data=self.request.POST or None,
                                               instance=site.fees)
         return context
@@ -487,4 +487,3 @@ class AdminSettingsView(AdminLoginRequiredMixin, TemplateView):
         if fees_form.is_valid():
             fees_form.save()
         return self.render_to_response(context)
-

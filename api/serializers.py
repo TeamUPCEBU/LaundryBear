@@ -31,13 +31,13 @@ class PriceSerializer(serializers.ModelSerializer):
 
 
 class LaundryShopSerializer(serializers.ModelSerializer):
-    prices = PriceSerializer(many=True)
+    price_set = PriceSerializer(many=True)
     class Meta:
         model = LaundryShop
         depth = 1
         fields = ('id', 'name', 'province', 'city', 'barangay', 'street',
                   'building', 'contact_number', 'email', 'website',
-                  'hours_open', 'days_open', 'prices')
+                  'hours_open', 'days_open', 'price_set')
 
 
 class OrderSerializer(serializers.ModelSerializer):

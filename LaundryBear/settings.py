@@ -39,14 +39,15 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'corsheaders',
-    'rest_framework',
-    'rest_framework.authtoken',
+    #'rest_framework',
+    #'rest_framework.authtoken',
     'LaundryBear',
     'database',
     'management',
     'client',
-    'api',
-    'django_filters'
+    #'shopadmin',
+    #'api',
+    #'django_filters'
 )
 
 REST_FRAMEWORK = {
