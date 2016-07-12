@@ -72,14 +72,6 @@ class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
 
 
-class PriceViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows transactions to be viewed or edited.
-    """
-    queryset = Price.objects.all()
-    serializer_class = PriceSerializer
-
-
 class ServiceViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows transactions to be viewed or edited.

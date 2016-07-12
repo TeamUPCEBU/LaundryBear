@@ -1,7 +1,3 @@
-import json
-
-from datetime import timedelta
-
 from django.contrib.auth import authenticate, login
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
@@ -10,22 +6,19 @@ from django.template import RequestContext
 from django.forms.models import model_to_dict
 from django.contrib.sites.models import Site
 from django.views.generic import (DetailView, ListView, TemplateView, View)
-from django.views.decorators.csrf import *
-from django.utils.decorators import method_decorator
-
-from client.forms import ProfileForm, UserForm, AddressForm, TransactionForm, ChangeUsernameForm
-
+from datetime import timedelta
+# Create your views here.
+from client.forms import UserForm
+from management.forms import LaundryShopForm
 from django.contrib.auth.forms import PasswordChangeForm
-from client.mixins import ClientLoginRequiredMixin
-from database.models import LaundryShop, Transaction, Order, default_date
+from shopadmin.mixins import ShopAdminLoginRequiredMixin
+from database.models import (LaundryShop, Price, Transaction,
+                             Order, default_date, ShopAdministrator)
 
 from LaundryBear.forms import LoginForm
 from LaundryBear.views import LoginView, LogoutView
 
-#Django uses class based views to connect with templates.
-#Each class based view has their own methods.
-#You can still add more methods if needed.
-#Check ccbv.co.uk for more information
+class CreateShopAdminView(TemplateView):
 
 #Inherits Class Based View "LoginView"
 class ClientLoginView(LoginView):
@@ -275,6 +268,7 @@ class CreateTransactionView(ClientLoginRequiredMixin, View):
         return HttpResponse(status=400)
 
     def post(self, request, *args, **kwargs):
+        print request.POST['csrftoken']
         if request.is_ajax():
             services = request.POST['selectedServices']
             services = json.loads(services)
@@ -289,6 +283,8 @@ class CreateTransactionView(ClientLoginRequiredMixin, View):
                 pricePk = service['pk']
                 price = Price.objects.get(pk=pricePk)
                 Order.objects.create(price=price, pieces=service['pieces'], transaction=transaction)
+            print 'yes'
+            # return HttpResponse(status=200)
             return HttpResponse(reverse('client:view-shops'))
         else:
             return HttpResponse(status=400)

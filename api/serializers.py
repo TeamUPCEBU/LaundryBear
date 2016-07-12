@@ -23,28 +23,21 @@ class ServiceSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'description')
 
 
-class PriceSerializer(serializers.ModelSerializer):
-    service = ServiceSerializer()
-    class Meta:
-        model = Price
-        fields = ('laundry_shop', 'id', 'price', 'duration', 'service')
-
-
 class LaundryShopSerializer(serializers.ModelSerializer):
-    prices = PriceSerializer(many=True)
+    service_set = ServiceSerializer(many=True)
     class Meta:
         model = LaundryShop
         depth = 1
         fields = ('id', 'name', 'province', 'city', 'barangay', 'street',
                   'building', 'contact_number', 'email', 'website',
-                  'hours_open', 'days_open', 'prices')
+                  'hours_open', 'days_open', 'service_set')
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    price = PriceSerializer()
+    service = ServiceSerializer()
     class Meta:
         model = Order
-        fields = ('price', 'transaction','pieces')
+        fields = ('service', 'transaction','pieces')
 
 
 class FeesSerializer(serializers.ModelSerializer):

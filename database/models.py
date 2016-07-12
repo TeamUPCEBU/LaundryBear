@@ -2,7 +2,6 @@ from decimal import *
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
-from django.contrib.sites.models import Site
 from datetime import timedelta
 from django.core.validators import RegexValidator
 from django.core import serializers as serial
@@ -12,10 +11,6 @@ from rest_framework.authtoken.models import Token
 #Each field is an attribute of the table
 #Models are still classes and can have methods within
 
-
-#Generate tokens for all existing users
-#for user in User.objects.all():
-#    Token.objects.get_or_create(user=user)
 
 contactNumberValidator = RegexValidator(r'^\+?([\d][\s-]?){10,13}$', 'Invalid input!')
 class UserProfile(models.Model):
@@ -43,6 +38,16 @@ class UserProfile(models.Model):
 class LaundryShop(models.Model):
     class Meta:
         get_latest_by = 'creation_date' #Sort
+
+    LAUNDRY_SHOP_STATUS_CHOICES = (
+        (1, 'Pending'),
+        (2, 'Active'),
+        (3, 'Inactive'),
+        (4, 'Rejected')
+    )
+
+    admin = models.OneToOneField(User, related_name='admin')
+    status = models.IntegerField(choices=LAUNDRY_SHOP_STATUS_CHOICES, default=1)
     name = models.CharField(max_length=50, blank=False)
     province = models.CharField(max_length=50, blank=False)
     city = models.CharField(max_length=50, blank=True)
@@ -67,65 +72,28 @@ class LaundryShop(models.Model):
 
     @property
     def average_rating(self):
-        average = 0.0
-        price_pk = [price.pk for price in self.prices.all()]
-        orders = Order.objects.filter(price__pk__in=price_pk)
-        total = 0
-        order_pk = [order.pk for order in orders]
-        transactions = Transaction.objects.filter(order__pk__in=order_pk).distinct()
-        for transaction in transactions:
-            if transaction.paws:
-                average += transaction.paws
-                total += 1
-        if not total:
-            return 0
-        TWOPLACES = Decimal(10) ** -2
-        return Decimal(average/total).quantize(TWOPLACES)
-
-    @property
-    def raters(self):
-        price_pk = [price.pk for price in self.prices.all()]
-        orders = Order.objects.filter(price__pk__in=price_pk)
-        total = 0
-        order_pk = [order.pk for order in orders]
-        transactions = Transaction.objects.filter(order__pk__in=order_pk).distinct()
-        for transaction in transactions:
-            if transaction.paws:
-                total += 1
-        if not total:
-            return 0
-        return total
-
-    @property
-    def the_services(self):
-        return serial.serializers('json', self.services.all())
-
+        #TWOPLACES = Decimal(10) ** -2
+        #return Decimal(average/total).quantize(TWOPLACES)
+        return 0.0
 
     def __unicode__(self):
         return self.name
 
 
 class Service(models.Model):
+    laundry_shop = models.ForeignKey('LaundryShop', related_name='services')
     name = models.CharField(max_length=100, blank=False, unique=True)
     description = models.TextField(blank=False)
-    prices = models.ManyToManyField('LaundryShop', through='Price',
-        related_name='services')
+    price = models.DecimalField(max_digits=10, decimal_places=2, blank=False)
+    duration = models.IntegerField()
 
     def __unicode__(self):
         return self.name
 
 
-class Price(models.Model):
-    laundry_shop = models.ForeignKey('LaundryShop', on_delete=models.CASCADE,
-                                     related_name='prices')
-    service = models.ForeignKey('Service', on_delete=models.CASCADE)
-    price = models.DecimalField(max_digits=10, decimal_places=2, blank=False)
-    duration = models.IntegerField()
-
-
 class Order (models.Model):
-    price = models.ForeignKey('Price', related_name='orders')
-    transaction = models.ForeignKey('Transaction',)
+    transaction = models.ForeignKey('Transaction')
+    service = models.ForeignKey('Service')
     pieces = models.IntegerField(default=0)
 
 def default_date():
@@ -146,8 +114,8 @@ class Transaction(models.Model):
     def get_choice_name(self):
         return self.TRANSACTION_STATUS_CHOICES[self.status - 1][1]
 
+    fee = models.ForeignKey('Fees', related_name='fee')
     client = models.ForeignKey('UserProfile', related_name='transactions')
-    paws = models.IntegerField(blank=True, null=True)
     status = models.IntegerField(choices=TRANSACTION_STATUS_CHOICES, default=1)
     request_date = models.DateTimeField(auto_now_add=True)
     delivery_date = models.DateField(default=default_date)
@@ -158,6 +126,8 @@ class Transaction(models.Model):
     building = models.CharField(max_length=50, blank=True)
     price = models.DecimalField(blank=False, default=0, max_digits=8,
         decimal_places=2)
+    paws = models.IntegerField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
 
     @property
     def location(self):
@@ -176,4 +146,7 @@ class Fees(models.Model):
         max_digits=4)
     service_charge = models.DecimalField(default=0.1, decimal_places=2,
         max_digits=3)
-    site = models.OneToOneField(Site)
+    name = models.CharField(blank=False, max_length=100)
+
+    def __unicode__(self):
+        return self.name + "|" + self.delivery_fee + " " + self.service_charge

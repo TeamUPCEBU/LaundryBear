@@ -18,10 +18,10 @@ from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib import admin
-from rest_framework.authtoken import views as rest_views
-from api.views import ObtainAuthToken#obtain_auth_token, ObtainAuthToken
+# from rest_framework.authtoken import views as rest_views
+# from api.views import ObtainAuthToken
 
-import api
+#import api
 import client
 import management
 
@@ -29,8 +29,8 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^management/', include('management.urls', namespace='management')),
     url(r'^', include('client.urls', namespace='client')),
-    url(r'^api/', include('api.urls')),
-    url(r'^api/auth/', include('rest_framework.urls', namespace='rest_framework')),
-    #url(r'^api-token-auth/', rest_views.obtain_auth_token),
-    url(r'^api/token-auth$', api.views.GetAuthToken.as_view())#api.views.obtain_auth_token),
+    # url(r'^api/', include('api.urls')),
+    # url(r'^api/auth/', include('rest_framework.urls', namespace='rest_framework')),
+    # url(r'^api-token-auth/', rest_views.obtain_auth_token),
+    # url(r'^api/token-auth$', api.views.GetAuthToken.as_view())#api.views.obtain_auth_token),
 ]

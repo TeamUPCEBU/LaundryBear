@@ -23,7 +23,7 @@ class ProfileForm(ModelForm): #Used in creating a user profile, or updating info
 class OrderForm(ModelForm): #Used in creating or modifying an Order
     class Meta:
         model = Order
-        fields = ['price', 'transaction', 'pieces']
+        fields = ['transaction', 'pieces']
 
 
 class TransactionForm(ModelForm): #Used in creating or modifying a transaction
@@ -44,5 +44,3 @@ class ChangeUsernameForm(ModelForm): #Used in modification of user's username
     class Meta:
         model = User
         fields = ['username']
-
-
