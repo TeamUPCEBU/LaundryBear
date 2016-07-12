@@ -54,7 +54,7 @@ class LaundryShop(models.Model):
         (4, 'Rejected')
     )
 
-    admin = models.OneToOneField(UserProfile, related_name='admin')
+    admin = models.OneToOneField(UserProfile, related_name='laundry_shop')
     status = models.IntegerField(choices=LAUNDRY_SHOP_STATUS_CHOICES, default=1)
     name = models.CharField(max_length=50, blank=False)
     contact_number = models.CharField(max_length=30, blank=False, validators=[contactNumberValidator])
@@ -122,7 +122,7 @@ class Service(models.Model):
 
 
 class Order (models.Model):
-    transaction = models.ForeignKey('Transaction')
+    transaction = models.ForeignKey('Transaction', related_name='orders')
     service = models.ForeignKey('Service')
     pieces = models.IntegerField(default=0)
 

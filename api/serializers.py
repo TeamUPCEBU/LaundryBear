@@ -46,12 +46,12 @@ class FeesSerializer(serializers.ModelSerializer):
 
 
 class TransactionSerializer(serializers.ModelSerializer):
-    order_set = OrderSerializer(many=True)
+    orders = OrderSerializer(many=True)
     class Meta:
         model = Transaction
         fields = ('url', 'paws', 'status', 'request_date', 'delivery_date',
                   'province', 'city', 'barangay', 'street', 'building',
-                  'price', 'client', 'order_set',)
+                  'price', 'client', 'orders',)
 
 
 class UserProfileSerializer(serializers.ModelSerializer):

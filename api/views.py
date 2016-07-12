@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 
+from rest_framework import generics
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 
@@ -45,6 +46,16 @@ class LaundryShopViewSet(viewsets.ModelViewSet):
                      'street', 'building', 'the_services')
 
 
+
+class NearbyLaundryShopViewSet(LaundryShopViewSet):
+    """
+    API endpoint that allows shops to be viewed or edited.
+    """
+
+    def get_queryset(self):
+        return LaundryShop.objects.filter(admin__barangay=self.request.user.userprofile.barangay)
+
+
 class TransactionViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows transactions to be viewed or edited.
@@ -56,9 +67,20 @@ class TransactionViewSet(viewsets.ModelViewSet):
                      'delivery_date', 'city', 'street', 'building', 'price',
                      'client')
 
+
+class ClientTransactionViewSet(TransactionViewSet):
+    """
+    API endpoint that allows transactions to be viewed or edited.
+    """
     def get_queryset(self):
-        user = self.request.user
         return self.request.user.userprofile.transactions.all()
+
+
+class ShopTransactionViewSet(TransactionViewSet):
+    def get_queryset(self):
+        admin = self.request.user.userprofile
+        return  Transaction.objects.filter(orders__service__laundry_shop=admin.laundry_shop)
+
 
 class UserProfileViewSet(viewsets.ModelViewSet):
     """
@@ -66,6 +88,7 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     """
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
+
 
 
 class OrderViewSet(viewsets.ModelViewSet):
