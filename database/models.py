@@ -19,6 +19,7 @@ class UserProfile(models.Model):
         (1, 'Customer'),
         (2, 'Shop Administrator'),
         (3, 'Laundry Bear Administrator'),
+        (4, 'Subscriber')
     )
 
     account_type = models.IntegerField(choices=ACCOUNT_TYPE_CHOICES, default=1)

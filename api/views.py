@@ -1,19 +1,21 @@
 from django.contrib.auth.models import User, Group
-from django.core import serializers
+from django.core import serializers as serial
 from database.models import *
 from rest_framework import viewsets
 from api.serializers import *
-from rest_framework.authtoken import views as rest_views
-from rest_framework import filters
-from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 
+from rest_framework.authtoken import views as rest_views
+from rest_framework import filters
+from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework import mixins
 from rest_framework.authtoken.views import ObtainAuthToken
+
+from datetime import datetime
 
 from api.models import *
 
@@ -21,7 +23,7 @@ import json
 
 ################# Shops #################
 
-class LaundryShopViewSet(viewsets.ModelViewSet, mixins.UpdateModelMixin):
+class LaundryShopViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows shops to be viewed or edited.
     """
@@ -30,8 +32,6 @@ class LaundryShopViewSet(viewsets.ModelViewSet, mixins.UpdateModelMixin):
     filter_backends = (filters.DjangoFilterBackend,)
     fields = ('name', 'barangay', 'province', 'city',
                      'street', 'building', 'the_services')
-
-
 
 class ActiveLaundryShopViewSet(LaundryShopViewSet):
     def get_queryset(self):
@@ -46,10 +46,9 @@ class NearbyLaundryShopViewSet(LaundryShopViewSet):
                 status=2)
 
 
-
 ################# Transactions #################
 
-class TransactionViewSet(viewsets.ModelViewSet, mixins.UpdateModelMixin):
+class TransactionViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows transactions to be viewed or edited.
     """
@@ -59,6 +58,72 @@ class TransactionViewSet(viewsets.ModelViewSet, mixins.UpdateModelMixin):
     filter_fields = ('barangay', 'province', 'paws', 'status', 'request_date',
                      'delivery_date', 'city', 'street', 'building', 'price',
                      'client')
+
+
+    def create(self, request, *args, **kwargs):
+        data = request.data
+        transaction = Transaction()
+        transaction.paws = data['paws']
+        transaction.status = data['status']
+        # date time field
+        # 2016-07-12T15:10:21.496437Z
+        request_date = datetime.strptime(data['request_date'][:-1], '%Y-%m-%dT%H:%M:%S.%f')
+        transaction.request_date = request_date
+        # date field
+        # 2016-07-18
+        delivery_date = datetime.strptime(data['delivery_date'],'%Y-%m-%d').date()
+        transaction.delivery_date = delivery_date
+        transaction.province = data['province']
+        transaction.city = data['city']
+        transaction.barangay = data['barangay']
+        transaction.street = data['street']
+        transaction.building = data['building']
+        transaction.price = data['price']
+        transaction.client = UserProfile.objects.get(id=data['client'])
+        transaction.fee = Fees.objects.get(id=data['fee'])
+        transaction.save()
+        for d_order in data['orders']:
+            order = Order()
+            s = d_order['service']
+            order.service = Service.objects.get(id=s['id'])
+            order.transaction = Transaction.objects.get(id=transaction.id)
+            order.pieces = d_order['pieces']
+            order.save()
+        struct = TransactionSerializer(transaction).data
+        return Response(struct)
+
+
+    def update(self, request, *args, **kwargs):
+        data = request.data
+        transaction = Transaction.objects.get(id=data['id'])
+        transaction.paws = data['paws']
+        transaction.status = data['status']
+        # date time field
+        request_date = datetime.strptime(data['request_date'][:-1], '%Y-%m-%dT%H:%M:%S.%f')
+        transaction.request_date = request_date
+        # 2016-07-12T15:10:21.496437Z
+        # date field
+        # 2016-07-18
+        delivery_date = datetime.strptime(data['delivery_date'],'%Y-%m-%d').date()
+        transaction.delivery_date = delivery_date
+        transaction.province = data['province']
+        transaction.city = data['city']
+        transaction.barangay = data['barangay']
+        transaction.street = data['street']
+        transaction.building = data['building']
+        transaction.price = data['price']
+        transaction.client = UserProfile.objects.get(id=data['client'])
+        transaction.fee = Fees.objects.get(id=data['fee'])
+        transaction.save()
+        for d_order in data['orders']:
+            order = Order.objects.get(id=d_order['id'])
+            s = d_order['service']
+            order.service = Service.objects.get(id=s['id'])
+            order.transaction = Transaction.objects.get(id=d_order['transaction'])
+            order.pieces = d_order['pieces']
+            order.save()
+        struct = TransactionSerializer(transaction).data
+        return Response(struct)
 
 
 class ClientTransactionViewSet(TransactionViewSet):
@@ -142,7 +207,7 @@ class GetAuthToken(ObtainAuthToken):
         token, created = Token.objects.get_or_create(user=user)
         print user.userprofile
         context = {}
-        context['token'] = token.key
+        context['token'] = 'Token ' + token.key
         context['username'] = user.username
         context['first_name'] = user.first_name
         context['last_name'] = user.last_name

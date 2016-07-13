@@ -16,11 +16,10 @@ class GroupSerializer(serializers.ModelSerializer):
 
 
 class ServiceSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Service
         depth = 2
-        fields = ('id', 'name', 'description', 'price')
+        fields = ('id', 'name', 'description', 'price', 'laundry_shop')
 
 
 class LaundryShopSerializer(serializers.ModelSerializer):
@@ -29,8 +28,10 @@ class LaundryShopSerializer(serializers.ModelSerializer):
         model = LaundryShop
         depth = 1
         fields = ('id', 'name', 'province', 'city', 'barangay', 'street',
-                  'building', 'contact_number', 'website',
-                  'opening_time', 'closing_time', 'services')
+                  'building', 'contact_number', 'website', 'status',
+                  'days_open',
+                  'opening_time', 'closing_time', 'services', 'admin')
+
 
 class OrderSerializer(serializers.ModelSerializer):
     service = ServiceSerializer(read_only=True)
@@ -46,12 +47,12 @@ class FeesSerializer(serializers.ModelSerializer):
 
 
 class TransactionSerializer(serializers.ModelSerializer):
-    orders = OrderSerializer(many=True, read_only=True)
+    orders = OrderSerializer(many=True)#, read_only=True)
     class Meta:
         model = Transaction
         fields = ('id', 'paws', 'status', 'request_date', 'delivery_date',
                   'province', 'city', 'barangay', 'street', 'building',
-                  'price', 'client', 'orders', 'fee')
+                  'price', 'client', 'orders', 'fee', 'comment')
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
@@ -59,4 +60,4 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = ('id', 'client', 'province', 'city', 'barangay', 'street',
-                  'building', 'contact_number')
+                  'building', 'contact_number', 'account_type')
