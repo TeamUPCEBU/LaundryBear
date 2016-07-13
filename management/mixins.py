@@ -9,12 +9,14 @@ class AdminLoginRequiredMixin(LoginRequiredMixin):
 
 	def dispatch(self, request, *args, **kwargs):
 		if request.user.is_authenticated():
-			user = request.user
-			if user.is_staff and user.userprofile.account_type == 3:
+			userprofile = request.user.userprofile
+			if userprofile.account_type == 3:
 				return super(AdminLoginRequiredMixin, self).dispatch(request,
 																	 *args, **kwargs)
-			else:
+			elif userprofile.account_type == 1:
 				return redirect('client:menu')
+			else:
+				return redirect('client:logout')
 		else:
 			return super(AdminLoginRequiredMixin, self).dispatch(request,
 																 *args, **kwargs)

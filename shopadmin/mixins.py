@@ -8,11 +8,11 @@ class ShopAdminLoginRequiredMixin(LoginRequiredMixin):
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated():
-            user = request.user
-            if user.userprofile.account_type == 2:
+            userprofile = request.user.userprofile
+            if userprofile.account_type == 2:
                 return super(ShopAdminLoginRequiredMixin, self).dispatch(request,
                                                                      *args, **kwargs)
-            elif user.userprofile.account_type == 1:
+            elif userprofile.account_type == 1:
                 return redirect('client:menu')
             else:
                 return redirect('management:menu')
