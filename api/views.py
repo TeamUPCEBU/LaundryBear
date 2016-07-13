@@ -33,6 +33,36 @@ class LaundryShopViewSet(viewsets.ModelViewSet):
     fields = ('name', 'barangay', 'province', 'city',
                      'street', 'building', 'the_services')
 
+    def create(self, request, *args, **kwargs):
+        data = request.data
+        # DATAAAAAAAAAAAAAAAAAAAAAAAAAAAAA OF ADMIN SHOULD BE OBJECT
+        d_admin = data['admin']
+        shop = LaundryShop()
+        shop.admin = UserProfile.objects.get(id=d_admin['id'])
+        shop.name = data['name']
+        shop.province = data['province']
+        shop.city = data['city']
+        shop.barangay = data['barangay']
+        shop.street = data['street']
+        shop.building = data['building']
+        shop.contact_number = data['contact_number']
+        shop.website = data['website']
+        shop.status = data['status']
+        shop.days_open = data['days_open']
+        # time
+        # shop.opening_time
+        # time
+        # shop.closing_time
+        shop.save()
+        for d_service in data['services']:
+            service = Service(name=d_service['services'], price=d_service['price'])
+            service.description = d_service['description']
+            service.laundry_shop = LaundryShop.objects.get(id=d_service['id'])
+            service.save()
+
+
+
+
 class ActiveLaundryShopViewSet(LaundryShopViewSet):
     def get_queryset(self):
         return LaundryShop.objects.filter(status=2)
