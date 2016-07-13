@@ -12,7 +12,7 @@ from django.utils.decorators import method_decorator
 from rest_framework import generics
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
-
+from rest_framework import mixins
 from rest_framework.authtoken.views import ObtainAuthToken
 
 from api.models import *
@@ -21,7 +21,7 @@ import json
 
 ################# Shops #################
 
-class LaundryShopViewSet(viewsets.ModelViewSet):
+class LaundryShopViewSet(viewsets.ModelViewSet, mixins.UpdateModelMixin):
     """
     API endpoint that allows shops to be viewed or edited.
     """
@@ -49,7 +49,7 @@ class NearbyLaundryShopViewSet(LaundryShopViewSet):
 
 ################# Transactions #################
 
-class TransactionViewSet(viewsets.ModelViewSet):
+class TransactionViewSet(viewsets.ModelViewSet, mixins.UpdateModelMixin):
     """
     API endpoint that allows transactions to be viewed or edited.
     """
@@ -74,7 +74,7 @@ class ShopTransactionViewSet(TransactionViewSet):
 
 
 
-class OrderViewSet(viewsets.ModelViewSet):
+class OrderViewSet(viewsets.ModelViewSet, mixins.UpdateModelMixin):
     """
     API endpoint that allows transactions to be viewed or edited.
     """
@@ -82,7 +82,7 @@ class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
 
 
-class ServiceViewSet(viewsets.ModelViewSet):
+class ServiceViewSet(viewsets.ModelViewSet, mixins.UpdateModelMixin):
     """
     API endpoint that allows transactions to be viewed or edited.
     """
@@ -92,7 +92,7 @@ class ServiceViewSet(viewsets.ModelViewSet):
 
 ################# Users #################
 
-class UserViewSet(viewsets.ModelViewSet):
+class UserViewSet(viewsets.ModelViewSet, mixins.UpdateModelMixin):
     """
     API endpoint that allows users to be viewed or edited.
     """
@@ -100,7 +100,7 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
 
-class UserProfileViewSet(viewsets.ModelViewSet):
+class UserProfileViewSet(viewsets.ModelViewSet, mixins.UpdateModelMixin):
     """
     API endpoint that allows transactions to be viewed or edited.
     """
