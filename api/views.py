@@ -5,15 +5,16 @@ from rest_framework import viewsets
 from api.serializers import *
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
-
+from django.http import HttpResponse
+from client.forms import *
 from rest_framework.authtoken import views as rest_views
-from rest_framework import filters
+from rest_framework import filters, status
 from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework import mixins
-from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.views import ObtainAuthToken, APIView
 
 from datetime import datetime
 
@@ -34,39 +35,47 @@ class LaundryShopViewSet(viewsets.ModelViewSet):
                      'street', 'building', 'the_services')
 
     def create(self, request, *args, **kwargs):
-        data = request.data
-        # DATAAAAAAAAAAAAAAAAAAAAAAAAAAAAA OF ADMIN SHOULD BE OBJECT
-        d_admin = data['admin']
-        shop = LaundryShop()
-        shop.admin = UserProfile.objects.get(id=d_admin['id'])
-        shop.name = data['name']
-        shop.province = data['province']
-        shop.city = data['city']
-        shop.barangay = data['barangay']
-        shop.street = data['street']
-        shop.building = data['building']
-        shop.contact_number = data['contact_number']
-        shop.website = data['website']
-        shop.status = data['status']
-        shop.days_open = data['days_open']
-        # time
-        # shop.opening_time
-        # time
-        # shop.closing_time
-        shop.save()
+        admin = self.user.userprofile
+        admin.account_type = 2
+        admin.save()
+        try:
+            data = request.data
+            shop = LaundryShop()
+            shop.admin = admin
+            shop.status = 1
+            shop.name = data['name']
+            shop.province = data['province']
+            shop.city = data['city']
+            shop.barangay = data['barangay']
+            shop.street = data['street']
+            shop.building = data['building']
+            shop.contact_number = data['contact_number']
+            shop.website = data['website']
+            shop.status = data['status']
+            shop.days_open = data['days_open']
+            shop.opening_time = datetime.strptime(data['opening_time'],
+                                                  '%H:%M:%S').time()
+            shop.closing_time = datetime.strptime(data['closing_time'],
+                                                  '%H:%M:%S').time()
+            shop.save()
+        except Exception as e:
+                k = str(e)[1:len(str(e))-1]
+                return Response({k:'This field is required'}, status=status.HTTP_400_BAD_REQUEST)
         for d_service in data['services']:
-            service = Service(name=d_service['services'], price=d_service['price'])
-            service.description = d_service['description']
-            service.laundry_shop = LaundryShop.objects.get(id=d_service['id'])
-            service.save()
-
-
+            try:
+                service = Service(name=d_service['services'], price=d_service['price'])
+                service.description = d_service['description']
+                service.laundry_shop = shop
+                service.save()
+            except Exception as e:
+                shop.delete()
+                k = str(e)[1:len(str(e))-1]
+                return Response({k:'This field is required'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ActiveLaundryShopViewSet(LaundryShopViewSet):
     def get_queryset(self):
         return LaundryShop.objects.filter(status=2)
-
 
 
 class NearbyLaundryShopViewSet(LaundryShopViewSet):
@@ -76,7 +85,37 @@ class NearbyLaundryShopViewSet(LaundryShopViewSet):
                 status=2)
 
 
+class ActivateLaundryShopView(LaundryShopViewSet):
+    def partial_update(self, request, *args, **kwargs):
+        data = request.data
+        shop = LaundryShop.objects.get(id=data['id'])
+        shop.status = 2
+        shop.save()
+        shop = self.serializer_class(shop).data
+        return Response(shop)
+
+
+class DeactivateLaundryShopView(LaundryShopViewSet):
+    def partial_update(self, request, *args, **kwargs):
+        data = request.data
+        shop = LaundryShop.objects.get(id=data['id'])
+        shop.status = 3
+        shop.save()
+        shop = self.serializer_class(shop).data
+        return Response(shop)
+
+
+class RejectLaundryShopRequestView(LaundryShopViewSet):
+    def partial_update(self, request, *args, **kwargs):
+        data = request.data
+        shop = LaundryShop.objects.get(id=data['id'])
+        shop.status = 4
+        shop = self.serializer_class(shop).data
+        return Response(shop)
+
+
 ################# Transactions #################
+
 
 class TransactionViewSet(viewsets.ModelViewSet):
     """
@@ -92,67 +131,43 @@ class TransactionViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         data = request.data
-        transaction = Transaction()
-        transaction.paws = data['paws']
-        transaction.status = data['status']
-        # date time field
-        # 2016-07-12T15:10:21.496437Z
-        request_date = datetime.strptime(data['request_date'][:-1], '%Y-%m-%dT%H:%M:%S.%f')
-        transaction.request_date = request_date
-        # date field
-        # 2016-07-18
-        delivery_date = datetime.strptime(data['delivery_date'],'%Y-%m-%d').date()
-        transaction.delivery_date = delivery_date
-        transaction.province = data['province']
-        transaction.city = data['city']
-        transaction.barangay = data['barangay']
-        transaction.street = data['street']
-        transaction.building = data['building']
-        transaction.price = data['price']
-        transaction.client = UserProfile.objects.get(id=data['client'])
-        transaction.fee = Fees.objects.get(id=data['fee'])
-        transaction.save()
+        resp = super(TransactionViewSet, self).create(request, *args, **kwargs)
+
+        transaction = Transaction.objects.get(id=resp.data['id'])
         for d_order in data['orders']:
-            order = Order()
-            s = d_order['service']
-            order.service = Service.objects.get(id=s['id'])
-            order.transaction = Transaction.objects.get(id=transaction.id)
-            order.pieces = d_order['pieces']
-            order.save()
-        struct = TransactionSerializer(transaction).data
+            try:
+                order = Order()
+                s = d_order['service']
+                order.service = Service.objects.get(id=s['id'])
+                order.transaction = transaction
+                order.pieces = d_order['pieces']
+                order.save()
+            except Exception as e:
+                transaction.delete()
+                k = str(e)[1:len(str(e))-1]
+                return Response({k:'This field is required'}, status=status.HTTP_400_BAD_REQUEST)
+        struct = self.serializer_class(transaction).data
         return Response(struct)
 
 
     def update(self, request, *args, **kwargs):
         data = request.data
-        transaction = Transaction.objects.get(id=data['id'])
-        transaction.paws = data['paws']
-        transaction.status = data['status']
-        # date time field
-        request_date = datetime.strptime(data['request_date'][:-1], '%Y-%m-%dT%H:%M:%S.%f')
-        transaction.request_date = request_date
-        # 2016-07-12T15:10:21.496437Z
-        # date field
-        # 2016-07-18
-        delivery_date = datetime.strptime(data['delivery_date'],'%Y-%m-%d').date()
-        transaction.delivery_date = delivery_date
-        transaction.province = data['province']
-        transaction.city = data['city']
-        transaction.barangay = data['barangay']
-        transaction.street = data['street']
-        transaction.building = data['building']
-        transaction.price = data['price']
-        transaction.client = UserProfile.objects.get(id=data['client'])
-        transaction.fee = Fees.objects.get(id=data['fee'])
-        transaction.save()
+        resp = super(TransactionViewSet, self).update(request, *args, **kwargs)
+
+        transaction = Transaction.objects.get(id=resp.data['id'])
         for d_order in data['orders']:
-            order = Order.objects.get(id=d_order['id'])
-            s = d_order['service']
-            order.service = Service.objects.get(id=s['id'])
-            order.transaction = Transaction.objects.get(id=d_order['transaction'])
-            order.pieces = d_order['pieces']
-            order.save()
-        struct = TransactionSerializer(transaction).data
+            try:
+                order = Order()
+                s = d_order['service']
+                order.service = Service.objects.get(id=s['id'])
+                order.transaction = transaction
+                order.pieces = d_order['pieces']
+                order.save()
+            except Exception as e:
+                transaction.delete()
+                k = str(e)[1:len(str(e))-1]
+                return Response({k:'This field is required'}, status=status.HTTP_400_BAD_REQUEST)
+        struct = self.serializer_class(transaction).data
         return Response(struct)
 
 
@@ -169,7 +184,7 @@ class ShopTransactionViewSet(TransactionViewSet):
 
 
 
-class OrderViewSet(viewsets.ModelViewSet, mixins.UpdateModelMixin):
+class OrderViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows transactions to be viewed or edited.
     """
@@ -177,7 +192,7 @@ class OrderViewSet(viewsets.ModelViewSet, mixins.UpdateModelMixin):
     serializer_class = OrderSerializer
 
 
-class ServiceViewSet(viewsets.ModelViewSet, mixins.UpdateModelMixin):
+class ServiceViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows transactions to be viewed or edited.
     """
@@ -187,7 +202,7 @@ class ServiceViewSet(viewsets.ModelViewSet, mixins.UpdateModelMixin):
 
 ################# Users #################
 
-class UserViewSet(viewsets.ModelViewSet, mixins.UpdateModelMixin):
+class UserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
@@ -195,17 +210,28 @@ class UserViewSet(viewsets.ModelViewSet, mixins.UpdateModelMixin):
     serializer_class = UserSerializer
 
 
-class UserProfileViewSet(viewsets.ModelViewSet, mixins.UpdateModelMixin):
+class SignUpUserViewSet(generics.CreateAPIView):
+    def post(self, request):
+        return super(SignUpUserViewSet, self).post(request)
+
+
+class UserProfileViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows transactions to be viewed or edited.
+    API endpoint that allows user profiles to be viewed or edited.
     """
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
 
 
+class CreateProfileViewSet(generics.CreateAPIView):
+    def post(self, request):
+        return super(CreateProfileViewSet, self).create(request)
+
+
 class CustomerUserProfileViewSet(UserProfileViewSet):
     def get_queryset(self):
         return UserProfile.objects.filter(account_type=1)
+
 
 class ShopAdminUserProfileViewSet(UserProfileViewSet):
     def get_queryset(self):
@@ -215,6 +241,14 @@ class ShopAdminUserProfileViewSet(UserProfileViewSet):
 class LaundryBearAdminUserProfileViewSet(UserProfileViewSet):
     def get_queryset(self):
         return UserProfile.objects.filter(account_type=3)
+
+
+class MyCustomersViewSet(UserProfileViewSet):
+    def get_queryset(self):
+        shop = self.request.user.userprofile.laundry_shop
+        t = Transaction.objects.filter(
+                    orders__service__laundry_shop=shop)
+        return UserProfile.objects.filter(transactions__in=t).distinct()
 
 
 class GroupViewSet(viewsets.ModelViewSet):

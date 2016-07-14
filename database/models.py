@@ -7,10 +7,6 @@ from django.core.validators import RegexValidator
 from django.core import serializers as serial
 
 from rest_framework.authtoken.models import Token
-#Models are also known as tables
-#Each field is an attribute of the table
-#Models are still classes and can have methods within
-
 
 contactNumberValidator = RegexValidator(r'^\+?([\d][\s-]?){10,13}$', 'Invalid input!')
 days_open_validator = RegexValidator(r'([0]|[1]){7,7}$', 'Invalid input!')
@@ -23,7 +19,7 @@ class UserProfile(models.Model):
     )
 
     account_type = models.IntegerField(choices=ACCOUNT_TYPE_CHOICES, default=1)
-    client = models.OneToOneField(User, related_name='userprofile')
+    user = models.OneToOneField(User, related_name='userprofile')
     province = models.CharField(max_length=50, blank=False)
     city = models.CharField(max_length=50, blank=True)
     barangay = models.CharField(max_length=50, blank=False)
@@ -33,7 +29,7 @@ class UserProfile(models.Model):
                                 validators=[contactNumberValidator])
 
     def __unicode__(self): #Default return value of the UserProfile
-        return self.client.get_full_name()
+        return self.user.get_full_name()
 
     @property
     def location(self): #Concatenate address of a user
@@ -97,9 +93,22 @@ class LaundryShop(models.Model):
 
     @property
     def average_rating(self):
-        #TWOPLACES = Decimal(10) ** -2
-        #return Decimal(average/total).quantize(TWOPLACES)
-        return 0.0
+        t = Transaction.objects.filter(
+                    orders__service__laundry_shop=self, paws__isnull=False)
+        average = t.aggregate(models.Avg('paws'))
+        return average['paws__avg']
+
+    @property
+    def raters(self):
+        return len(Transaction.objects.filter(
+                    orders__service__laundry_shop=self, paws__isnull=False))
+
+    @property
+    def comments(self):
+        return Transaction.objects.filter(
+                    orders__service__laundry_shop=self,
+                    comment__isnull=False).exclude(comment='').values_list('comment')
+
 
     def __unicode__(self):
         return self.name
@@ -125,7 +134,7 @@ class Service(models.Model):
 class Order (models.Model):
     transaction = models.ForeignKey('Transaction', related_name='orders')
     service = models.ForeignKey('Service')
-    pieces = models.IntegerField(default=0)
+    pieces = models.IntegerField(null=False, blank=False, default=0)
 
     def __unicode__(self):
         return str(self.transaction) + " " + str(self.service) + " " + str(self.pieces)
@@ -142,7 +151,8 @@ class Transaction(models.Model):
         (1, 'Pending'),
         (2, 'Ongoing'),
         (3, 'Done'),
-        (4, 'Rejected')
+        (4, 'Rejected'),
+        (5, 'Broadcasted')
     )
 
     def get_choice_name(self):

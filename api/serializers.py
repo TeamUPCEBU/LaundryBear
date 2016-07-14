@@ -29,8 +29,8 @@ class LaundryShopSerializer(serializers.ModelSerializer):
         depth = 1
         fields = ('id', 'name', 'province', 'city', 'barangay', 'street',
                   'building', 'contact_number', 'website', 'status',
-                  'days_open',
-                  'opening_time', 'closing_time', 'services', 'admin')
+                  'days_open', 'opening_time', 'closing_time',
+                  'services', 'admin', 'comments', 'raters')
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -47,7 +47,7 @@ class FeesSerializer(serializers.ModelSerializer):
 
 
 class TransactionSerializer(serializers.ModelSerializer):
-    orders = OrderSerializer(many=True)#, read_only=True)
+    orders = OrderSerializer(many=True, read_only=True)
     class Meta:
         model = Transaction
         fields = ('id', 'paws', 'status', 'request_date', 'delivery_date',
@@ -56,8 +56,8 @@ class TransactionSerializer(serializers.ModelSerializer):
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
-    client = UserSerializer(read_only=True)
+    user = UserSerializer()
     class Meta:
         model = UserProfile
-        fields = ('id', 'client', 'province', 'city', 'barangay', 'street',
+        fields = ('id', 'user', 'province', 'city', 'barangay', 'street',
                   'building', 'contact_number', 'account_type')
