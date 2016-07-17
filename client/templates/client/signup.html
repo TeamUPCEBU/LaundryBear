@@ -21,6 +21,14 @@
         {% csrf_token %}
         <div>
           <div class="large-12 columns">
+            <label class="title"><b>Sign up as:</b><strong><font color="red" size="3">*</font></strong></label>
+            {{ userprofileform.account_type }}
+            {% if userprofileform.account_type.errors %}
+            <span class="error label">{{ userprofileform.account_type.errors | striptags }}</span>
+            {% endif %}
+          </div>
+
+          <div class="large-12 columns">
             <label class="title"><b>First Name</b><strong><font color="red" size="3">*</font></strong></label>
             {{ userform.first_name }}
             {% if userform.first_name.errors %}
@@ -108,5 +116,9 @@
 <script src="{%static "LaundryBear/js/vendor/fastclick.js"%}"></script>
    <script src="{%static "LaundryBear/js/foundation.min.js"%}"></script>
 <script src="{%static "management/js/app.js"%}"></script>
+<script>
+
+  $('#id_userprofile-account_type').children().last().prev().remove();
+</script>
 </body>
 </html>

@@ -2,6 +2,7 @@ from django.forms import ModelForm, Form
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.db.models import Q
 from database.models import UserProfile, Order, Transaction
 
 #Forms are used for taking inputs
@@ -17,7 +18,7 @@ class UserForm(UserCreationForm): #Used in creating a new user, or updating info
 class ProfileForm(ModelForm): #Used in creating a user profile, or updating info of user profile
     class Meta:
         model = UserProfile
-        exclude = ['client'] #exclude client because it has a different specific form
+        exclude = ['user'] #exclude user because it has a different specific form
 
 
 class OrderForm(ModelForm): #Used in creating or modifying an Order
@@ -44,5 +45,3 @@ class ChangeUsernameForm(ModelForm): #Used in modification of user's username
     class Meta:
         model = User
         fields = ['username']
-
-

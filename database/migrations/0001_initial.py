@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.db import migrations, models
 import database.models
 from django.conf import settings
+import django.core.validators
 
 
 class Migration(migrations.Migration):
@@ -27,16 +28,12 @@ class Migration(migrations.Migration):
             name='LaundryShop',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('status', models.IntegerField(default=1, choices=[(1, b'Pending'), (2, b'Active'), (3, b'Inactive'), (4, b'Rejected')])),
                 ('name', models.CharField(max_length=50)),
-                ('province', models.CharField(max_length=50)),
-                ('city', models.CharField(max_length=50, blank=True)),
-                ('barangay', models.CharField(max_length=50)),
-                ('street', models.CharField(max_length=50, blank=True)),
-                ('building', models.CharField(max_length=50, blank=True)),
-                ('contact_number', models.CharField(max_length=30)),
-                ('email', models.EmailField(max_length=254, blank=True)),
+                ('contact_number', models.CharField(max_length=30, validators=[django.core.validators.RegexValidator(b'^\\+?([\\d][\\s-]?){10,13}$', b'Invalid input!')])),
                 ('website', models.URLField(blank=True)),
-                ('hours_open', models.CharField(max_length=100)),
+                ('opening_time', models.TimeField()),
+                ('closing_time', models.TimeField()),
                 ('days_open', models.CharField(max_length=100)),
                 ('creation_date', models.DateTimeField(auto_now_add=True)),
             ],
@@ -74,7 +71,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('paws', models.IntegerField(null=True, blank=True)),
-                ('status', models.IntegerField(default=1, choices=[(1, b'Pending'), (2, b'Ongoing'), (3, b'Done'), (4, b'Rejected')])),
+                ('status', models.IntegerField(default=1, choices=[(1, b'Pending'), (2, b'Ongoing'), (3, b'Done'), (4, b'Rejected'), (5, b'Broadcasted')])),
                 ('request_date', models.DateTimeField(auto_now_add=True)),
                 ('delivery_date', models.DateField(default=database.models.default_date)),
                 ('province', models.CharField(max_length=50)),
@@ -83,25 +80,35 @@ class Migration(migrations.Migration):
                 ('street', models.CharField(max_length=50, blank=True)),
                 ('building', models.CharField(max_length=50, blank=True)),
                 ('price', models.DecimalField(default=0, max_digits=8, decimal_places=2)),
+                ('comment', models.TextField(null=True, blank=True)),
             ],
+            options={
+                'get_latest_by': 'request_date',
+            },
         ),
         migrations.CreateModel(
             name='UserProfile',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('account_type', models.IntegerField(default=1, choices=[(1, b'Customer'), (2, b'Shop Administrator'), (3, b'Laundry Bear Administrator'), (4, b'Subscriber')])),
                 ('province', models.CharField(max_length=50)),
                 ('city', models.CharField(max_length=50, blank=True)),
                 ('barangay', models.CharField(max_length=50)),
                 ('street', models.CharField(max_length=50, blank=True)),
                 ('building', models.CharField(max_length=50, blank=True)),
-                ('contact_number', models.CharField(max_length=30)),
-                ('client', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
+                ('contact_number', models.CharField(max_length=30, validators=[django.core.validators.RegexValidator(b'^\\+?([\\d][\\s-]?){10,13}$', b'Invalid input!')])),
+                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.AddField(
             model_name='transaction',
             name='client',
-            field=models.ForeignKey(to='database.UserProfile'),
+            field=models.ForeignKey(related_name='transactions', to='database.UserProfile'),
+        ),
+        migrations.AddField(
+            model_name='transaction',
+            name='fee',
+            field=models.ForeignKey(related_name='fees', to='database.Fees'),
         ),
         migrations.AddField(
             model_name='price',
@@ -117,5 +124,10 @@ class Migration(migrations.Migration):
             model_name='order',
             name='transaction',
             field=models.ForeignKey(to='database.Transaction'),
+        ),
+        migrations.AddField(
+            model_name='laundryshop',
+            name='admin',
+            field=models.OneToOneField(related_name='laundry_shop', to='database.UserProfile'),
         ),
     ]

@@ -49,7 +49,7 @@
                         <form action="{% url "client:rate" transaction.pk %}" method="post" charset="UTF-8">
                         {% csrf_token %}
                         <div id="paws"><a class="raty-click"
-                                          id="{{ transaction.id }}">Imprint this Laundry Shop</a></div>
+                                       id="{{ transaction.id }}">Imprint this Laundry Shop</a></div>
                         </form>
                         {% else %}
                         Not yet available
@@ -60,7 +60,7 @@
                 </tbody>
             </table>
             {% else %}
-            <h3 style="text-align:center">Welcome, <b>{{ userprofile.client.username }}!</b></h3>
+            <h3 style="text-align:center">Welcome, <b>{{ user.username }}!</b></h3>
             <h6 style="text-align:center">You have no existing laundry requests</h6>
             {% endif %}
             <center>

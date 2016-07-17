@@ -21,9 +21,7 @@ class PriceForm(forms.ModelForm):
 class LaundryShopForm(forms.ModelForm):
     class Meta:
         model = LaundryShop
-        fields = ['barangay', 'building', 'city', 'contact_number',
-                  'days_open', 'email', 'hours_open', 'name', 'province',
-                  'street', 'website']
+        fields = ['days_open', 'opening_time', 'closing_time', 'name', 'website']
 
 
 class AdminLoginForm(LoginForm):

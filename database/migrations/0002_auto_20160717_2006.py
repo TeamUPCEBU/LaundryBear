@@ -8,18 +8,17 @@ import django.core.validators
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('database', '0002_admin_user'),
+        ('database', '0001_initial'),
     ]
 
     operations = [
-        migrations.AlterField(
+        migrations.RemoveField(
             model_name='laundryshop',
             name='contact_number',
-            field=models.CharField(max_length=30, validators=[django.core.validators.RegexValidator(b'^/\\+?([0-9][\\s-]?){10,13}/', b'Invalid input!')]),
         ),
         migrations.AlterField(
             model_name='userprofile',
             name='contact_number',
-            field=models.CharField(max_length=30, validators=[django.core.validators.RegexValidator(b'^/\\+?([0-9][\\s-]?){10,13}/', b'Invalid input!')]),
+            field=models.CharField(unique=True, max_length=30, validators=[django.core.validators.RegexValidator(b'^\\+?([\\d][\\s-]?){10,13}$', b'Invalid input!')]),
         ),
     ]

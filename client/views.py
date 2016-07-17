@@ -76,12 +76,13 @@ class SignupView(TemplateView):
         uf = UserForm(request.POST, prefix='user')
         upf = ProfileForm(request.POST, prefix='userprofile')
         # Note: in the ProfileForm do not include the user
+        print 'post'
         if uf.is_valid() and upf.is_valid():  # check if both forms are valid
             user = uf.save()
             userprofile = upf.save(commit=False)
-            userprofile.client = user
+            userprofile.user = user
             userprofile.save()
-            username = userprofile.client.username
+            username = userprofile.user.username
             password = request.POST['user-password1']
             user = authenticate(username=username, password=password)
             login(request, user)
@@ -135,20 +136,16 @@ class UserSettingsView(ClientLoginRequiredMixin, TemplateView):
         else:
             print userprofileform.errors
 
-
-
         if (usernameform.is_valid()):
             usernameform.save()
         else:
             print usernameform.errors
-
 
         if passwordform.is_valid():
             passwordform.save()
             return redirect('client:menu')
         else:
             print passwordform.error_messages
-
 
         return self.render_to_response(context)
 
@@ -169,7 +166,7 @@ class ShopsListView(ClientLoginRequiredMixin, ListView):
         none_query = self.request.GET.get('browse', False)
         if none_query:
             shops = self.get_all_shops()
-            shops.order_by('-barangay', 'rating')
+            shops.order_by('-barangay', 'average_rating')
             query_type = 'browse'
 
         name_query = self.request.GET.get('name', False)
@@ -187,7 +184,6 @@ class ShopsListView(ClientLoginRequiredMixin, ListView):
             shops = self.get_shops_by_province(province_query)
             query_type = 'province'
 
-
         barangay_query = self.request.GET.get('barangay', False)
         if barangay_query or not query_type:
             shops = self.get_shops_by_barangay(barangay_query or self.request.user.userprofile.barangay)
@@ -202,13 +198,13 @@ class ShopsListView(ClientLoginRequiredMixin, ListView):
         return LaundryShop.objects.filter(name__icontains=name_query)
 
     def get_shops_by_city(self, city_query):
-        return LaundryShop.objects.filter(city__icontains=city_query)
+        return LaundryShop.objects.filter(admin__city__icontains=city_query)
 
     def get_shops_by_province(self, province_query):
-        return LaundryShop.objects.filter(province__icontains=province_query)
+        return LaundryShop.objects.filter(admin__province__icontains=province_query)
 
     def get_shops_by_barangay(self, barangay_query):
-        return LaundryShop.objects.filter(barangay__icontains=barangay_query)
+        return LaundryShop.objects.filter(admin__barangay__icontains=barangay_query)
 
     def get_all_shops(self):
         return LaundryShop.objects.all()
@@ -233,7 +229,6 @@ class OrderSummaryView(ClientLoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(OrderSummaryView, self).get_context_data(**kwargs)
-        # context['fees'] = Site.objects.get_current().fees
         context['fees'] = Site.objects.get_or_create(domain='laundrybear.pythonanywhere.com')[0].fees
         context['delivery_date'] = default_date().strftime('%Y-%m-%d')
         context['delivery_date_max'] = (default_date() + timedelta(days=7)).strftime('%Y-%m-%d')
@@ -249,7 +244,7 @@ class OrderSummaryView(ClientLoginRequiredMixin, DetailView):
             transaction_form = TransactionForm(request.POST)
             if transaction_form.is_valid():
                 transaction = transaction_form.save(commit=False)
-                transaction.client = request.user.userprofile
+                transaction.user = request.user.userprofile
                 transaction.save()
             else:
                 print transaction_form.errors
@@ -282,7 +277,7 @@ class CreateTransactionView(ClientLoginRequiredMixin, View):
             transaction_form = TransactionForm(request.POST)
             if transaction_form.is_valid():
                 transaction = transaction_form.save(commit=False)
-                transaction.client = request.user.userprofile
+                transaction.user = request.user.userprofile
                 transaction.save()
             else:
                 print transaction_form.errors
