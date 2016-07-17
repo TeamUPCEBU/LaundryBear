@@ -1,79 +1,79 @@
 {% load staticfiles  %}
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>{% block title %}LaundryBear{% endblock %}</title>
-  <link rel="stylesheet" href="{% static "LaundryBear/css/foundation.min.css" %}"/>
-  <link rel="stylesheet" href="{% static "LaundryBear/foundation-icons/foundation-icons.css" %}"/>
-  <link rel="stylesheet" href="{% static "client/css/app.css" %}"/>
-  <link rel="stylesheet" href="{% static "LaundryBear/css/app.css" %}">
-  <link rel="stylesheet" href="{% static "client/css/control.css" %}"/>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}LaundryBear{% endblock %}</title>
 
+    <link rel="stylesheet" href="{% static "client/css/app.css" %}"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="{% static "LaundryBear/vendor/font-awesome/css/font-awesome.min.css" %}">
+    <!-- <link rel="stylesheet" href="{% static "LaundryBear/css/foundation.min.css" %}"/> -->
+    <!-- <link rel="stylesheet" href="{% static "LaundryBear/foundation-icons/foundation-icons.css" %}"/> -->
+    <!-- <link rel="stylesheet" href="{% static "LaundryBear/css/app.css" %}"> -->
+    <link rel="stylesheet" href="{% static "client/css/control.css" %}"/>
+    <link rel="stylesheet" href="{% static "LaundryBear/vendor/materialize/css/materialize.min.css" %}"/>
+    <!-- <link rel="stylesheet" href="{% static "LaundryBear/foundation-icons/foundation-icons.css" %}" /> -->
+    {%block stylesheets%} {% endblock %}
+  </head>
+  <main>
+    <nav>
+      <div class="nav-wrapper blue">
+        <a class="brand-logo" href="{% url "client:menu" %}">
+          <img src="{% static "LaundryBear/images/header-logo.png" %}"  width = "90%" height="80%"/>
+        </a>
+        <a href="#" data-activates="mobile-mode" class="button-collapse" style="padding-left: 5px"><i class="material-icons">menu</i></a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li><a href="{% url "client:menu" %}">Home</a></li>
+          <li><a href="{% url "client:usersettings" %}">Edit Profile</a></li>
+          <li><a href="{% url "client:logout" %}">Sign Out</a></li>
+        </ul>
+        <ul class="side-nav" id="mobile-mode">
+          <div class="center">
+            <button class="btn pink">Make Request</button>
+          </div>
+          <li class="divider"></li>
+          <li>
+            <a href="{% url "client:menu" %}"><i class="fa fa-home fa-fw fa-3x" style="vertical-align: bottom"></i>&nbsp; Home</a>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <a href="{% url "client:usersettings" %}"><i class="fa fa-user fa-fw fa-3x" style="vertical-align: bottom"></i>&nbsp;Edit Profile</a>
+          </li>
+          <li class="divider"></li>
+          <li><a href="{% url "client:logout" %}"><i class="fa fa-sign-out fa-fw fa-3x" style="vertical-align: bottom"></i>&nbsp;Sign Out</a></li>
+        </ul>
+      </div>
+    </nav>
 
-  <link rel="stylesheet" href="{% static "LaundryBear/foundation-icons/foundation-icons.css" %}" />
-  {%block stylesheets%} {% endblock %}
-</head>
-<body>
-<div id="header">
-  <nav class="top-bar" data-topbar role="navigation">
-    <ul class="title-area">
-
-      <li class="name">
-        <h1>
-          <a href="{% url "client:menu" %}">
-          <img src="{% static "LaundryBear/images/header-logo.png" %}" width="60%" height="60%"/>
-          </a>
-        </h1>
-      </li>
-      <li class="toggle-topbar menu-icon"><a href="#"><span>menu</span></a></li>
-    </ul>
-
-    <section class="top-bar-section">
-      <ul class="right">
-
-        <li class="divider"></li>
-        <li><a href="{% url "client:menu" %}">Orders</a></li>
-        <li class="divider"></li>
-        <li class="has-dropdown">
-          <a href="#">Hi, {{user.username}}</a>
-          <ul class="dropdown">
-            <li><a href="{%url "client:usersettings"%}">Edit Profile</a></li>
-            <li class="divider"></li>
-            <li><a href="{%url "client:logout"%}">Sign Out →</a></li>
-          </ul>
-        </li>
-      </ul>
-    </section>
-  </nav>
-</div>
-
-<div id="body">
-  {%block body%}{%endblock%}
-</div>
-
-<div id="footer">
-  {%block footer%}{%endblock%}
-  <hr>
-  <div class="row">
-    <div class="large-12 columns">
-      <p>Laundry Bear 2015</p>
+    <div id="body">
+      {%block body%}{%endblock%}
     </div>
-  </div>
-</div>
 
 
-<script src="{%static "LaundryBear/js/vendor/modernizr.js"%}"></script>
+
+    <script src="{%static "LaundryBear/js/vendor/modernizr.js"%}"></script>
     <script src="{%static "LaundryBear/js/vendor/jquery.js"%}"></script>
-<script src="{%static "LaundryBear/js/vendor/fastclick.js"%}"></script>
+    <script src="{%static "LaundryBear/js/vendor/fastclick.js"%}"></script>
     <script src="{%static "LaundryBear/js/foundation.min.js"%}"></script>
-<script src="{%static "client/js/app.js"%}"></script>
+    <script src="{%static "client/js/app.js"%}"></script>
     <script src="{% static "LaundryBear/js/jquery.raty.js" %}"></script>
-<script src="{% static "LaundryBear/js/labs.js" %}"></script>
+    <script src="{% static "LaundryBear/js/labs.js" %}"></script>
+    <script src="{% static "client/js/init.js" %}"></script>
+    <script src="{% static "LaundryBear/vendor/materialize/js/materialize.min.js" %}"></script>
     <script>
         $.fn.raty.defaults.path = "{% static "LaundryBear/images" %}";
     </script>
-<script src="{% static "client/js/ratings.js" %}"></script>
+    <script src="{% static "client/js/ratings.js" %}"></script>
     {%block javascripts%} {% endblock %}
-  </body>
+  </main>
+  <footer class="page-footer blue lighten-4">
+    <div class="footer-copyright blue lighten-4">
+      <div class="container grey-text">
+      © Laundry Bear 2015
+      <a class="grey-text right" href="#!">More Links</a>
+    </div>
+    </div>
+  </footer>
 </html>

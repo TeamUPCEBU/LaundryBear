@@ -1,8 +1,16 @@
 @charset "utf-8";
 /* CSS Document */
+
 body {
-	background-color: #BBE1FA;
+  display:flex;;
+  min-height: 100vh;
+  flex-direction: column;
+	background-color: #bbdefb;
 }
+
+main {
+	 flex: 1 0 auto;
+ }
 
 body#admin {
 	background: url(../icons/headlogo.png);
@@ -42,19 +50,19 @@ img#writtenlogo {
 }
 
 .top-bar-section li a:not(.button) {
-    background: #1982C6 !important;   
+    background: #1982C6 !important;
 }
 
 .top-bar-section li a:not(.button):hover {
-    background: #58809a !important;   
+    background: #58809a !important;
 }
 
 .top-bar-section ul li.active > a {
-    background: gray !important;   
+    background: gray !important;
 }
 
 .top-bar-section ul li.active > a:hover {
-    background: blue !important;   
+    background: blue !important;
 }
 
 .top-bar-section ul .divider{
