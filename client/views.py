@@ -275,7 +275,7 @@ class CreateTransactionView(ClientLoginRequiredMixin, View):
         return HttpResponse(status=400)
 
     def post(self, request, *args, **kwargs):
-        print request.POST['csrftoken']
+        print '*'*30
         if request.is_ajax():
             services = request.POST['selectedServices']
             services = json.loads(services)

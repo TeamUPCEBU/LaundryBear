@@ -48,40 +48,6 @@ function insertRow(service) {
 
 $("#confirm").on("click", function() {
 	var data = collectData();
-	$.ajax($(location).attr('pathname'), {
-		method: 'POST',
-		data: data,
-		beforeSend: function(xhr) {
-			xhr.setRequestHeader('X-CSRFToken', data.csrfmiddlewaretoken);
-			console.log(xhr);
-		},
-		crossDomain:true,
-					 xhrFields: {
-							 withCredentials: true
-					 },
-		success: function(res) {
-				// clear cookies
-				console.log(res);
-				var services = document.cookie.replace(/(?:(?:^|.*;\s*)selectedServices\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-				document.cookie = "selectedServices=;expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;";
-				// show modal
-				$("#sendModal").foundation("reveal", "open");
-				setTimeout(function() {
-					document.location.replace(res);
-				}, 3000);
-				return true;
-			},
-		error: function(response, error, errmsg) {
-			$("#sendModal").foundation("reveal", "close");
-		},
-		complete: function(xhr, msg) {
-			console.log(xhr);
-		}
-			});
-		return false;
-	});
-
-/*
 	$.post(transactionUrl, data, function(response) {
 		// clear cookies
 		var services = document.cookie.replace(/(?:(?:^|.*;\s*)selectedServices\s*\=\s*([^;]*).*$)|^.*$/, "$1");
@@ -94,8 +60,9 @@ $("#confirm").on("click", function() {
 		}, 5000);
 	});
 	return false;
-});
-*/
+	});
+
+
 function collectData() {
 	var csrf = $.cookie('csrftoken');
 	var services = document.cookie.replace(/(?:(?:^|.*;\s*)selectedServices\s*\=\s*([^;]*).*$)|^.*$/, "$1");
