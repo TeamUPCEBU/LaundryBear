@@ -94,19 +94,19 @@ class LaundryShop(models.Model):
     @property
     def average_rating(self):
         t = Transaction.objects.filter(
-                    orders__service__laundry_shop=self, paws__isnull=False)
+                    orders__price__laundry_shop=self, paws__isnull=False)
         average = t.aggregate(models.Avg('paws'))
         return average['paws__avg']
 
     @property
     def raters(self):
         return len(Transaction.objects.filter(
-                    orders__service__laundry_shop=self, paws__isnull=False))
+                    orders__price__laundry_shop=self, paws__isnull=False))
 
     @property
     def comments(self):
         return Transaction.objects.filter(
-                    orders__service__laundry_shop=self,
+                    orders__price__laundry_shop=self,
                     comment__isnull=False).exclude(comment='').values_list('comment')
 
 
@@ -120,27 +120,32 @@ class LaundryShop(models.Model):
         self.admin.save()
 
 
+
+def default_date():
+    return timezone.now()+timedelta(days=3)
+
+
 class Service(models.Model):
-    laundry_shop = models.ForeignKey('LaundryShop', related_name='services')
     name = models.CharField(max_length=100, blank=False, unique=True)
     description = models.TextField(blank=False)
-    price = models.DecimalField(max_digits=10, decimal_places=2, blank=False)
-    duration = models.IntegerField()
+    prices = models.ManyToManyField('LaundryShop', through='Price',
+        related_name='services')
 
     def __unicode__(self):
         return self.name
 
 
+class Price(models.Model):
+    laundry_shop = models.ForeignKey('LaundryShop', on_delete=models.CASCADE)
+    service = models.ForeignKey('Service', on_delete=models.CASCADE, related_name='price_set')
+    price = models.DecimalField(max_digits=10, decimal_places=2, blank=False)
+    duration = models.IntegerField()
+
+
 class Order (models.Model):
+    price = models.ForeignKey('Price')
     transaction = models.ForeignKey('Transaction', related_name='orders')
-    service = models.ForeignKey('Service')
-    pieces = models.IntegerField(null=False, blank=False, default=0)
-
-    def __unicode__(self):
-        return str(self.transaction) + " " + str(self.service) + " " + str(self.pieces)
-
-def default_date():
-    return timezone.now()+timedelta(days=3)
+    pieces = models.IntegerField(default=0)
 
 
 class Transaction(models.Model):
@@ -158,8 +163,7 @@ class Transaction(models.Model):
     def get_choice_name(self):
         return self.TRANSACTION_STATUS_CHOICES[self.status - 1][1]
 
-    fee = models.ForeignKey('Fees', related_name='fee')
-    client = models.ForeignKey('UserProfile', related_name='transactions')
+    paws = models.IntegerField(blank=True, null=True)
     status = models.IntegerField(choices=TRANSACTION_STATUS_CHOICES, default=1)
     request_date = models.DateTimeField(auto_now_add=True)
     delivery_date = models.DateField(default=default_date)
@@ -170,8 +174,9 @@ class Transaction(models.Model):
     building = models.CharField(max_length=50, blank=True)
     price = models.DecimalField(blank=False, default=0, max_digits=8,
         decimal_places=2)
-    paws = models.IntegerField(blank=True, null=True)
+    client = models.ForeignKey('UserProfile', related_name='transactions')
     comment = models.TextField(blank=True, null=True)
+    fee = models.ForeignKey('Fee', related_name='fee')
 
     @property
     def location(self):
@@ -181,7 +186,7 @@ class Transaction(models.Model):
         return "{0}".format(unicode(self.request_date))
 
 
-class Fees(models.Model):
+class Fee(models.Model):
     delivery_fee = models.DecimalField(default=50, decimal_places=2,
         max_digits=4)
     service_charge = models.DecimalField(default=0.1, decimal_places=2,

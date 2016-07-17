@@ -1,6 +1,6 @@
 import json
 
-from database.models import LaundryShop, Service, UserProfile, Transaction, Order, Fees
+from database.models import *
 
 from datetime import timedelta
 

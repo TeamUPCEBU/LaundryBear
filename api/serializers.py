@@ -19,7 +19,7 @@ class ServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Service
         depth = 2
-        fields = ('id', 'name', 'description', 'price', 'laundry_shop')
+        fields = ('id', 'name', 'description', )
 
 
 class LaundryShopSerializer(serializers.ModelSerializer):
@@ -33,16 +33,25 @@ class LaundryShopSerializer(serializers.ModelSerializer):
                   'services', 'admin', 'comments', 'raters')
 
 
-class OrderSerializer(serializers.ModelSerializer):
+class PriceSerializer(serializers.ModelSerializer):
+    laundry_shop = LaundryShopSerializer(read_only=True)
     service = ServiceSerializer(read_only=True)
     class Meta:
-        model = Order
-        fields = ('id', 'service', 'transaction','pieces')
+        model = Price
+        fields = ('id', 'laundry_shop', 'service', 'price', 'duration')
 
 
-class FeesSerializer(serializers.ModelSerializer):
+
+class OrderSerializer(serializers.ModelSerializer):
+    price = PriceSerializer(read_only=True)
     class Meta:
-        model = Fees
+        model = Order
+        fields = ('id', 'price', 'transaction','pieces')
+
+
+class FeeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Fee
         fields = ('id', 'delivery_fee', 'service_charge', 'name')
 
 
@@ -52,7 +61,7 @@ class TransactionSerializer(serializers.ModelSerializer):
         model = Transaction
         fields = ('id', 'paws', 'status', 'request_date', 'delivery_date',
                   'province', 'city', 'barangay', 'street', 'building',
-                  'price', 'client', 'orders', 'fee', 'comment')
+                  'price', 'client', 'comment', 'fee', 'orders',)
 
 
 class UserProfileSerializer(serializers.ModelSerializer):

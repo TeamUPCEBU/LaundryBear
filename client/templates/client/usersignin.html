@@ -2,9 +2,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta content="text/html; charset=utf-8" />
-    <link rel="stylesheet" href="{% static "LaundryBear/css/foundation.css"%}" />
-    <link rel="stylesheet" href="{% static "client/css/signincontrol.css"%}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
+    <link rel="stylesheet" href="{% static "LaundryBear/vendor/mdl/material.blue-pink.min.css" %}"/>
+    <link rel="stylesheet" href="{% static "LaundryBear/vendor/mdl/icon.css" %}"/>
+    <link rel="stylesheet" href="{% static "LaundryBear/vendor/mdl/fonts.css" %}"/>
+
+
     <link rel="stylesheet" href="{% static "client/slick/slick.css"%}"/>
     <link rel="stylesheet" href="{% static "client/slick/slick-theme.css"%}"/>
     <title>Welcome to LaundryBear</title>
@@ -12,129 +15,111 @@
 <body>
 <header class="header">
     <div class="slider">
-        <div><img src={% static "client/icons/header3.jpg"%}></div>
-        <div><img src={% static "client/icons/locate.jpg"%}></div>
-        <div><img src={% static "client/icons/request.jpg"%}></div>
-        <div><img src={% static "client/icons/pay.jpg"%}></div>
-        <div><img src={% static "client/icons/receive.jpg"%}></div>
+        <div><img height="100%" width="100%" src={% static "client/icons/header3.jpg"%}></div>
+        <div><img height="100%" width="100%" src={% static "client/icons/locate.jpg"%}></div>
+        <div><img height="100%" width="100%" src={% static "client/icons/request.jpg"%}></div>
+        <div><img height="100%" width="100%" src={% static "client/icons/pay.jpg"%}></div>
+        <div><img height="100%" width="100%" src={% static "client/icons/receive.jpg"%}></div>
     </div>
-    <ul class="header-subnav" data-tab>
-        <li class="tab-title active"><a href="#home" >Log In</a></li>
-        <li class="tab-title" onclick="location.href='{% url 'client:signup' %}'"><a href="{% url 'client:signup' %}" >Sign Up</a></li>
-        <li class="tab-title"><a href="#about-us">About Us</a></li>
-    </ul>
-    </div>
-    <div class="tabs-content">
-        <div class="content active" id="home">
-            {%if not user.is_authenticated %}
-            <div id="container" class="row">
-                <div id="form" class="login">
-                    {% if form.non_field_errors %}
-                    <div class="row">
-                        <div class="large-12 columns">
-                            <span class="error label">{{ form.non_field_errors | striptags }}</span>
-                        </div>
-                    </div>
-                    {% endif %}
-                    <div class="medium-4 columns">
-                        <div class="login-box">
-                            <div class="row">
-                                <h3 id="adminlogin"align="center"><img id="logo"src="{% static "management/icons/logologin.png"%}" /></h3>
-                                <br>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="info" class="medium-4 columns">
-                        <form method="post">
-                            {% csrf_token %}
-                            <div class="row">
-                                <div class="large-12 columns">
-                                    <label class="title"><b>Username</b></label>
-                                    <input type="text" name="username" placeholder="Enter your username" required autocomplete="on" />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="large-12 columns">
-                                    <label class="title"><b>Password</b></label>
-                                    <input type="password" name="password" placeholder="Enter your password" required />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="large-12 columns">
-                                    <input type="submit" class="button expand" value="Sign In" />
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                {%endif%}
-            </div>
-        </div>
-        <div class="content" id="about-us">
-            <div class="panel">
-                <h1><font color="#1982C6">Be Hassle Free!</font></h1>
-                <h5><font color="87C7F1"><b>We give you the most relaxing way to do your laundry. Anywhere. Anytime</b></font></h5>
-            </div>
+    <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+      <div class="mdl-tabs__tab-bar">
+          <a href="#login-panel" class="mdl-tabs__tab is-active">Log In</a>
+          <a href="#signup-panel" class="mdl-tabs__tab">Sign Up</a>
+          <a href="#about-us-panel" class="mdl-tabs__tab">About Us</a>
+      </div>
 
-            <div class="panel">
-                <h1><font color="#1982C6">Convenience In Four Easy Steps</font></h1><br>
+      <div class="mdl-tabs__panel is-active" id="login-panel" align="center">
+
+        <div class="demo-card-square mdl-card mdl-shadow--2dp">
+          <div class="mdl-card__title mdl-card--expand">
+            <h2 class="mdl-card__title-text">Login</h2>
+          </div>
+          <div class="mdl-card__supporting-text">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Aenan convallis.
+          </div>
+          <div class="mdl-card__actions mdl-card--border">
+            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+              View Updates
+            </a>
+          </div>
+        </div>
+
+        {%if not user.is_authenticated %}
+        <div id="container" class="row">
+            <div id="form" class="login">
+                {% if form.non_field_errors %}
                 <div class="row">
-                    <div class="medium-3 columns">
-                        <img src={% static "client/icons/1.png"%}>
-                        <b>Locate. </b>For ease and convenience, LaundryBear find shops nearest to you. Saves you more time from searching through a lot of listed shops.
-                    </div>
-                    <div class="medium-3 columns">
-                        <img src={% static "client/icons/2.png"%}>
-                        <b>Order. </b>Take advantage of the Internet and send a laundry-pick-up request online. We'll do the carrying-to-the-laundry-shops ourselves.
-                    </div>
-                    <div class="medium-3 columns">
-                        <img src={% static "client/icons/3.png"%}>
-                        <b>Pay. </b>We give customers the easiest payment mode, cash-on-delivery.
-                    </div>
-                    <div class="medium-3 columns">
-                        <img src={% static "client/icons/4.png"%}>
-                        <b>Wear. </b>Customer satisfaction is our priority. Receive your laundry at the exact time you wanted it to be delivered, and enjoy the hug of the fluffy bear on you.
+                    <div class="large-12 columns">
+                        <span class="error label">{{ form.non_field_errors | striptags }}</span>
                     </div>
                 </div>
+                {% endif %}
+                <div class="medium-4 columns">
+                    <div class="login-box">
+                        <div class="row">
+                            <h3 id="adminlogin"align="center"><img id="logo"src="{% static "management/icons/logologin.png"%}" /></h3>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+                <div id="info" class="medium-4 columns">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="large-12 columns">
+                                <label class="title"><b>Username</b></label>
+                                <input type="text" name="username" placeholder="Enter your username" required autocomplete="on" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="large-12 columns">
+                                <label class="title"><b>Password</b></label>
+                                <input type="password" name="password" placeholder="Enter your password" required />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="large-12 columns">
+                                <input type="submit" class="button expand" value="Sign In" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
+            {%endif%}
+      </div>
+      <div class="mdl-tabs__panel" id="signup-panel">
 
-    </div><hr id="separate">
-    </div><font id="copy" size="2">©LaundryBear 2015</font>
-    <div id="logos">
-        <a href="http://www.instagram.com/laundry_bear"><img src="{% static "management/icons/instagram-icon-black.png"%}" id="logo" alt="" align="right"/></a>
-        <a href="http://www.twitter.com/laundrybear2015"><img src="{% static "management/icons/twitter-icon-circle-logo.png" %}" id="logo"  alt="" align="right"/></a>
-        <a href="https://www.facebook.com/Laundry-Bear-851698551595218"><img src="{% static "management/icons/kNPKJ.gif"%}" alt="" id="logo"  align="right"/></a>
+      </div>
+      <div class="mdl-tabs__panel" id="about-us-panel">
+        
+      </div>
     </div>
-    <script src="{%static "LaundryBear/js/vendor/jquery.js"%}"></script>
-    <script src="{%static "LaundryBear/js/foundation.js"%}"></script>
 
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="{% static "LaundryBear/vendor/jquery/jquery-3.1.0.min.js"%}"></script>
+    <script src="{% static "LaundryBear/vendor/mdl/material.min.js" %}" charset="utf-8"></script>
     <script src="{%static "client/slick/slick.min.js"%}"></script>
-    <script src="{%static "LaundryBear/js/vendor/modernizr.js"%}"></script>
-    <script src="{%static "LaundryBear/js/vendor/fastclick.js"%}"></script>
-    <script src="{%static "LaundryBear/js/foundation.min.js" %}"></script>
-    <script src="{%static "management/js/app.js"%}"></script>
-<script type="text/javascript">
-    $(document).ready(function(){
-      $('.slider').slick({
-        infinite: true,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        adaptiveHeight: true,
-        autoplay: true,
-        autoplayspeed: 8000,
-        dots: true,
-        arrows: false,
-        fade: false,
-        mobileFirst: true,
-        pauseOnHover: true,
-        speed: 800,
-        swipeToSlide: true,
 
-     });
-    });
-  </script>
+  <script type="text/javascript">
+      $(document).ready(function(){
+        $('.slider').slick({
+          infinite: true,
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          adaptiveHeight: true,
+          autoplay: true,
+          autoplayspeed: 8000,
+          dots: true,
+          arrows: false,
+          fade: false,
+          mobileFirst: true,
+          pauseOnHover: true,
+          speed: 800,
+          swipeToSlide: true,
+
+       });
+      });
+
+    </script>
 </body>
 </html>

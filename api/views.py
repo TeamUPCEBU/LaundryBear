@@ -137,8 +137,8 @@ class TransactionViewSet(viewsets.ModelViewSet):
         for d_order in data['orders']:
             try:
                 order = Order()
-                s = d_order['service']
-                order.service = Service.objects.get(id=s['id'])
+                p = d_order['price']
+                order.service = Service.objects.get(id=p['id'])
                 order.transaction = transaction
                 order.pieces = d_order['pieces']
                 order.save()
@@ -158,8 +158,8 @@ class TransactionViewSet(viewsets.ModelViewSet):
         for d_order in data['orders']:
             try:
                 order = Order()
-                s = d_order['service']
-                order.service = Service.objects.get(id=s['id'])
+                p = d_order['price']
+                order.service = Service.objects.get(id=p['id'])
                 order.transaction = transaction
                 order.pieces = d_order['pieces']
                 order.save()

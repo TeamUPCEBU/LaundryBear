@@ -8,15 +8,27 @@ import django_filters
 class TransactionFilter(filters.FilterSet):
     class Meta:
         model = Transaction
-        fields = ('barangay', 'province', 'paws', 'status', 'request_date',
+        fields = ('barangay', 'province', 'paws', 'comment','status', 'request_date',
                          'delivery_date', 'city', 'street', 'building', 'price',
                          'client', )
+
+
+class ServiceFilter(filters.FilterSet):
+    class Meta:
+        model = Service
+        fields = ('name', 'description')
+
+
+class Price(filters.FilterSet):
+    class Meta:
+        model = Price
+        fields = ('laundry_shop', 'service', 'price', 'duration')
 
 
 class OrderFilter(filters.FilterSet):
     class Meta:
         model = Order
-        fields = ('transaction', 'pieces', 'service')
+        fields = ('price', 'transaction', 'pieces')
 
 
 class UserProfileFilter(filters.FilterSet):
@@ -34,6 +46,7 @@ class LaundryShopFilter(filters.FilterSet):
     street = django_filters.CharFilter(name="admin__street")
     building = django_filters.CharFilter(name="admin__building")
     email = django_filters.CharFilter(name="admin__user__email")
+
 
     class Meta:
         model = LaundryShop

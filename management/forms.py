@@ -1,17 +1,9 @@
 from django import forms
-from database.models import Service, LaundryShop, Transaction, User, UserProfile, Fees
+from database.models import *
 from LaundryBear.forms import LoginForm
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-
-
-class ServiceForm(forms.ModelForm):
-    class Meta:
-        model = Service
-        fields = ['name', 'description']
-        widgets = {'description': forms.Textarea(attrs={'rows': 5})}
-
 
 
 class AdminLoginForm(LoginForm):
