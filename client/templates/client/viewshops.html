@@ -4,44 +4,67 @@
 {% block title %} Laundry Bear | Shops {% endblock %}
 
 {% block stylesheets %}
-<link rel="stylesheet" type="text/css" href="{% static "LaundryBear/css/clickyTable.css" %}">
+<link rel="stylesheet" href="{% static "client/css/selectshopcontrol.css" %}" media="screen" title="no title" charset="utf-8">
+<!-- <link rel="stylesheet" type="text/css" href="{% static "LaundryBear/css/clickyTable.css" %}"> -->
 {% endblock %}
 
 {% block body %}
-
-<form method="get">
-    {% csrf_token %}
-    <div class="large-12 columns">
-        <dl class="sub-nav inline">
-            <dt style="color:#000000;"><b>Search Shops by:</b></dt>
-            <dd {% if query_type == "name" %} class="active"{% endif %}><a href="#">Name</a></dd>
-            <dd {% if query_type == "city" %} class="active"{% endif %}><a href="#">City</a></dd>
-            <dd {% if query_type == "barangay" %} class="active"{% endif %}><a href="#">Barangay</a></dd>
-            <dd {% if query_type == "province" %} class="active"{% endif %}><a href="#">Province</a></dd>
-        </dl>
-    </div>
-
-
-    <div class="row">
-        <div class="large-12 columns">
-            <div class="row collapse">
-
-                <div class="small-2 columns">
-                </div>
-                <div class="small-7 small-offset-2 columns">
-                    <input name="{{ query_type }}" id="search" type="text" placeholder="Search Laundry Shop">
-                </div>
-
-                <div class="small-1 columns">
-                    <button type="submit" class="button postfix">Go</button>
-                </div>
-                <div class="small-2 columns">
-                </div>
-            </div>
+<div class="row">
+  <div class="container search-filter-container green lighten-5 z-depth-2">
+    <form method="get">
+      {% csrf_token %}
+      <div class="row">
+        <div class="input-field col s12">
+          <select name="query_type">
+            <option value="" disabled>Choose your option</option>
+            <option value="name" {% if query_type == 'name'%} selected {% endif %}>Name</option>
+            <option value="city" {% if query_type == 'city'%} selected {% endif %}>City</option>
+            <option value="barangay" {% if query_type == 'barangay'%} selected {% endif %}>Barangay</option>
+            <option value="province" {% if query_type == 'province'%} selected {% endif %}>Province</option>
+          </select>
+          <label>Search By:</label>
         </div>
-    </div>
-</form>
+      </div>
+      <div class="row">
+        <div class="col s12 ml2 l12">
+          <div class="input-field" style="margin-top: 0px">
+            <i class="material-icons prefix" style="padding-top: 7px !important">search</i>
+            <input type="text" id="search" name="browse" placeholder="Look for Laundry Shops"/>
+            <label for="search"></label>
+          </div>
+        </div>
+        <div hidden>
+          <button name="button" type="submit"></button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="row">
+    <div class="container">
+      {% if shop_list %}
+        {% for shop in shop_list %}
+        <ul class="collection">
+        {% include 'client/partials/shops/laundryshop_item.html'%}
+        </ul>
+        {% endfor %}
+      {% else %}
+      <div class="center">
+        <h1>OOPS!</h1>
+        <h5>Unfortunately, your search did not match any laundry shop.</h5>
+        <h6>Try searching other laundry shops.</h6>
+      </div>
+      {% endif %}
 
+      {% if query_type != "browse" %}
+      <div style="text-align:center;">
+          <a href="{% url 'client:view-shops' %}?browse=all" style="text-decoration: underline; color:#FF9613;">Browse all available laundry shops here</a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<!--
 {% if shop_list %}
 <table style="margin:auto" id="clicky-table">
     <thead>
@@ -84,7 +107,7 @@
         <a class="button left" href="?page={{ page_obj.previous_page_number }}">Previous <i class="fi-arrow-left"></i></a>
         {% endif %}
     </div>
-</div>
+</div> -->
 {% endblock %}
 {% block footer %}
 <br>

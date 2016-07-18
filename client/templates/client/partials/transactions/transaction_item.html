@@ -38,7 +38,7 @@
       <div class="col s12 m6 l6" style="padding-top: 5px">
         <div class="row">
           <div class="col s6 m6 l6">
-            <b><i class="fa fa-fw fa-bar-chart"></i>&nbsp;Average Paws: </b>
+            <b><i class="fa fa-fw fa-bar-chart"></i>&nbsp;Shop's Paws: </b>
             <div class="raty-rating" data-value="{{transaction.order_set.first.price.laundry_shop.average_rating}}" id="transaction.id"></div>
           </div>
           <div class="col s6 m6 l6">
@@ -52,7 +52,7 @@
                               id="{{ transaction.id }}">Imprint</a></div>
             </form>
             {% else %}
-            Not yet available
+              <br>Not yet available
             {% endif %}
           </div>
         </div>

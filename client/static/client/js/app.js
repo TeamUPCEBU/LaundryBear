@@ -24,12 +24,7 @@ $('#drop1 option').click(function(){
   $('#selected').html(value);
 });
 
-$("dl.sub-nav dd").click(function(){
-  $("dl.sub-nav dd.active").removeClass("active");
-  $(this).addClass("active");
-  $("#search").prop("name", $(this).children().html().toLowerCase());
-  return false;
-});
+
 
 $('#logout_submit').click(function(){$('#logout_form').submit();});
 
@@ -57,4 +52,3 @@ $(document).foundation({
 $('#myTabs').on('toggled', function (event, tab) {
     console.log(tab);
 });
-
