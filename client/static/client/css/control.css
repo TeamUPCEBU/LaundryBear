@@ -153,5 +153,9 @@ img#star {
     display: table;
     margin:auto;
     margin-bottom: 1em;
+}
 
+.transact-info{
+  padding: 5px 10px 0px 10px !important;
+  margin-bottom: 0px !important;
 }

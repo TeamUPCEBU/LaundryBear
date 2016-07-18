@@ -5,7 +5,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}LaundryBear{% endblock %}</title>
-
     <link rel="stylesheet" href="{% static "client/css/app.css" %}"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="{% static "LaundryBear/vendor/font-awesome/css/font-awesome.min.css" %}">
@@ -47,10 +46,7 @@
       </div>
     </nav>
 
-    <div id="body">
-      {%block body%}{%endblock%}
-    </div>
-
+    {%block body%}{%endblock%}
 
 
     <script src="{%static "LaundryBear/js/vendor/modernizr.js"%}"></script>
@@ -71,9 +67,8 @@
   <footer class="page-footer blue lighten-4">
     <div class="footer-copyright blue lighten-4">
       <div class="container grey-text">
-      © Laundry Bear 2015
-      <a class="grey-text right" href="#!">More Links</a>
-    </div>
+        ©Laundry Bear 2015
+      </div>
     </div>
   </footer>
 </html>

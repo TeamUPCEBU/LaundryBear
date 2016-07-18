@@ -1,0 +1,62 @@
+{% load staticfiles %}
+
+<li>
+  <div class="collapsible-header">
+    <div class="row" style="margin-bottom: 0px">
+      <div class="col s6 m6 l6">
+        <b>{{transaction.order_set.first.price.laundry_shop }}</b>
+      </div>
+      <div class="col s6 m6 l6 right-align">
+        <b>{{ transaction.request_date.date }}</b>
+      </div>
+    </div>
+  </div>
+  <div class="collapsible-body black-text">
+    <div class="row transact-info ">
+      <div class="col s12 m6 l6">
+        {% if transaction.delivery_date %}
+        <b><i class="fa fa-fw fa-calendar"></i>&nbsp;Ret. Date:</b> {{ transaction.delivery_date }} <br>
+        {% else %}
+        {% endif %}
+      </div>
+      <div class="col s12 m6 l6" style="padding-top: 5px">
+        {% if transaction.get_choice_name == "Done" %}
+        <b class="light-green-text accent-3"><i class="fa fa-fw fa-check"></i>&nbsp;Status: Delivered!</b>
+        {% elif transaction.get_choice_name == "Pending" %}
+        <b class="yellow-text"><i class="fa fa-fw fa-commenting"></i>&nbsp;Status: Pending</b>
+        {% elif transaction.get_choice_name == "Ongoing" %}
+        <b class="cyan-text accent-2"><i class="fa fa-fw fa-spinner fa-spin"></i>&nbsp;Status: Ongoing</b>
+        {% elif transaction.get_choice_name == "Rejected" %}
+        <b class="red-text darken-4"><i class="fa fa-fw fa-times"></i>&nbsp;Status: REJECTED!</b>
+        {%endif%}
+      </div>
+    </div>
+    <div class="row transact-info">
+      <div class="col s12 m6 l6">
+        <b><i class="fa fa-fw fa-money"></i>&nbsp;Price: </b> {{transaction.price}}
+      </div>
+      <div class="col s12 m6 l6" style="padding-top: 5px">
+        <div class="row">
+          <div class="col s6 m6 l6">
+            <b><i class="fa fa-fw fa-bar-chart"></i>&nbsp;Average Paws: </b>
+            <div class="raty-rating" data-value="{{transaction.order_set.first.price.laundry_shop.average_rating}}" id="transaction.id"></div>
+          </div>
+          <div class="col s6 m6 l6">
+            <b><i class="fa fa-fw fa-paw"></i>&nbsp; Your Rating: </b>
+            {% if transaction.paws %}
+            <div class="raty-rating" data-value={{ transaction.paws }}></div>
+            {% elif transaction.get_choice_name == "Done" or transaction.get_choice_name == "Rejected" %}
+            <form action="{% url "client:rate" transaction.pk %}" method="post" charset="UTF-8">
+            {% csrf_token %}
+            <div id="paws"><a class="raty-click btn pink waves-effect waves-light"
+                              id="{{ transaction.id }}">Imprint</a></div>
+            </form>
+            {% else %}
+            Not yet available
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</li>

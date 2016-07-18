@@ -2,6 +2,30 @@
 {% load staticfiles %}
 {% load custom_math %}
 {% block title %} Dashboard | LaundryBear {% endblock %} {%block body%}
+
+<div class="row">
+  <div class="container green lighten-5 z-depth-2" style="border-radius: 7px">
+    <ul class="collapsible" style="border: 0px;padding-top: 2px">
+      {% if transaction_list %}
+        <h4 class="center"><b>Laundry Requests</b></h4>
+
+        <!-- <div class="search-wrapper">
+          <input type="search" id="search">
+          <label for="search"><i class="material-icons">search</i></label>
+        </div> -->
+        {% for transaction in transaction_list %}
+          {% include 'client/shop/partials/transaction_item.html' %}
+        {% endfor %}
+      {% else %}
+        <h4 class="center">Welcome, {{ userprofile.client.username }}! </h4>
+        <h5 class="center" style="border-top: 1px groove; padding-top: 5px">Would you like to make a transaction?</h5>
+      {% endif %}
+    </ul>
+  </div>
+</div>
+<div class="row center">
+  <button class="z-depth-2 pink btn-large waves-effect waves-light"><i class="material-icons" style="vertical-align: bottom">add_shopping_cart</i>&nbsp;Make Request</button>
+</div>
 <!-- <div class="row" xmlns:client="http://www.w3.org/1999/xhtml">
     <div class="large-1 columns"></div>
     <div class="large-9 large-offset-1 columns">
