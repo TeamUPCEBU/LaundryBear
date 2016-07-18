@@ -192,3 +192,6 @@ function createOption(service) {
 	// update all options of the hidden formset
 	$("#price-formset-container").find("select").append(compiledTemplate);
 }
+
+
+$('#id_admin option[value="' + admin_id + '"]').attr('selected', 'selected');

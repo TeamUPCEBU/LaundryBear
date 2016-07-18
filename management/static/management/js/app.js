@@ -65,5 +65,3 @@ $('#logout_submit').click(function(){$('#logout_form').submit();});
  	$("#sname").val("");
  	$("#desc").val("");
  });
-
-// $("#add-new-service-button").

@@ -45,7 +45,8 @@ INSTALLED_APPS = (
     'database',
     'management',
     'client',
-    'api'
+    'api',
+    'shopadmin'
 )
 
 REST_FRAMEWORK = {

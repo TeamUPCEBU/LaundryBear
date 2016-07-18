@@ -30,111 +30,6 @@
 
                     <div class="row">
                         <div class="large-12 columns">
-                            <label>Province
-                                <div>
-                                    <span id="required" class="warning label right">Required field</span>
-                                    {{ form.province }}
-                                    {% if form.province.errors %}
-                    <span class="error label center">
-                    {{ form.province.errors | striptags  }}
-                    </span>
-                                    {% endif %}
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="large-12 columns">
-                            <label>City
-                                <div>
-                                    {{ form.city }}
-                                    {% if form.city.errors %}
-                    <span class="error label center">
-                    {{ form.city.errors | striptags }}
-                    </span>
-                                    {% endif %}
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="large-12 columns">
-                            <label>Barangay
-                                <div>
-                                    <span id="required" class="warning label right">Required field</span>
-                                    {{ form.barangay }}
-                                    {% if form.barangay.errors %}
-                    <span class="error label center">
-                    {{ form.barangay.errors | striptags }}
-                    </span>
-                                    {% endif %}
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="large-12 columns">
-                            <label>Street
-                                <div>
-                                    {{ form.street }}
-                                    {% if form.street.errors %}
-                    <span class="error label center">
-                    {{ form.street.errors | striptags }}
-                    </span>
-                                    {%endif %}
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="large-12 columns">
-                            <label>Building
-                                <div>
-                                    {{ form.building }}
-                                    {% if form.building.errors %}
-                    <span class="error label center">
-                    {{ form.building.errors | striptags }}
-                    </span>
-                                    {% endif %}
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="large-12 columns">
-                            <label>Contact number
-                                <div>
-                                    <span id="required" class="warning label right">Required field</span>
-                                    {{ form.contact_number }}
-                                    {% if form.contact_number.errors %}
-                    <span class="error label center">
-                    {{ form.contact_number.errors | striptags }}
-                    </span>
-                                    {% endif %}
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="large-12 columns">
-                            <label>Email
-                                <div>
-                                    {{ form.email }}
-                                    {% if form.email.errors %}
-                            <span class="error label center">
-                            {{ form.email.errors | striptags }}
-                            </span>
-                                    {% endif %}
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="large-12 columns">
                             <label>Website
                                 {{ form.website }}
                                 {% if form.website.errors %}
@@ -150,76 +45,23 @@
 
                     <div class="row">
                         <div class="large-12 columns">
-                            {% if form.hours_open.errors %}
+                            {% if form.opening_time.errors %}
                 <span class="error label">
-                             {{ form.hours_open.errors | striptags }}
+                             {{ form.opening_time.errors | striptags }}
                              </span>
                             {% endif %}
-                            <div class="hide">{{ form.hours_open }}</div>
                             <div class="row">
                                 <span id="required" class="warning label">Required field</span>
 
                                 <div class="large-4 columns">
                                     <label>Opening Time
-                                        <select id="open-time">
-                                            <option value="null">---------</option>
-                                            <option value="12:00 AM">12:00 AM</option>
-                                            <option value="1:00 AM">1:00 AM</option>
-                                            <option value="2:00 AM">2:00 AM</option>
-                                            <option value="3:00 AM">3:00 AM</option>
-                                            <option value="4:00 AM">4:00 AM</option>
-                                            <option value="5:00 AM">5:00 AM</option>
-                                            <option value="6:00 AM">6:00 AM</option>
-                                            <option value="7:00 AM">7:00 AM</option>
-                                            <option value="8:00 AM">8:00 AM</option>
-                                            <option value="9:00 AM">9:00 AM</option>
-                                            <option value="10:00 AM">10:00 AM</option>
-                                            <option value="11:00 AM">11:00 AM</option>
-                                            <option value="12:00 PM">12:00 PM</option>
-                                            <option value="1:00 PM">1:00 PM</option>
-                                            <option value="2:00 PM">2:00 PM</option>
-                                            <option value="3:00 PM">3:00 PM</option>
-                                            <option value="4:00 PM">4:00 PM</option>
-                                            <option value="5:00 PM">5:00 PM</option>
-                                            <option value="6:00 PM">6:00 PM</option>
-                                            <option value="7:00 PM">7:00 PM</option>
-                                            <option value="8:00 PM">8:00 PM</option>
-                                            <option value="9:00 PM">9:00 PM</option>
-                                            <option value="10:00 PM">10:00 PM</option>
-                                            <option value="11:00 PM">11:00 PM</option>
-                                        </select>
+                                      {{ form.opening_time }}
                                     </label>
                                 </div>
 
                                 <div class="large-4 columns">
                                     <label>Closing Time
-                                        <select id="close-time">
-                                            <option value="null">---------</option>
-                                            <option value="12:00 AM">12:00 AM</option>
-                                            <option value="1:00 AM">1:00 AM</option>
-                                            <option value="2:00 AM">2:00 AM</option>
-                                            <option value="3:00 AM">3:00 AM</option>
-                                            <option value="4:00 AM">4:00 AM</option>
-                                            <option value="5:00 AM">5:00 AM</option>
-                                            <option value="6:00 AM">6:00 AM</option>
-                                            <option value="7:00 AM">7:00 AM</option>
-                                            <option value="8:00 AM">8:00 AM</option>
-                                            <option value="9:00 AM">9:00 AM</option>
-                                            <option value="10:00 AM">10:00 AM</option>
-                                            <option value="11:00 AM">11:00 AM</option>
-                                            <option value="12:00 PM">12:00 PM</option>
-                                            <option value="1:00 PM">1:00 PM</option>
-                                            <option value="2:00 PM">2:00 PM</option>
-                                            <option value="3:00 PM">3:00 PM</option>
-                                            <option value="4:00 PM">4:00 PM</option>
-                                            <option value="5:00 PM">5:00 PM</option>
-                                            <option value="6:00 PM">6:00 PM</option>
-                                            <option value="7:00 PM">7:00 PM</option>
-                                            <option value="8:00 PM">8:00 PM</option>
-                                            <option value="9:00 PM">9:00 PM</option>
-                                            <option value="10:00 PM">10:00 PM</option>
-                                            <option value="11:00 PM">11:00 PM</option>
-                                        </select>
+                                      {{ form.closing_time }}
                                     </label>
                                 </div>
                             </div>
@@ -268,7 +110,7 @@
                                         </label>
                                     </div>
                                     <div class="medium-2 columns">
-                                        <label>Price
+                                        <label>Price/Kg
                                             <input type="number" id="price-input" min="1" />
                                         </label>
                                     </div>
@@ -299,7 +141,7 @@
                                 <tr>
                                     <th>Service Name</th>
                                     <th>Description</th>
-                                    <th>Price</th>
+                                    <th>Price/Kg</th>
                                     <th>Duration</th>
                                     <th>Actions</th>
                                 </tr>

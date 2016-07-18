@@ -6,7 +6,6 @@ from django.utils.decorators import method_decorator
 
 
 class AdminLoginRequiredMixin(LoginRequiredMixin):
-	login_view_name = 'management:login-admin'
 
 	def dispatch(self, request, *args, **kwargs):
 		if request.user.is_authenticated():
@@ -14,10 +13,11 @@ class AdminLoginRequiredMixin(LoginRequiredMixin):
 			if userprofile.account_type == 3:
 				return super(AdminLoginRequiredMixin, self).dispatch(request,
 																	 *args, **kwargs)
-			elif userprofile.account_type == 1:
+			elif userprofile.account_type == 1 or userprofile.account_type == 4:
 				return redirect('client:menu')
-			else:
-				return redirect('client:logout')
+
+			elif userprofile.account_type == 2:
+				return redirect('shopadmin:menu')
 		else:
 			return super(AdminLoginRequiredMixin, self).dispatch(request,
 																 *args, **kwargs)

@@ -14,9 +14,8 @@ from django.shortcuts import redirect, render
 from django.views.generic import (CreateView, DeleteView, DetailView, FormView, ListView,
                                   RedirectView, TemplateView, UpdateView)
 
-from management import forms
-from management.mixins import AdminLoginRequiredMixin
-
+from shopadmin import forms
+from shopadmin.mixins import ShopAdminLoginRequiredMixin
 from LaundryBear.views import LoginView, LogoutView
 from django.contrib.auth.forms import PasswordChangeForm
 
@@ -25,10 +24,10 @@ from django.contrib.auth.forms import PasswordChangeForm
 #You can still add more methods if needed.
 #Check ccbv.co.uk for more information
 
-class LaundryMenuView(AdminLoginRequiredMixin, ListView):
+class LaundryMenuView(ShopAdminLoginRequiredMixin, ListView):
     model = Transaction
     context_object_name = 'pending_transaction_list'
-    template_name = 'management/shop/laundrybearmenu.html'
+    template_name = 'shopadmin/shop/laundrybearmenu.html'
 
     def get_queryset(self):
         queryset = super(LaundryMenuView, self).get_queryset()
@@ -37,47 +36,12 @@ class LaundryMenuView(AdminLoginRequiredMixin, ListView):
         return queryset
 
 
-class LaundryUpdateView(AdminLoginRequiredMixin, UpdateView):
-    """
-    View for updating a laundry shop. Handles saving related services and
-    prices.
-    """
-    template_name = 'management/shop/editlaundryshop.html'
-    model = LaundryShop
-    form_class = forms.LaundryShopForm
-
-    def get_success_url(self):
-        return reverse('management:list-shops')
-
-    def form_valid(self, form):
-        """ Save related prices and selected services if form is valid """
-        response = super(LaundryUpdateView, self).form_valid(form)
-
-        PriceInlineFormSet = inlineformset_factory(
-            LaundryShop, Price, fields=('service', 'price', 'duration'), extra=1)
-        price_formset = PriceInlineFormSet(
-            data=self.request.POST, instance=self.object)
-        if price_formset.is_valid():
-            price_formset.save()
-        else:
-            print price_formset.errors
-        return response
-
-    def get_context_data(self,**kwargs):
-        """ Place prices formset into context """
-        context = super(LaundryUpdateView, self).get_context_data(**kwargs)
-        context['service_list'] = Service.objects.all().order_by('pk')
-        price_formset = inlineformset_factory(
-            LaundryShop, Price, fields=('service', 'price', 'duration'), extra=1)
-        context['price_formset'] = price_formset(instance=self.object)
-        return context
-
-class LaundryCreateView(AdminLoginRequiredMixin, CreateView):
+class LaundryCreateView(ShopAdminLoginRequiredMixin, CreateView):
     """
     View to create a laundry shop. Takes user input and creates and saves a
     laundry shop into the database.
     """
-    template_name = 'management/shop/addlaundryshop.html'
+    template_name = 'shopadmin/shop/addlaundryshop.html'
     model = LaundryShop
     form_class = forms.LaundryShopForm
 
@@ -85,17 +49,20 @@ class LaundryCreateView(AdminLoginRequiredMixin, CreateView):
         """
         Redirect to the list of shops if laundry shop creation was a success.
         """
-        return reverse('management:list-shops')
+        return reverse('shopadmin:list-shops')
 
     def form_valid(self, form):
         """
         Save the laundry shop when form is valid, along with related objects.
         """
+        # 'admin', 'status',
+        data = self.request.POST
+
         response = super(LaundryCreateView, self).form_valid(form)
         PriceInlineFormSet = inlineformset_factory(
             LaundryShop, Price, fields=('service', 'price', 'duration'), extra=1)
         price_formset = PriceInlineFormSet(
-            data=self.request.POST, instance=self.object)
+            data=data, instance=self.object)
         if price_formset.is_valid():
             price_formset.save()
         else:
@@ -111,14 +78,7 @@ class LaundryCreateView(AdminLoginRequiredMixin, CreateView):
         return context
 
 
-class LaundryDeleteView(AdminLoginRequiredMixin, DeleteView):
-    """ A view to delete a laundry shop. """
-    model = LaundryShop
-
-    def get_success_url(self):
-        return reverse('management:list-shops')
-
-class LaundryListView(AdminLoginRequiredMixin, ListView):
+class LaundryListView(ShopAdminLoginRequiredMixin, ListView):
     """
     A view that lists at most 10 laundry shops in a page.
     Also allows filtering.
@@ -126,7 +86,7 @@ class LaundryListView(AdminLoginRequiredMixin, ListView):
     model = LaundryShop
     paginate_by = 10
     ordering = 'name'
-    template_name = 'management/shop/viewlaundryshops.html'
+    template_name = 'shopadmin/shop/viewlaundryshops.html'
     context_object_name = 'shop_list'
 
     def get_context_data(self, **kwargs):
@@ -171,23 +131,24 @@ class LaundryListView(AdminLoginRequiredMixin, ListView):
         return LaundryShop.objects.filter(barangay__icontains=barangay_query)
 
 
-# class AdminLoginView(LoginView):
-#    """ A view that only allows admins to login. """
-#    template_name = "management/account/login.html"
-#    form_class = forms.AdminLoginForm
-#    success_view_name = 'management:menu'
+class LaundryDeleteView(ShopAdminLoginRequiredMixin, DeleteView):
+    """ A view to delete a laundry shop. """
+    model = LaundryShop
+
+    def get_success_url(self):
+        return reverse('shopadmin:list-shops')
 
 
-class AdminLogoutView(LogoutView):
+class ShopAdminLogoutView(LogoutView):
     """ A view that logs out the user and redirects to the admin login. """
     login_view_name = 'client:login'
 
 
-class ClientListView(AdminLoginRequiredMixin, ListView):
+class ClientListView(ShopAdminLoginRequiredMixin, ListView):
     """ A view that shows a list of clients. Also filterable. """
     model = UserProfile
     paginate_by = 10
-    template_name = 'management/client/viewclients.html'
+    template_name = 'shopadmin/client/viewclients.html'
     context_object_name = 'user_list'
     ordering = ['user__first_name', 'user__last_name']
 
@@ -234,11 +195,11 @@ class ClientListView(AdminLoginRequiredMixin, ListView):
         return UserProfile.objects.filter(barangay__icontains=barangay_query)
 
 
-class ServicesListView(AdminLoginRequiredMixin, ListView):
+class ServicesListView(ShopAdminLoginRequiredMixin, ListView):
     """ A view to show the list of services. """
     model = Service
     paginate_by = 10
-    template_name = 'management/shop/viewservices.html'
+    template_name = 'shopadmin/shop/viewservices.html'
     context_object_name = 'service_list'
 
     def get_context_data(self, **kwargs):
@@ -266,17 +227,17 @@ class ServicesListView(AdminLoginRequiredMixin, ListView):
     def get_service_by_description(self, description_query):
         return Service.objects.filter(description__icontains=description_query)
 
-class ServicesDeleteView(AdminLoginRequiredMixin, DeleteView):
+class ServicesDeleteView(ShopAdminLoginRequiredMixin, DeleteView):
     """ A view to delete a service. """
     model = Service
 
     def get_success_url(self):
-        return reverse('management:list-service')
+        return reverse('shopadmin:list-service')
 
 
-class ServiceCreateView(AdminLoginRequiredMixin, CreateView):
+class ServiceCreateView(ShopAdminLoginRequiredMixin, CreateView):
     """ A view to create a service through JS AJAX. Returns JSON. """
-    template_name = 'management/shop/partials/createservice.html'
+    template_name = 'shopadmin/shop/partials/createservice.html'
     model = Service
     form_class = forms.ServiceForm
 
@@ -293,34 +254,34 @@ class ServiceCreateView(AdminLoginRequiredMixin, CreateView):
             return response
 
     def get_success_url(self):
-        return reverse('management:create-service')
+        return reverse('shopadmin:create-service')
 
 
-class ServiceUpdateView(AdminLoginRequiredMixin, UpdateView):
+class ServiceUpdateView(ShopAdminLoginRequiredMixin, UpdateView):
     """ A view to update a service. """
-    template_name = 'management/shop/editservices.html'
+    template_name = 'shopadmin/shop/editservices.html'
     model = Service
     form_class = forms.ServiceForm
 
     def get_success_url(self):
-        return reverse('management:list-service')
+        return reverse('shopadmin:list-service')
 
 
-class AddNewServiceView(AdminLoginRequiredMixin, CreateView):
+class AddNewServiceView(ShopAdminLoginRequiredMixin, CreateView):
     """ A view to add a new service. (non-ajax) """
-    template_name = 'management/shop/addnewservice.html'
+    template_name = 'shopadmin/shop/addnewservice.html'
     model = Service
     form_class = forms.ServiceForm
 
     def get_success_url(self):
-        return reverse('management:list-service')
+        return reverse('shopadmin:list-service')
 
 
-class PendingRequestedTransactionsView(AdminLoginRequiredMixin, ListView):
+class PendingRequestedTransactionsView(ShopAdminLoginRequiredMixin, ListView):
     """ A view to show pending transactions. """
     model = Transaction
     context_object_name = 'pending_transaction_list'
-    template_name = 'management/transactions/pending_requested_transactions.html'
+    template_name = 'shopadmin/transactions/pending_requested_transactions.html'
     paginate_by = 10
 
     def get_queryset(self):
@@ -331,11 +292,11 @@ class PendingRequestedTransactionsView(AdminLoginRequiredMixin, ListView):
         return queryset
 
 
-class OngoingTransactionsView(AdminLoginRequiredMixin, ListView):
+class OngoingTransactionsView(ShopAdminLoginRequiredMixin, ListView):
     """ A view to show ongoing transactions. """
     model = Transaction
     context_object_name = 'ongoing_transaction_list'
-    template_name = 'management/transactions/ongoing_transactions.html'
+    template_name = 'shopadmin/transactions/ongoing_transactions.html'
     paginate_by = 10
 
     def get_context_data(self, **kwargs):
@@ -356,7 +317,7 @@ class OngoingTransactionsView(AdminLoginRequiredMixin, ListView):
             if form.is_valid():
                 form.save()
 
-        return redirect('management:ongoing-transactions')
+        return redirect('shopadmin:ongoing-transactions')
 
 
     def get_queryset(self):
@@ -367,11 +328,11 @@ class OngoingTransactionsView(AdminLoginRequiredMixin, ListView):
         return queryset
 
 
-class HistoryTransactionsView(AdminLoginRequiredMixin, ListView):
+class HistoryTransactionsView(ShopAdminLoginRequiredMixin, ListView):
     """ A view to show the history of transactions (done, rejected). """
     model = Transaction
     context_object_name = 'history_transaction_list'
-    template_name = 'management/transactions/history_transactions.html'
+    template_name = 'shopadmin/transactions/history_transactions.html'
     paginate_by = 10
 
     def get_queryset(self):
@@ -411,14 +372,14 @@ class HistoryTransactionsView(AdminLoginRequiredMixin, ListView):
 
 
 
-class UpdateTransactionDeliveryDateView(AdminLoginRequiredMixin, UpdateView):
+class UpdateTransactionDeliveryDateView(ShopAdminLoginRequiredMixin, UpdateView):
     """
     A view to update a transaction delivery date.
     Also handle marking a transaction as approved or declined.
     """
     model = Transaction
     context_object_name = 'transaction'
-    template_name = 'management/transactions/update_transaction.html'
+    template_name = 'shopadmin/transactions/update_transaction.html'
     fields = ['delivery_date']
 
     def get_context_data(self, *args, **kwargs):
@@ -430,7 +391,7 @@ class UpdateTransactionDeliveryDateView(AdminLoginRequiredMixin, UpdateView):
         return context
 
     def get_success_url(self):
-        return reverse('management:pending-transactions')
+        return reverse('shopadmin:pending-transactions')
 
     def post(self, request, *args, **kwargs):
         """ Handle approving a transaction or rejecting it. """
@@ -444,18 +405,18 @@ class UpdateTransactionDeliveryDateView(AdminLoginRequiredMixin, UpdateView):
         return response
 
 
-class MarkTransactionDoneView(AdminLoginRequiredMixin, UpdateView):
+class MarkTransactionDoneView(ShopAdminLoginRequiredMixin, UpdateView):
     """ A view to mark a transaction done. """
     model = Transaction
     fields = ['status']
     template_name = ''
 
     def get_success_url(self):
-        return reverse('management:ongoing-transactions')
+        return reverse('shopadmin:ongoing-transactions')
 
-class AdminSettingsView(AdminLoginRequiredMixin, TemplateView):
+class AdminSettingsView(ShopAdminLoginRequiredMixin, TemplateView):
     """ A view to edit admin settings. (Password, service charges, delivery fees) """
-    template_name = 'management/account/settings.html'
+    template_name = 'shopadmin/account/settings.html'
 
     def get_context_data(self, **kwargs):
         context = super(AdminSettingsView, self).get_context_data(**kwargs)

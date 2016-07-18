@@ -8,7 +8,7 @@ class LoginRequiredMixin(object):
     """
     View mixin which requires that the user is authenticated.
     """
-    login_view_name = None
+    login_view_name = 'client:login'
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated():

@@ -17,7 +17,7 @@
 
         <li class="name">
           <h1>
-			  <a href="{% url "management:menu" %}">
+			  <a href="{% url "shopadmin:menu" %}">
 			  <img src="{% static "LaundryBear/images/header-logo.png" %}" width="60%" height="60%"/>
             </a>
           </h1>
@@ -30,35 +30,35 @@
         <ul id="topbar" class="right">
           <li class="divider"></li>
           <li id="topbar" class="has-dropdown">
-            <a>Manage Shops</a>
+            <a>Manage your Shop</a>
             <ul class="dropdown">
-              <li><a href="{% url "management:add-shop"%}">Add Shop</a></li>
+              <li><a href="{% url "shopadmin:add-shop"%}">Add Shop</a></li>
               <li class="divider"></li>
-              <li><a href="{% url "management:list-shops"%}">See all →</a></li>
+              <li><a href="{% url "shopadmin:list-shops"%}">See all →</a></li>
             </ul>
           </li>
         <li class="divider"></li>
           <li class="has-dropdown">
             <a>Manage Services</a>
             <ul class="dropdown">
-              <li><a href="{% url "management:add-service" %}">Add Service</a></li>
+              <li><a href="{% url "shopadmin:add-service" %}">Add Service</a></li>
               <li class="divider"></li>
-              <li><a href="{% url "management:list-service"%}">See all →</a></li>
+              <li><a href="{% url "shopadmin:list-service"%}">See all →</a></li>
             </ul>
           </li>
 
           <li class="divider"></li>
-          <li><a href="{% url "management:list-client" %}">View Accounts</a></li>
+          <li><a href="{% url "shopadmin:list-client" %}">View Accounts</a></li>
           <li class="divider"></li>
 
           <li class="has-dropdown">
-            <a href="{% url "management:pending-transactions" %}">View Transactions</a>
+            <a href="{% url "shopadmin:pending-transactions" %}">View Transactions</a>
             <ul class="dropdown">
-              <li><a href="{% url "management:pending-transactions" %}">Pending</a></li>
+              <li><a href="{% url "shopadmin:pending-transactions" %}">Pending</a></li>
               <li class="divider"></li>
-              <li><a href="{% url "management:ongoing-transactions" %}">Ongoing</a></li>
+              <li><a href="{% url "shopadmin:ongoing-transactions" %}">Ongoing</a></li>
               <li class="divider"></li>
-              <li><a href="{% url "management:history-transactions" %}">History</a></li>
+              <li><a href="{% url "shopadmin:history-transactions" %}">History</a></li>
             </ul>
           </li>
 
@@ -68,9 +68,9 @@
           <li class="has-dropdown">
             <a href="#">Hi, {{user.username}}</a>
             <ul class="dropdown">
-              <li><a href="{%url "management:settings"%}">Settings</a></li>
+              <li><a href="{%url "shopadmin:settings"%}">Settings</a></li>
               <li class="divider"></li>
-              <li><a href="{%url "management:logout-admin"%}">Sign Out →</a></li>
+              <li><a href="{%url "shopadmin:logout-admin"%}">Sign Out →</a></li>
             </ul>
           </li>
         </ul>
@@ -87,14 +87,6 @@
         <hr>
         <div class="large-12 columns">
                 <p>Laundry Bear 2015</p>
-            <!--<div class="large-6 small-12 columns">
-                <ul class="inline-list right">
-                  <li><a href="#">Link 1</a></li>
-                  <li><a href="#">Link 2</a></li>
-                  <li><a href="#">Link 3</a></li>
-                  <li><a href="#">Link 4</a></li>
-                </ul>
-            </div>-->
       </div>
     </div>
 

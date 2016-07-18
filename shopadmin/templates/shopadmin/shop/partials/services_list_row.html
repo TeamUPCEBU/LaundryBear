@@ -1,0 +1,19 @@
+{% load staticfiles %}
+<tr style="cursor: auto;">
+  <td>
+    {{ service.name }}
+  </td>
+  <td>{{ service.description }}</td>
+  <td>
+    <a href="{% url "shopadmin:edit-service" service.pk %}" class="button secondary tiny">Edit</a>
+    <button data-reveal-id="delete-modal{{ service.pk }}" class="button secondary tiny">Delete</button>
+    <div id="delete-modal{{ service.pk }}" class="reveal-modal tiny" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+    <h3 style="text-align: center;">Are you sure?</h3>
+    <form method="post" action="{%url 'shopadmin:delete-service' service.pk%}">
+      {%csrf_token%}
+      <button type="submit" style="margin-left:38%; "class="button small">Yes</button>
+    </form>
+      <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+    </div>
+  </td>
+</tr>

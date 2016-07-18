@@ -1,17 +1,23 @@
-{%extends 'management/base.html'%}
+{%extends 'shopadmin/base.html'%}
 {% load staticfiles %}
 
-{% block title %}Add Laundry Shop | LaundryBear{% endblock %}
+{% block title %}Edit Laundry Shop | LaundryBear{% endblock %}
 
 {%block body%}
 <div class="row">
     <div class="large-8 large-offset-2 columns">
-        <h3 align="center"><strong>Add Laundry Shop</strong></h3>
+        <h3 align="center"><strong>Edit Laundry Shop</strong></h3>
         <!--forms-->
         <form method="post">
             {% csrf_token %}
             <div id="contain">
                 <div id="contained" class="large-12 columns">
+
+                <div class="row" id="shiz" hidden>
+                  {{ form.admin }}
+                  {{ form.status }}
+                </div>
+
                     <div class="row">
                         <div class="large-12 columns">
                             <label>Name
@@ -128,7 +134,7 @@
                                     <div class="medium-4 columns" id="add-service-button-container">
                                         <a href="#" data-reveal-id="firstModal">Add Service...</a>
                                         <div id="firstModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog" style="width:500px; height: 450px;">
-                                            <iframe src="{%url 'management:create-service' %}" style="width:100%; height:100%; border:0;" seamless="seamless" scrolling="no"></iframe>
+                                            <iframe src="{%url 'shopadmin:create-service' %}" style="width:100%; height:100%; border:0;" seamless="seamless" scrolling="no"></iframe>
                                             <a id="new-service-modal-close-reveal" class="close-reveal-modal" aria-label="Close">&#215;</a>
                                         </div>
                                     </div>
@@ -228,5 +234,8 @@
 {% endblock %}
 
 {% block javascripts %}
+<script>
+  var admin_id = {{ user.userprofile.id }};
+</script>
 <script src="{% static "management/js/services.js" %}"></script>
   {% endblock %}

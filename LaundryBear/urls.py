@@ -24,10 +24,12 @@ from api.views import obtain_auth_token
 import api
 import client
 import management
+import shopadmin
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^management/', include('management.urls', namespace='management')),
+    url(r'^shopadmin/', include('shopadmin.urls', namespace='shopadmin')),
     url(r'^', include('client.urls', namespace='client')),
     url(r'^api/', include('api.urls')),
     url(r'^api/auth/', include('rest_framework.urls', namespace='rest_framework')),

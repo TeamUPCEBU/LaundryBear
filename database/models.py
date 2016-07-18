@@ -99,19 +99,19 @@ class LaundryShop(models.Model):
     @property
     def average_rating(self):
         t = Transaction.objects.filter(
-                    orders__price__laundry_shop=self, paws__isnull=False)
+                    order__price__laundry_shop=self, paws__isnull=False)
         average = t.aggregate(models.Avg('paws'))
         return average['paws__avg']
 
     @property
     def raters(self):
         return len(Transaction.objects.filter(
-                    orders__price__laundry_shop=self, paws__isnull=False))
+                    order__price__laundry_shop=self, paws__isnull=False))
 
     @property
     def comments(self):
         return Transaction.objects.filter(
-                    orders__price__laundry_shop=self,
+                    order__price__laundry_shop=self,
                     comment__isnull=False).exclude(comment='').values_list('comment')
 
     def __unicode__(self):
