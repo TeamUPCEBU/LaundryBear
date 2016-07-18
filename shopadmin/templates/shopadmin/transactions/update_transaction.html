@@ -112,5 +112,5 @@
 $("#date").datepicker({dateFormat: "yy-mm-dd", minDate: {{ transaction.order_set.first.price.duration }}, maxDate: {{ transaction.order_set.first.price.duration }} + 7});
 var serviceRate = {{ fees.service_charge }};
 </script>
-<script src="{% static "management/js/totals.js" %}"></script>
+<script src="{% static "shopadmin/js/totals.js" %}"></script>
 {% endblock%}

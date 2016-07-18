@@ -130,3 +130,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = './static/'
 
 SITE_ID = 1
+
+
+TIME_INPUT_FORMATS = ( '%I:%M %p', # '12:30 PM'
+                    )

@@ -1,0 +1,158 @@
+@charset "utf-8";
+/* CSS Document */
+body {
+	background-color: #FEFDFA;
+}
+
+body#admin {
+	background: url(../icons/headlogo.png);
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+div#form{
+	margin-top: 22%;
+}
+
+h3#adminlogin {
+	color: #5EB1E7;
+}
+
+.login-box {
+  background-color: transparent;
+  border: 2px solid transparent; 
+  margin-top: 5%;
+  padding: 40px 20px 0 20px;
+}
+
+img#logo {
+	width: 4%;
+	height: 3%;
+	margin-left: -12px;
+	margin-top: -3px;
+}
+img#writtenlogo {
+	width: 15%;
+	height: 10%;
+	margin-top: 2%;
+	margin-left:1%;
+}
+.top-bar {
+    background: #5EB1E7;
+}
+
+.top-bar-section li a:not(.button) {
+    background: #1982C6 !important;   
+}
+
+.top-bar-section li a:not(.button):hover {
+    background: #58809a !important;   
+}
+
+.top-bar-section ul li.active > a {
+    background: gray !important;   
+}
+
+.top-bar-section ul li.active > a:hover {
+    background: blue !important;   
+}
+
+.top-bar-section ul .divider{
+    border-right: solid 1px #E9E9E9;
+}
+
+
+.top-bar-section .divider, .top-bar-section [role="separator"] {
+    border-top: solid 1px #E9E9E9;
+    }
+
+span{
+	margin-top: 1%;
+}
+
+h4#requests {
+	margin-left: 30%;
+}
+
+
+div#contain{
+    width:500px;
+    height:200px;
+    z-index: 10;
+    display:block;
+    margin: auto;
+}
+
+div#contained{
+  border-radius: 10px;
+  background-color: #5EB1E7;
+}
+
+div#ufd:hover {
+	animation: ease-in;
+	background: #000;
+
+}
+div#vt:hover {
+	animation: ease-in;
+	background: #000;
+
+}
+img#star {
+	height: 2%;
+	width:  5s%;
+}
+
+.large-9 columns {
+  margin-top: 3%;
+}
+
+.event {
+  padding: 0rem 0rem 0rem 0;
+  display: table; }
+
+.event-date {
+  width: 2rem;
+  margin: 0 auto 1rem;
+  display: table-cell;
+  width: auto; }
+  .event-date .event-month {
+    margin: 0;
+    background: #eee;
+    padding: 0.5rem 1rem;
+    text-align: center; }
+  .event-date .event-day {
+    margin: 0;
+    border: 1px solid #eee;
+    padding: 0 1rem;
+    text-align: center;
+    font-size: 1rem; }
+
+.event-desc {
+  padding: 0 0 0 1rem;
+  text-align: left;
+  display: table-cell;
+  vertical-align: top; }
+  .event-desc .event-desc-header {
+    margin: 0 0 0.5rem 0;
+    padding: 0; }
+  .event-desc .event-desc-detail {
+    margin: 0 0 0rem;
+    padding: 0; }
+  .event-desc .event-desc-time {
+    font-weight: bold; }
+  .event-desc .rsvp.button {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin: 0; }
+
+.inline {
+    display: table;
+    margin:auto;
+    margin-bottom: 1em;
+
+}
+
+span#required {
+	margin-left: 80.5%;
+}

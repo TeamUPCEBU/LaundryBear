@@ -18,7 +18,7 @@ from shopadmin import forms
 from shopadmin.mixins import ShopAdminLoginRequiredMixin
 from LaundryBear.views import LoginView, LogoutView
 from django.contrib.auth.forms import PasswordChangeForm
-
+from database.models import LaundryShop, UserProfile
 #Django uses class based views to connect with templates.
 #Each class based view has their own methods.
 #You can still add more methods if needed.
@@ -31,9 +31,19 @@ class LaundryMenuView(ShopAdminLoginRequiredMixin, ListView):
 
     def get_queryset(self):
         queryset = super(LaundryMenuView, self).get_queryset()
-        queryset = queryset.filter(status=1).order_by('request_date')[:3]
-
+        queryset = queryset.filter(status=1,
+                order__price__laundry_shop=self.request.user.userprofile.laundry_shop).order_by('request_date')[:3]
         return queryset
+
+    def get(self, request, *args, **kwargs):
+        try:
+            shop = self.request.user.userprofile.laundry_shop
+            if shop.status == LaundryShop.PENDING:
+                return redirect('shopadmin:list-shops')
+            else:
+                return super(LaundryMenuView, self).get(request, *args, **kwargs)
+        except Exception as e:
+            return redirect('shopadmin:add-shop')
 
 
 class LaundryCreateView(ShopAdminLoginRequiredMixin, CreateView):
@@ -287,7 +297,7 @@ class PendingRequestedTransactionsView(ShopAdminLoginRequiredMixin, ListView):
     def get_queryset(self):
         """ Filters the set of transactions to only pending ones. """
         queryset = super(PendingRequestedTransactionsView, self).get_queryset()
-        queryset = queryset.filter(status=1)
+        queryset = queryset.filter(status=1, order__price__laundry_shop=self.request.user.userprofile.laundry_shop)
 
         return queryset
 
@@ -323,7 +333,7 @@ class OngoingTransactionsView(ShopAdminLoginRequiredMixin, ListView):
     def get_queryset(self):
         """ Filters the set of transactions to only ongoing ones. """
         queryset = super(OngoingTransactionsView, self).get_queryset()
-        queryset = queryset.filter(status=2)
+        queryset = queryset.filter(status=2, order__price__laundry_shop=self.request.user.userprofile.laundry_shop)
 
         return queryset
 
@@ -339,7 +349,7 @@ class HistoryTransactionsView(ShopAdminLoginRequiredMixin, ListView):
         """ Filter transactions to only show either done or rejected. """
         queryset = super(HistoryTransactionsView, self).get_queryset()
         filters = (3,4)
-        queryset = queryset.filter(status__in=filters).order_by('request_date').reverse()
+        queryset = queryset.filter(order__price__laundry_shop=self.request.user.userprofile.laundry_shop, status__in=filters).order_by('request_date').reverse()
 
         return queryset
 
@@ -423,7 +433,7 @@ class AdminSettingsView(ShopAdminLoginRequiredMixin, TemplateView):
         context['usernameform'] = forms.ChangeUsernameForm(data=self.request.POST or None, instance=self.request.user)
         context['passwordform'] = PasswordChangeForm(data=self.request.POST or None, user=self.request.user)
         # site = Site.objects.get_current()
-        site = Site.objects.get_or_create(domain='laundrybear.pythonanywhere.com')[0].fees
+
 
         return context
 
@@ -443,7 +453,5 @@ class AdminSettingsView(ShopAdminLoginRequiredMixin, TemplateView):
         else:
             print passwordform.error_messages
 
-        fees_form = context['fees_form']
-        if fees_form.is_valid():
-            fees_form.save()
+
         return self.render_to_response(context)

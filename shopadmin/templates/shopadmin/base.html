@@ -28,15 +28,12 @@
       <section class="top-bar-section">
 
         <ul id="topbar" class="right">
+          {% if user.userprofile.laundry_shop and user.userprofile.laundry_shop.status == 2 %}
           <li class="divider"></li>
-          <li id="topbar" class="has-dropdown">
-            <a>Manage your Shop</a>
-            <ul class="dropdown">
-              <li><a href="{% url "shopadmin:add-shop"%}">Add Shop</a></li>
-              <li class="divider"></li>
-              <li><a href="{% url "shopadmin:list-shops"%}">See all →</a></li>
-            </ul>
+          <li id="topbar">
+            <a href="{% url "shopadmin:list-shops"%}">See all →</a>
           </li>
+
         <li class="divider"></li>
           <li class="has-dropdown">
             <a>Manage Services</a>
@@ -47,9 +44,11 @@
             </ul>
           </li>
 
+
           <li class="divider"></li>
           <li><a href="{% url "shopadmin:list-client" %}">View Accounts</a></li>
           <li class="divider"></li>
+
 
           <li class="has-dropdown">
             <a href="{% url "shopadmin:pending-transactions" %}">View Transactions</a>
@@ -61,7 +60,7 @@
               <li><a href="{% url "shopadmin:history-transactions" %}">History</a></li>
             </ul>
           </li>
-
+          {% endif %}
 
 
           <li class="divider"></li>
@@ -96,7 +95,7 @@
     <script src="{%static "LaundryBear/js/vendor/fastclick.js"%}"></script>
     <script src="{%static "LaundryBear/js/foundation.min.js"%}"></script>
     <script src="{%static "LaundryBear/js/foundation.accordionMenu.js"%}"></script>
-    <script src="{%static "management/js/app.js"%}"></script>
+    <script src="{%static "shopadmin/js/app.js"%}"></script>
     {%block javascripts%} {% endblock %}
   </body>
 </html>

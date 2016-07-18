@@ -62,33 +62,6 @@
                 </div>
             </div>
         </li>
-        <li class="accordion-navigation">
-            <a href="#panel4a">Change Service Rates</a>
-            <div id="panel4a" class="content">
-                <div class="login-box">
-                    <div class="row">
-                        <div class="large-12 columns">
-                            <form method="post">
-                                {% csrf_token %}
-                                <div class="row">
-                                    <div class="large-12 columns">
-                                        <label class="title"><b>Delivery Fee:</b></label>
-                                        {{ fees_form.delivery_fee }}
-                                        <label class="title"><b>Service Charge:</b></label>
-                                        {{ fees_form.service_charge }}
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="large-12 large-centered columns">
-                                        <input type="submit" class="radius success button" value="Save New Rate" />
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </li>
     </ul>
 </div>
 

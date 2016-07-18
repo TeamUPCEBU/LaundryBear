@@ -49,12 +49,11 @@
         <th width="200">Name</th>
         <th>Address</th>
         <th>Rating</th>
-        <th>Action</th>
     </tr>
     </thead>
     <tbody>
     {% for shop in shop_list %}
-    {% include "management/shop/partials/laundry_shop_list_row.html" %}
+    {% include "shopadmin/shop/partials/laundry_shop_list_row.html" %}
     {% endfor %}
     </tbody>
 </table>

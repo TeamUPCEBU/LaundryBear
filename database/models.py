@@ -18,11 +18,17 @@ from django.core.validators import RegexValidator
 
 contactNumberValidator = RegexValidator(r'^\+?([\d][\s-]?){10,13}$', 'Invalid input!')
 class UserProfile(models.Model):
+
+    CUSTOMER = 1
+    SHOPADMIN = 2
+    LAUNDRYBEARADMIN = 3
+    SUBSCRIBER = 4
+
     ACCOUNT_TYPE_CHOICES = (
-        (1, 'Customer: (Pay per transaction)'),
-        (2, 'Shop Administrator: (Got a shop?)'),
-        (3, 'Laundry Bear Administrator'),
-        (4, 'Subscriber: (Just pay every month!)')
+        (CUSTOMER, 'Customer: (Pay per transaction)'),
+        (SHOPADMIN, 'Shop Administrator: (Got a shop?)'),
+        (LAUNDRYBEARADMIN, 'Laundry Bear Administrator'),
+        (SUBSCRIBER, 'Subscriber: (Just pay every month!)')
     )
 
     account_type = models.IntegerField(choices=ACCOUNT_TYPE_CHOICES, default=1)
@@ -51,11 +57,16 @@ class LaundryShop(models.Model):
     class Meta:
         get_latest_by = 'creation_date' #Sort
 
+    PENDING = 1
+    ACTIVE = 2
+    INACTIVE = 3
+    REJECTED = 4
+
     LAUNDRY_SHOP_STATUS_CHOICES = (
-        (1, 'Pending'),
-        (2, 'Active'),
-        (3, 'Inactive'),
-        (4, 'Rejected')
+        (PENDING, 'Pending'),
+        (ACTIVE, 'Active'),
+        (INACTIVE, 'Inactive'),
+        (REJECTED, 'Rejected')
     )
 
     admin = models.OneToOneField(UserProfile, related_name='laundry_shop')
@@ -66,6 +77,20 @@ class LaundryShop(models.Model):
     closing_time = models.TimeField(blank=False, auto_now=False, auto_now_add=False)
     days_open = models.CharField(max_length=100, blank=False)
     creation_date = models.DateTimeField(auto_now_add=True)
+
+    @property
+    def email(self):
+        return self.admin.user.email
+
+    @property
+    def contact_number(self):
+        return self.admin.contact_number
+
+
+    @property
+    def hours_open(self):
+        return str(self.opening_time) + " - "  + str(self.closing_time)
+
 
     @property
     def building(self):

@@ -20,7 +20,13 @@
             <td>{{ shop.name }}</td>
             <td>{{ shop.location }}</td>
             <td>{{ shop.contact_number }}</td>
-            <td><div class="paw-container" style="width: {% widthratio shop.average_rating 5 150 %}px;"><img src="{% static "management/icons/star.png" %}" /></div></td>
+            <td>
+              {% if shop.average_rating %}
+                <div class="raty-rating" data-value={{ shop.average_rating }}>
+              {% else %}
+               be the first to rate
+              {% endif %}
+            </td>
             <td>{{ shop.days_open }}</td>
             <td>{{ shop.hours_open }}</td>
             <td>{{ shop.email }}</td>
@@ -30,17 +36,11 @@
     </div>
   </td>
   <td>{{ shop.location }}</td>
-  <td><div class="paw-container" style="width: {% widthratio shop.average_rating 5 150 %}px;"><img src="{% static "management/icons/star.png" %}" /></div></td>
   <td>
-    <a href="{% url "shopadmin:edit-shop" shop.pk %}" class="button secondary tiny">Edit</a>
-    <button data-reveal-id="delete-modal{{ shop.pk }}" class="button secondary tiny">Delete</button>
-    <div id="delete-modal{{ shop.pk }}" class="reveal-modal tiny" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-    <h3 style="text-align:center;">Are you sure?</h3>
-    <form method="post" action="{%url 'shopadmin:delete-shop' shop.pk%}">
-      {%csrf_token%}
-      <button type="submit" style="margin-left:38%; "class="button small">Yes</button>
-    </form>
-      <a class="close-reveal-modal" aria-label="Close">&#215;</a>
-    </div>
+    {% if shop.average_rating %}
+      <div class="raty-rating" data-value={{ shop.average_rating }}>
+    {% else %}
+     be the first to rate
+    {% endif %}
   </td>
 </tr>
