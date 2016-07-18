@@ -43,9 +43,9 @@
     <div class="container">
       {% if shop_list %}
         {% for shop in shop_list %}
-        <ul class="collection">
+        <div class="collection">
         {% include 'client/partials/shops/laundryshop_item.html'%}
-        </ul>
+      </div>
         {% endfor %}
       {% else %}
       <div class="center">
