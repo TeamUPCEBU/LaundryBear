@@ -1,0 +1,19 @@
+{% load staticfiles %}
+
+<a class="collection-item avatar waves-effect waves-dark" href="{% url "client:order" shop.pk  %}">
+  <img src="{% static "LaundryBear/images/logologin.png"%}" alt="" class="circle">
+  <span class="title black-text">{{shop.name}}</span>
+  <p class="grey-text text-darken-3">
+     {{shop.street}} {{shop.barangay}}, {{shop.city}}<br>
+     Shop Rating:
+     {% if shop.average_rating %}
+     <span>
+       {% for i in shop.average_rating%}
+        <i class="fa fa-fw fa-paw"></i>
+       {% endfor %}
+     </span>
+     {% else %}
+     Be the first to Rate!
+     {% endif %}
+  </p>
+</a>

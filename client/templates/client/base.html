@@ -29,9 +29,6 @@
           <li><a href="{% url "client:logout" %}">Sign Out</a></li>
         </ul>
         <ul class="side-nav" id="mobile-mode">
-          <div class="center">
-            <button class="btn pink">Make Request</button>
-          </div>
           <li class="divider"></li>
           <li>
             <a href="{% url "client:menu" %}"><i class="fa fa-home fa-fw fa-3x" style="vertical-align: bottom"></i>&nbsp; Home</a>
@@ -47,8 +44,9 @@
     </nav>
 
     {%block body%}{%endblock%}
-
-
+    <div class="fixed-action-btn" style="bottom:45px; right: 24px;">
+      <a href="{% url "client:view-shops" %}" class="btn-floating btn-large waves-effect waves-light red z-depth-1"><i class="fa fa-fw fa-paw"></i></a>
+    </div>
     <script src="{%static "LaundryBear/js/vendor/modernizr.js"%}"></script>
     <script src="{%static "LaundryBear/js/vendor/jquery.js"%}"></script>
     <script src="{%static "LaundryBear/js/vendor/fastclick.js"%}"></script>

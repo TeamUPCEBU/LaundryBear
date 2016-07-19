@@ -160,37 +160,25 @@ class ShopsListView(ClientLoginRequiredMixin, ListView):
         context = super(ShopsListView, self).get_context_data(**kwargs)
         shops = context['shop_list']
 
-        query_type = ''
+        query_type = self.request.GET.get('query_type','')
 
         #Used for search with the use of filtering
-        none_query = self.request.GET.get('browse', False)
-        if none_query:
+        query = self.request.GET.get('browse', False)
+
+        if query_type == 'name':
+            shops = self.get_shops_by_name(query)
+        elif query_type == 'city':
+            shops = self.get_shops_by_city(query)
+        elif query_type == 'province':
+            shops = self.get_shops_by_province(query)
+        elif query_type == 'barangay':
+            shops = self.get_shops_by_barangay(query)
+        else:
             shops = self.get_all_shops()
-            shops.order_by('-barangay', 'average_rating')
-            query_type = 'browse'
-
-        name_query = self.request.GET.get('name', False)
-        if name_query:
-            shops = self.get_shops_by_name(name_query)
-            query_type = 'name'
-
-        city_query = self.request.GET.get('city', False)
-        if city_query:
-            shops = self.get_shops_by_city(city_query)
-            query_type = 'city'
-
-        province_query = self.request.GET.get('province', False)
-        if province_query:
-            shops = self.get_shops_by_province(province_query)
-            query_type = 'province'
-
-        barangay_query = self.request.GET.get('barangay', False)
-        if barangay_query or not query_type:
-            shops = self.get_shops_by_barangay(barangay_query or self.request.user.userprofile.barangay)
-            query_type = 'barangay'
 
         context.update({'shop_list': shops})
         context['query_type'] = query_type
+        print query_type
         return context
 
     #Get data needed by each search

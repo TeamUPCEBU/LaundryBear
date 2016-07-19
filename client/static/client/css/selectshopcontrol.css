@@ -20,8 +20,18 @@
     }
     .button{
       height: 45px;
-      margin-top:25px; 
+      margin-top:25px;
     }
     body{
         background: url("/static/client/icons/back.jpg") no-repeat center;
     }
+
+.search-filter-container{
+  border-radius: 6px;
+  margin-top: 20px;
+  padding: 10px 10px 0px 10px;
+}
+
+.row{
+  margin-bottom: 0px !important;
+}
