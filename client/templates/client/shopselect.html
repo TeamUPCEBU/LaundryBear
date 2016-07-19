@@ -13,109 +13,85 @@
 {% block body %}
 
 <div class="row">
-  <div class="container shop-header green lighten-5 z-depth-2">
-    <h2 style="text-align:center"> {{ shop.name }} </h2>
-    <div class="row" style="margin: auto;">
-        <div class="small-12 large-10 columns small-centered" style="margin: auto;">
-            <center><h4 style="inline:true">{{ shop.average_rating }} paws</h4>
-                <div class="paw-container" style="width: {% widthratio shop.average_rating 5 150 %}px; margin: auto;" ><img src="{% static "management/icons/star.png" %}" /></div>
-                <br>
-                <span>a total of {{ shop.raters }} reviews</span></center>
+  <div class="container shop-header green lighten-5 z-depth-2" style="padding-top: 5px; margin-top: 10px">
+    <h3 style="text-align:center"> {{ shop.name }} </h3>
+    <div class="row">
+        <div class="center" >
+            {% if shop.average_rating %}
+            <h5>
+              {{ shop.average_rating }} paws
+              <div class="paw-container" style="width: {% widthratio shop.average_rating 5 150 %}px; margin: auto;" ><img src="{% static "management/icons/star.png" %}" /></div>
+              <br>
+              <span>a total of {{ shop.raters }} reviews</span>
+            </h5>
+            {% else %}
+            <h5>This shop has no paws yet.</h5>
+            <span>Be the first to imprint <i class="fa fa-fw fa-paw"></i></span>
+            {% endif %}
+        </div>
+        <div class="center">
+            <p><strong>Location</strong> <br>{{ shop.location }} </p>
+            <p><strong>Contact number </strong><br> {{ shop.contact_number}}</p>
+            <p><strong>Days Open</strong><br> {{shop.days_open}}, {{ shop.hours_open }}</p>
+            {% if shop.email %}
+            <p><strong>Email</strong><br> {{ shop.email}} </p>
+            {% else %} {% endif %}
         </div>
     </div>
   </div>
 </div>
-
-<section class="services">
-    <div class="row" style="margin: auto; align: center;">
-        <div class="small-12 large-10 columns small-centered">
-            <br><br>
-            <div class="small-centered small-6" style="margin:auto;">
-                <p><strong>Location:</strong> {{ shop.location }} </p>
-                <p><strong>Contact number: </strong> {{ shop.contact_number}}</p>
-                <p><strong>Days Open:</strong> {{shop.days_open}}, {{ shop.hours_open }}</p>
-                {% if shop.email %}
-                <p><strong>Email:</strong> {{ shop.email}} </p>
-                {% else %} {% endif %}
-            </div>
-        </div>
+<br>
+<br>
+<div class="row">
+  <div class="container center">
+    <h5>Choose Service</h5>
+    <div class="row">
+      <div class="input-field s12">
+        <select class="service-choices">
+          <option value="" disabled selected>Choose your option</option>
+          {% for service in service_list %}
+          <option class="black" value="{{service.pk}}" data-price = "{{service.price}}" data-description="{{service.service.description}}">{{service.service.name}}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <!-- <div class="center">
+        <button class="btn waves-effect waves-light pink lighteon-2 modal-trigger" data-target="serviceModal">Avail this Service</button>
+      </div> -->
     </div>
-    <hr>
-
-    <br>
-    <form class="custom">
-        <div class="row">
-            <div class="large-12 columns">
-                <div class="row collapse">
-                    <div class="large-3 columns"></div>
-                    <div class="large-6 large-offset-3 columns">
-                        <button href="#" data-dropdown="drop1" aria-controls="drop1" aria-expanded="false" class="secondary button dropdown expand">Choose Service</button>
-                        <br>
-                        <ul id="drop1" data-dropdown-content class="f-dropdown" aria-hidden="true">
-                            {% for service in service_list %}
-                            <li value="{{ service.pk }}"><a href="#" class="reveal-modal-button" data-reveal-id="servicemodal{{ service.pk }}">{{ service.service.name }}</a></li>
-                            <!--this is the modal... -->
-                            <div id="servicemodal{{ service.pk }}" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-                                <h3>{{ service.service.name }}</h3>
-                                <p>Price: {{ service.price }} pesos per kilo </p>
-                                <p>Description: {{ service.service.description}} </p>
-                                Number of clothes <input type="number" min="1" />
-                                <a data-servicename="{{ service.service.name }}" data-price-per-kilo="{{ service.price }}" data-pk="{{ service.pk }}" class="button right add-to-basket"> Add to Basket </a>
-                                <a class="close-reveal-modal" aria-label="Close">&#215;</a>
-                            </div>
-                            <!--yeeaaahh-->
-                            {% endfor %}
-                        </ul>
-                    </div>
-                    <div class="large-3 columns">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
-</section>
-<h3 style="text-align:center"> My Laundry Basket </h3>
-<table align="center">
-    <thead>
-    <tr>
-        <th width="200">Service</th>
-        <th>Number of Items</th>
-        <th>Estimated Price</th>
-        <th width="275" align="center">Actions</th>
-    </tr>
-    </thead>
-    <tbody id="table-body">
-    </tbody>
-</table>
-<template id="row-template">
-    <tr data-price="__price__">
-        <td>__servicename__</td>
-        <td>
-            __pieces__
-        </td>
-        <td align="center">
-            __price__ <span data-tooltip aria-haspopup="true" class="warning label has-tip tip-top radius round" title="Estimated price may vary upon actual weighing.">May vary</span>
-        </td>
-        <td>
-            <ul class="button-group round">
-                <li><a href="#" class="button info" data-reveal-id="servicemodal__pk__" data-pieces="__pieces__" data-price-per-kg="__pricePerKg__">Edit</a></li>
-                <li><a href="#" class="button alert">Delete</a></li>
-            </ul>
-        </td>
-    </tr>
-</template>
-<div class="row" align="center">
-    <div class="large-2 columns"></div>
-    <div class="large-10 large-offset-1 columns" align="center">
-        <span class="info label">Total:</span>
-        <p><strong id="total-price">0</strong></p>
-    </div>
-    <div class="large-2 columns"></div>
+  </div>
 </div>
+
+<div class="row">
+  <div class="container">
+    <h4 class="center">My Laundry Basket</h4>
+    <h5 class="center nothing-label">Nothing in basket yet.</h5>
+    <ul class="collapsible service-orders" data-collapsible="expandable">
+    </ul>
+  </div>
+</div>
+<div class="modal" id="serviceModal">
+  <div class="modal-content">
+      <div class="container">
+        <div class="row">
+          <h3></h3>
+          <p id="servicePrice"></p>
+          <p id="serviceDescription"></p>
+          Number of clothes <input class="input-field num-clothes" type="number" min="1" />
+        </div>
+      </div>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="modal-action modal-close waves-effect waves-light light-blue btn-flat add-to-basket">
+      <span class="grey-text text-darken-4"><i class="material-icons" style="vertical-align:bottom">add_shopping_cart</i>Add to Basket
+      </span>
+    </a>
+  </div>
+</div>
+
 <div class="row">
     <div class="large-12 columns" align="center">
-        <a href="{% url "client:view-shops" %}" class="button">Back</a>
-        <a href="{% url "client:order-summary" shop.pk %}" class="button success">Request</a>
+        <a href="{% url "client:view-shops" %}" class="btn light-blue waves-light waves-effect">Back</a>
+        <a href="{% url "client:order-summary" shop.pk %}" class="btn green waves-light waves-effect">Request</a>
     </div>
 </div>
 {% endblock %}
