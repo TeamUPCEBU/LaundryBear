@@ -178,7 +178,6 @@ class ShopsListView(ClientLoginRequiredMixin, ListView):
 
         context.update({'shop_list': shops})
         context['query_type'] = query_type
-        print query_type
         return context
 
     #Get data needed by each search
@@ -207,6 +206,11 @@ class OrderView(ClientLoginRequiredMixin, DetailView):
         context = super(OrderView, self).get_context_data(**kwargs)
         the_shop = context['shop']
         context['service_list'] = Price.objects.filter(laundry_shop__name=the_shop)
+        context['fees'] = Site.objects.get_current().fees
+        context['delivery_date'] = default_date().strftime('%Y-%m-%d')
+        context['delivery_date_max'] = (default_date() + timedelta(days=7)).strftime('%Y-%m-%d')
+        context['address_form'] = AddressForm(
+            initial=model_to_dict(self.request.user.userprofile))
         return context
 
 #Inherits CBV "DetailView"
