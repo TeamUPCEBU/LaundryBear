@@ -118,7 +118,7 @@ TIME_ZONE = 'Asia/Manila'
 
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False
 
 USE_TZ = True
 
@@ -133,4 +133,6 @@ SITE_ID = 1
 
 
 TIME_INPUT_FORMATS = ( '%I:%M %p', # '12:30 PM'
+                    )
+TIME_FORMAT = ( '%H:%M:%S.%f', # '12:30 PM'
                     )

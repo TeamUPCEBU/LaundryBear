@@ -5,12 +5,12 @@
 
 {%block body%}
 <div class="row">
-    <div class="large-8 large-offset-2 columns">
-        <h3 align="center"><strong>Add Laundry Shop</strong></h3>
+    <div class="large-offset-2 large-8 columns">
+        <h3 align="center"><strong>Register your Laundry Shop</strong></h3>
         <!--forms-->
         <form method="post">
             {% csrf_token %}
-            <div id="contain">
+            <div>
                 <div id="contained" class="large-12 columns">
 
                 <div class="row" id="shiz" hidden>
@@ -57,16 +57,16 @@
                              </span>
                             {% endif %}
                             <div class="row">
-                                <span id="required" class="warning label">Required field</span>
 
                                 <div class="large-4 columns">
                                     <label>Opening Time
+                                      <span id="required" class="warning label right">Required field</span>
                                       {{ form.opening_time }}
                                     </label>
                                 </div>
-
                                 <div class="large-4 columns">
                                     <label>Closing Time
+                                      <span id="required" class="warning label right">Required field</span>
                                       {{ form.closing_time }}
                                     </label>
                                 </div>
@@ -132,29 +132,34 @@
 
                                 <div class="row">
                                     <div class="medium-4 columns" id="add-service-button-container">
-                                        <a href="#" data-reveal-id="firstModal">Add Service...</a>
-                                        <div id="firstModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog" style="width:500px; height: 450px;">
+                                        <a href="#" class="button small" data-reveal-id="firstModal">Add New Service</a>
+                                        <div id="firstModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog" style="width:100%; height: 450px;">
                                             <iframe src="{%url 'shopadmin:create-service' %}" style="width:100%; height:100%; border:0;" seamless="seamless" scrolling="no"></iframe>
                                             <a id="new-service-modal-close-reveal" class="close-reveal-modal" aria-label="Close">&#215;</a>
                                         </div>
                                     </div>
                                 </div>
 
+                              <div class="row" style="overflow-x:auto" align="center">
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th>Service Name</th>
+                                        <th>Description</th>
+                                        <th>Price/Kg</th>
+                                        <th>Duration</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="service-table-body">
+                                    </tbody>
+                                </table>
+                              </div>
+
                             </div>
 
-                            <table style="margin:auto;">
-                                <thead>
-                                <tr>
-                                    <th>Service Name</th>
-                                    <th>Description</th>
-                                    <th>Price/Kg</th>
-                                    <th>Duration</th>
-                                    <th>Actions</th>
-                                </tr>
-                                </thead>
-                                <tbody id="service-table-body">
-                                </tbody>
-                            </table>
+
+
 
                             {{ price_formset.management_form }}
                             <div class="hide" id="price-formset-container" data-edit-pk="None">

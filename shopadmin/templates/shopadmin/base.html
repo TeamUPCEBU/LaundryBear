@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8">
     <title>{% block title %}LaundryBear{% endblock %}</title>
     <link rel="stylesheet" href="{% static "LaundryBear/css/foundation.min.css" %}"/>
-    <link rel="stylesheet" href="{% static "management/css/app.css" %}"/>
-    <link rel="stylesheet" href="{% static "management/css/control.css" %}"/>
+    <link rel="stylesheet" href="{% static "shopadmin/css/app.css" %}"/>
+    <link rel="stylesheet" href="{% static "shopadmin/css/control.css" %}"/>
     <link rel="stylesheet" href="{% static "LaundryBear/foundation-icons/foundation-icons.css" %}" />
     {%block stylesheets%} {% endblock %}
   </head>
@@ -28,10 +28,11 @@
       <section class="top-bar-section">
 
         <ul id="topbar" class="right">
+          <!-- if laundry shop is active -->
           {% if user.userprofile.laundry_shop and user.userprofile.laundry_shop.status == 2 %}
           <li class="divider"></li>
           <li id="topbar">
-            <a href="{% url "shopadmin:list-shops"%}">See all →</a>
+            <a href="{% url "shopadmin:list-shops"%}">See All Shops</a>
           </li>
 
         <li class="divider"></li>
@@ -46,7 +47,7 @@
 
 
           <li class="divider"></li>
-          <li><a href="{% url "shopadmin:list-client" %}">View Accounts</a></li>
+          <li><a href="{% url "shopadmin:list-client" %}">View Customers</a></li>
           <li class="divider"></li>
 
 

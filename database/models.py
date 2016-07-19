@@ -1,9 +1,10 @@
 from decimal import *
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.contrib.sites.models import Site
-from datetime import timedelta
+from datetime import timedelta, datetime
 from django.core.validators import RegexValidator
 
 #from rest_framework.authtoken.models import Token
@@ -89,7 +90,8 @@ class LaundryShop(models.Model):
 
     @property
     def hours_open(self):
-        return str(self.opening_time) + " - "  + str(self.closing_time)
+        return (str(datetime.strptime(str(self.opening_time), "%H:%M:%S").strftime("%I:%M %p")) + " - "  +
+               str(datetime.strptime(str(self.closing_time), "%H:%M:%S").strftime("%I:%M %p")))
 
 
     @property
@@ -223,3 +225,6 @@ class Fees(models.Model):
     service_charge = models.DecimalField(default=0.1, decimal_places=2,
         max_digits=3)
     site = models.OneToOneField(Site)
+
+    def __unicode__(self):
+        return 'Regular rate'

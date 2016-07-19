@@ -34,20 +34,23 @@
                 </div>
             </div>
         </form>
-        <table id='clickytable' style="margin:auto">
-            <thead>
-            <th>Client Name</th>
-            <th>Laundry Shop</th>
-            <th>Date Requested</th>
-            <th>Time Requested</th>
-            <th>Status</th>
-            </thead>
-            <tbody>
-            {% for transaction in history_transaction_list %}
-            {% include "management/transactions/partials/history_transaction_row.html" %}
-            {% endfor %}
-            </tbody>
-        </table>
+        <div class="row" style="overflow-x:auto" align="center">
+          <table id='clickytable' style="margin:auto">
+              <thead>
+              <th>Client Name</th>
+              <th>Laundry Shop</th>
+              <th>Date Requested</th>
+              <th>Time Requested</th>
+              <th>Date Delivered</th>
+              <th>Status</th>
+              </thead>
+              <tbody>
+              {% for transaction in history_transaction_list %}
+              {% include "shopadmin/transactions/partials/history_transaction_row.html" %}
+              {% endfor %}
+              </tbody>
+          </table>
+        </div>
     </div>
     <div class="large-2 columns"></div>
 </div>

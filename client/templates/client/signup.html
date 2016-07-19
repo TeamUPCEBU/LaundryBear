@@ -1,7 +1,7 @@
 {% load staticfiles %}
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="{% static "LaundryBear/css/foundation.css"%}" />
   <link rel="stylesheet" href="{% static "client/css/signupcontrol.css" %}"/>
@@ -9,108 +9,28 @@
   <title>Laundry Bear | Sign Up</title>
 </head>
 <body>
-<p class="welcome"><a href="{% url 'client:login' %}"><img src="{% static "management/icons/logologin.png"%}" /></a></p>
-<center><strong><h3 id="tag"><b>Join us and be part of something clean!</b></h3></strong></center><hr>
-<div class="row">
-  <div id="form" class="large-6 columns">
-    <div id="insideform" class="signup-panel">
-      <form action="{%url 'client:signup'%}"method="post">
-        <div class="large-12 columns">
-          <span id="legend" class="warning label" align="right">*Required Field</span>
-        </div>
-        {% csrf_token %}
-        <div>
-          <div class="large-12 columns">
-            <label class="title"><b>Sign up as:</b><strong><font color="red" size="3">*</font></strong></label>
-            {{ userprofileform.account_type }}
-            {% if userprofileform.account_type.errors %}
-            <span class="error label">{{ userprofileform.account_type.errors | striptags }}</span>
-            {% endif %}
-          </div>
 
-          <div class="large-12 columns">
-            <label class="title"><b>First Name</b><strong><font color="red" size="3">*</font></strong></label>
-            {{ userform.first_name }}
-            {% if userform.first_name.errors %}
-            <span class="error label">{{ userform.first_name.errors | striptags }}</span>
-            {% endif %}
-          </div>
-          <div class="large-12 columns">
-            <label class="title"><b>Last Name</b><strong><font color="red" size="3">*</font></strong></label>
-            {{ userform.last_name }}
-            {% if userform.last_name.errors %}
-            <span class="error label">{{ userform.last_name.errors | striptags }}</span>
-            {% endif %}
-          </div>
-          <div class="large-12 columns">
-            <label class="title"><b>Cellphone Number</b><strong><font color="red" size="3">*</font></strong></label>
-            {{ userprofileform.contact_number }}
-            {% if userprofileform.contact_number.errors %}
-            <span class="error label">{{ userprofileform.contact_number.errors | striptags }}</span>
-            {% endif %}
-          </div>
-          <div class="large-12 columns">
-            <label class="title"><b>Email</b><strong><font color="red" size="3">*</font></strong></label>
-            {{ userform.email }}
-            {% if userform.email.errors %}
-            <span class="error label">{{ userform.email.errors | striptags }}</span>
-            {% endif %}
-          </div><hr>
-          <div class="large-12 columns">
-            <label class="title"><b>Username</b><strong><font color="red" size="3">*</font></strong></label>
-            {{ userform.username }}
-            {% if userform.username.errors %}
-            <span class="error label">{{ userform.username.errors | striptags }}</span>
-            {% endif %}
-          </div>
-          <div class="large-12 columns">
-            <label class="title"><b>Password</b><strong><font color="red" size="3">*</font></strong></label>
-            {{ userform.password1 }}
-            {% if userform.password1.errors %}
-            <span class="error label">{{ userform.password1.errors | striptags }}</span>
-            {% endif %}
-          </div>
-          <div class="large-12 columns">
-            <label class="title"><b>Confirm Password</b><strong><font color="red" size="3">*</font></strong></strong></label>
-            {{ userform.password2 }}
-            {% if userform.password2.errors %}
-            <span class="error label">{{ userform.password2.errors | striptags }}</span>
-            {% endif %}
-          </div>
-          <hr>
-          <div class="large-12 columns">
-            <label class="title"><b>Building</b></label>
-            {{ userprofileform.building }}
-          </div>
-          <div class="large-12 columns">
-            <label class="title"><b>Street</b></label>
-            {{ userprofileform.street }}
-          </div>
-          <div class="large-12 columns">
-            <label class="title"><b>Barangay</b><strong><font color="red" size="3">*</font></strong></label>
-            {{ userprofileform.barangay }}
-            {% if userprofileform.barangay.errors %}
-            <span class="error label">{{ userprofileform.barangay.errors | striptags }}</span>
-            {% endif %}
-          </div>
-          <div class="large-12 columns">
-            <label class="title"><b>City</b></label>
-            {{ userprofileform.city }}
-          </div>
-          <div class="large-12 columns">
-            <label class="title"><b>Province</b><strong><font color="red" size="3">*</font></strong></label>
-            {{ userprofileform.province }}
-            {% if userprofileform.province.errors %}
-            <span class="error label">{{ userprofileform.province.errors | striptags }}</span>
-            {% endif %}
-          </div>
-          <hr>
-          <input type="submit" class="button" value="Sign Up"/>
-      </form>
-      <p>Already have an account? <a href="{%url 'client:login'%}">Login here </a></p>
-    </div>
+  <div align="center" class="row">
+    <a href="{% url 'client:login' %}"><img src="{% static "management/icons/logologin.png"%}" /></a>
+    <center><strong><h3><b>Join us and be part of something clean!</b></h3></strong></center><hr>
+  </div>
+
+
+
+
+<div class="row large-offset-4 large-4 columns collapse" style="background-color:white">
+  <form action="{%url 'client:signup'%}"method="post">
+    {% csrf_token %}
+    {{ userform.as_p }}
+    {{ userprofileform.as_p }}
+    <div align="center"><input type="submit" class="button" value="Sign Up"/></div>
+  </form>
+  <div align="center">
+      <a href="{%url 'client:login'%}">Login here </a>
+    <p>Already have an account?</p>
   </div>
 </div>
+
 <script src="{%static "LaundryBear/js/vendor/modernizr.js"%}"></script>
    <script src="{%static "LaundryBear/js/vendor/jquery.js"%}"></script>
 <script src="{%static "LaundryBear/js/vendor/fastclick.js"%}"></script>

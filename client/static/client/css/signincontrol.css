@@ -3,7 +3,7 @@
 body {
 	background-position: center;
 }
-      
+
 .slider{
   width: auto;
   margin: none;
@@ -18,18 +18,17 @@ h2{
 
 img#logo {
 
-	width: 120px;
-	height: 187.5px;
+	width: 30%;
+	height: 30%;
 	display:block;
 	margin-left:auto;
 	margin-right:auto;
-	margin-bottom: 5%;
 }
 .login-box {
   background-color: transparent;
   border: 2px solid transparent;
   margin-top: 2%;
-  padding: 40px 20px 0 20px;
+  padding: 20px 10px 0 20px;
 }
 
 div#logos img {
@@ -93,5 +92,3 @@ div#logos:after {
         color: #333;
         transition: all .25s ease-in-out;
 		}
-
- 

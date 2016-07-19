@@ -42,22 +42,24 @@
     </div>
 </form>
 
+<div class="row" style="overflow-x:auto" align="center">
+  <table style="margin:auto" id="clicky-table">
+      <thead>
+      <tr>
+          <th width="200">Name</th>
+          <th>Address</th>
+          <th>Rating</th>
+          <th>Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for shop in shop_list %}
+      {% include "management/shop/partials/laundry_shop_list_row.html" %}
+      {% endfor %}
+      </tbody>
+  </table>
+</div>
 
-<table style="margin:auto" id="clicky-table">
-    <thead>
-    <tr>
-        <th width="200">Name</th>
-        <th>Address</th>
-        <th>Rating</th>
-        <th>Action</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for shop in shop_list %}
-    {% include "management/shop/partials/laundry_shop_list_row.html" %}
-    {% endfor %}
-    </tbody>
-</table>
 <div class="row">
     <div class="small-6 small-centered columns">
         {% if page_obj.has_next %}

@@ -12,7 +12,8 @@
     <div class="large-2 columns"></div>
     <div class="large-8 large-offset-2 columns">
         <h3 style="text-align:center"><b>Pending Requested Transactions</b></h3>
-        <table id="clicky-table" style="margin:auto">
+        <div class="row" style="overflow-x:auto" align="center">
+          <table id="clicky-table" style="margin:auto">
             <thead>
             <th>Name of Client</th>
             <th>Laundry Shop</th>
@@ -21,10 +22,11 @@
             </thead>
             <tbody>
             {% for transaction in pending_transaction_list %}
-            {% include "management/transactions/partials/pending_transaction_row.html" %}
+            {% include "shopadmin/transactions/partials/pending_transaction_row.html" %}
             {% endfor %}
             </tbody>
-        </table>
+          </table>
+        <div class="row" style="overflow-x:auto" align="center">
     </div>
     <div class="large-2 columns"></div>
 </div>

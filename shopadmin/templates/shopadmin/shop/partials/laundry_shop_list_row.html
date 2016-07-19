@@ -3,35 +3,37 @@
   <td data-reveal-id="shopmodal{{ shop.pk }}">
     {{ shop.name }}
     <div id="shopmodal{{ shop.pk }}" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-      <table style="margin:auto">
-        <thead>
-          <tr>
-            <th width="200">Name</th>
-            <th width="500">Address</th>
-            <th width="150">Contact Information</th>
-            <th>Rating</th>
-            <th width="200">Operating Days</th>
-            <th width="150">Hours</th>
-            <th width="200">Email</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{{ shop.name }}</td>
-            <td>{{ shop.location }}</td>
-            <td>{{ shop.contact_number }}</td>
-            <td>
-              {% if shop.average_rating %}
-                <div class="raty-rating" data-value={{ shop.average_rating }}>
-              {% else %}
-               be the first to rate
-              {% endif %}
-            </td>
-            <td>{{ shop.days_open }}</td>
-            <td>{{ shop.hours_open }}</td>
-            <td>{{ shop.email }}</td>
-        </tbody>
-      </table>
+      <div class="row" style="overflow-x:auto" align="center">
+        <table style="margin:auto">
+          <thead>
+            <tr>
+              <th width="200">Name</th>
+              <th width="500">Address</th>
+              <th width="150">Contact Information</th>
+              <th>Rating</th>
+              <th width="200">Operating Days</th>
+              <th width="150">Hours</th>
+              <th width="200">Email</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{ shop.name }}</td>
+              <td>{{ shop.location }}</td>
+              <td>{{ shop.contact_number }}</td>
+              <td>
+                {% if shop.average_rating %}
+                  <div class="raty-rating" data-value={{ shop.average_rating }}>
+                {% else %}
+                 be the first to rate
+                {% endif %}
+              </td>
+              <td>{{ shop.days_open }}</td>
+              <td>{{ shop.hours_open }}</td>
+              <td>{{ shop.email }}</td>
+          </tbody>
+        </table>
+      </div>
       <a class="close-reveal-modal" aria-label="Close">&#215;</a>
     </div>
   </td>

@@ -12,20 +12,22 @@
         <h3 style="text-align: center;"><b>Welcome back, {{request.user}}!</b></h3>
         {%if pending_transaction_list%}
         <h5 style="text-align: center;"><b></b>You've got some work to do</h5>
-        <table id="clicky-table" style="margin:auto">
-            <thead>
-            <th>Name of Client</th>
-            <th>Laundry Shop</th>
-            <th>Date Requested</th>
-            <th>Time Requested</th>
-            </thead>
-            <tbody>
-            {% for transaction in pending_transaction_list %}
-            {% include "management/transactions/partials/pending_transaction_row.html" %}
-            {% endfor %}
-            <td colspan="4" style="text-align: center;" onclick="document.location.href='{% url "shopadmin:pending-transactions" %}';">Show More</td>
-            </tbody>
-        </table>
+        <div class="row" style="overflow-x:auto" align="center">
+          <table id="clicky-table" style="margin:auto">
+              <thead>
+              <th>Name of Client</th>
+              <th>Laundry Shop</th>
+              <th>Date Requested</th>
+              <th>Time Requested</th>
+              </thead>
+              <tbody>
+              {% for transaction in pending_transaction_list %}
+              {% include "shopadmin/transactions/partials/pending_transaction_row.html" %}
+              {% endfor %}
+              <td colspan="4" style="text-align: center;" onclick="document.location.href='{% url "shopadmin:pending-transactions" %}';">Show More</td>
+              </tbody>
+          </table>
+        </div>
         {%else%}
         <h5 style="text-align: center;"><b></b>No pending requests to review</h5>
         {%endif%}

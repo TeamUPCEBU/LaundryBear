@@ -12,6 +12,7 @@ from shopadmin import views
 #View: Which view to show
 #Name: Used in views and template tags
 urlpatterns = [
+    url(r'^thanks$', views.PendingRegNoticeView.as_view(), name='pending-registration'),
     url(r'^menu$', views.LaundryMenuView.as_view(), name='menu'),
     url(r'^shops/add$', views.LaundryCreateView.as_view(), name='add-shop'),
     #url(r'^shops/edit/(?P<pk>\d+)$', views.LaundryUpdateView.as_view(),

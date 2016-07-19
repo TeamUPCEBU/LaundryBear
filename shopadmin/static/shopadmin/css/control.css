@@ -20,7 +20,7 @@ h3#adminlogin {
 
 .login-box {
   background-color: transparent;
-  border: 2px solid transparent; 
+  border: 2px solid transparent;
   margin-top: 5%;
   padding: 40px 20px 0 20px;
 }
@@ -42,19 +42,19 @@ img#writtenlogo {
 }
 
 .top-bar-section li a:not(.button) {
-    background: #1982C6 !important;   
+    background: #1982C6 !important;
 }
 
 .top-bar-section li a:not(.button):hover {
-    background: #58809a !important;   
+    background: #58809a !important;
 }
 
 .top-bar-section ul li.active > a {
-    background: gray !important;   
+    background: gray !important;
 }
 
 .top-bar-section ul li.active > a:hover {
-    background: blue !important;   
+    background: blue !important;
 }
 
 .top-bar-section ul .divider{

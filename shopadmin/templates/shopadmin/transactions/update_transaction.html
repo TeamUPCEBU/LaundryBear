@@ -20,61 +20,63 @@
                 <div class="large-10  large-offset-1 columns">
                     <div class="row">
                         <div class="large-12 columns">
-                            <h6 style="text-align: right">Date Requested: {{ transaction.request_date }}</h6>
+                            <h6>Date Requested: {{ transaction.request_date }}</h6>
                         </div>
 
                     </div>
                     <div class="row">
                         <div class="large-12 columns">
                             <h4>Client Details</h4>
-                            <strong>Name: </strong> {{ transaction.client.client.get_full_name }}
+                            <strong>Name: </strong> {{ transaction.client.user.get_full_name }}
                             <br>
                             <strong>Address: </strong> {{ transaction.location }}
                             <br>
                             <strong>Contact Number: </strong> {{ transaction.client.contact_number }}
                             <br>
-                            <strong>Email: </strong> {{ transaction.client.client.email }}
+                            <strong>Email: </strong> {{ transaction.client.user.email }}
                             <br>
                             <h4 style="text-align:center"> Orders </h4>
-                            <table style="margin:auto">
-                                <thead>
-                                <th>Service</th>
-                                <th>Price/Kilo</th>
-                                <th>Pieces</th>
-                                <th>Estimated Total</th>
-                                </thead>
-                                <tbody>
-                                {% for order in transaction.order_set.all %}
-                                {% include "management/transactions/partials/update_transaction_row.html" %}
-                                {% endfor %}
-                                </tbody>
-                                <tfoot>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td>Subtotal</td>
-                                    <td id="subtotal">0.00</td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td>+ {{ fees.service_charge|multiply:100|floatformat:"-2" }}%<br>Service Charge</td>
-                                    <td id="servicecharge">0.00</td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td>+ Delivery Fee</td>
-                                    <td id="deliveryfee">{{ fees.delivery_fee }}</td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td>Total</td>
-                                    <td id="total">0.00</td>
-                                </tr>
-                                </tfoot>
-                            </table>
+                            <div class="row" style="overflow-x:auto" align="center">
+                              <table style="margin:auto">
+                                  <thead>
+                                  <th>Service</th>
+                                  <th>Price/Kilo</th>
+                                  <th>Pieces</th>
+                                  <th>Estimated Total</th>
+                                  </thead>
+                                  <tbody>
+                                  {% for order in transaction.order_set.all %}
+                                  {% include "management/transactions/partials/update_transaction_row.html" %}
+                                  {% endfor %}
+                                  </tbody>
+                                  <tfoot>
+                                  <tr>
+                                      <td></td>
+                                      <td></td>
+                                      <td>Subtotal</td>
+                                      <td id="subtotal">0.00</td>
+                                  </tr>
+                                  <tr>
+                                      <td></td>
+                                      <td></td>
+                                      <td>+ {{ fees.service_charge|multiply:100|floatformat:"-2" }}%<br>Service Charge</td>
+                                      <td id="servicecharge">0.00</td>
+                                  </tr>
+                                  <tr>
+                                      <td></td>
+                                      <td></td>
+                                      <td>+ Delivery Fee</td>
+                                      <td id="deliveryfee">{{ fees.delivery_fee }}</td>
+                                  </tr>
+                                  <tr>
+                                      <td></td>
+                                      <td></td>
+                                      <td>Total</td>
+                                      <td id="total">0.00</td>
+                                  </tr>
+                                  </tfoot>
+                              </table>
+                            </div>
                         </div>
                     </div>
                 </div>

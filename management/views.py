@@ -26,13 +26,13 @@ from django.contrib.auth.forms import PasswordChangeForm
 #Check ccbv.co.uk for more information
 
 class LaundryMenuView(AdminLoginRequiredMixin, ListView):
-    model = Transaction
-    context_object_name = 'pending_transaction_list'
+    model = LaundryShop
+    context_object_name = 'pending_shop_registration_list'
     template_name = 'management/shop/laundrybearmenu.html'
 
     def get_queryset(self):
         queryset = super(LaundryMenuView, self).get_queryset()
-        queryset = queryset.filter(status=1).order_by('request_date')[:3]
+        
 
         return queryset
 

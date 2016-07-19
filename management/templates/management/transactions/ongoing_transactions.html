@@ -10,21 +10,23 @@
     <div class="large-2 columns"></div>
     <div class="large-8 large-offset-2 columns">
         <h3 style="text-align:center"><b>Ongoing Transactions</b></h3>
-        <table id='clickytable' style="margin:auto">
-            <thead>
-            <th>Name of Client</th>
-            <th>Laundry Shop</th>
-            <th>Date Requested</th>
-            <th>Time Requested</th>
-            <th>Amount Payable</th>
-            <th>Actions</th>
-            </thead>
-            <tbody>
-            {% for transaction, form in transaction_list %}
-            {% include "management/transactions/partials/ongoing_transaction_row.html" %}
-            {% endfor %}
-            </tbody>
-        </table>
+        <div class="row" style="overflow-x:auto" align="center">
+          <table id='clickytable' style="margin:auto">
+              <thead>
+              <th>Name of Client</th>
+              <th>Laundry Shop</th>
+              <th>Date Requested</th>
+              <th>Time Requested</th>
+              <th>Amount Payable</th>
+              <th>Actions</th>
+              </thead>
+              <tbody>
+              {% for transaction, form in transaction_list %}
+              {% include "management/transactions/partials/ongoing_transaction_row.html" %}
+              {% endfor %}
+              </tbody>
+          </table>
+        </div>
     </div>
     <div class="large-2 columns"></div>
 </div>

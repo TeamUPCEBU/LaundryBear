@@ -30,20 +30,21 @@
     </div>
 </form>
 <br>
-
-<table style="margin:auto">
-    <thead>
-    <tr>
-        <th width="200">Name</th>
-        <th>Address</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for profile in user_list %}
-    {% include "management/client/clients_row.html" %}
-    {% endfor %}
-    </tbody>
-</table>
+<div class="row" style="overflow-x:auto" align="center">
+  <table style="margin:auto">
+      <thead>
+      <tr>
+          <th width="200">Name</th>
+          <th>Address</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for profile in user_list %}
+      {% include "management/client/clients_row.html" %}
+      {% endfor %}
+      </tbody>
+  </table>
+</div>
 <div class="row">
     <div class="small-6 small-centered columns">
         <br>

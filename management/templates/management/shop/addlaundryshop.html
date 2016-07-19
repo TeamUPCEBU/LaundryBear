@@ -135,21 +135,21 @@
                                 </div>
 
                             </div>
-
-                            <table style="margin:auto;">
-                                <thead>
-                                <tr>
-                                    <th>Service Name</th>
-                                    <th>Description</th>
-                                    <th>Price/Kg</th>
-                                    <th>Duration</th>
-                                    <th>Actions</th>
-                                </tr>
-                                </thead>
-                                <tbody id="service-table-body">
-                                </tbody>
-                            </table>
-
+                            <div class="row" style="overflow-x:auto" align="center">
+                              <table style="margin:auto;">
+                                  <thead>
+                                  <tr>
+                                      <th>Service Name</th>
+                                      <th>Description</th>
+                                      <th>Price/Kg</th>
+                                      <th>Duration</th>
+                                      <th>Actions</th>
+                                  </tr>
+                                  </thead>
+                                  <tbody id="service-table-body">
+                                  </tbody>
+                              </table>
+                            </div>
                             {{ price_formset.management_form }}
                             <div class="hide" id="price-formset-container" data-edit-pk="None">
                                 {% for price_form in price_formset %}

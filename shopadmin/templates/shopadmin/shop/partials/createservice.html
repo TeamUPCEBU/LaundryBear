@@ -1,18 +1,20 @@
 {% load staticfiles  %}
+
 <link rel="stylesheet" href="{% static "LaundryBear/css/foundation.min.css" %}"/>
 <form method="post">
 	{%csrf_token%}
   <h3 style="text-align: center;">Add New Service</h3>
-
-  <div style="height:auto; clear: both;">
-    <div style="height: 115px;">
-      <span id="required" class="warning label">Required field</span>
-      <p>Service Name:</p> {{form.name}} <br>
+  <div class="row">
+    <div class="large-12 columns">
+			<label>Service Name:
+				<span id="required" class="warning label right">Required field</span>
+      </label> {{form.name}}
     </div>
-    <div style="height: 175px;">
-      <span id="required" class="warning label">Required field</span>
-      <p>Description:</p>  {{form.description}} <br><br>
+    <div class="large-12 columns">
+      <label>Description:
+					<span id="required" class="warning label right">Required field</span>
+      </label>  {{form.description}}
     </div>
-    <button type="submit" class="button small right" class="close-reveal-modal" aria-label="Close" id="add-new-service-button">Save</button>
+		<button type="submit" class="button small right" class="close-reveal-modal" aria-label="Close" id="add-new-service-button">Save</button>
   </div>
 </form>

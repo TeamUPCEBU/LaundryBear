@@ -24,6 +24,20 @@ from database.models import LaundryShop, UserProfile
 #You can still add more methods if needed.
 #Check ccbv.co.uk for more information
 
+
+class PendingRegNoticeView(ShopAdminLoginRequiredMixin, TemplateView):
+    template_name = 'shopadmin/account/confirmation.html'
+
+    def get(self, request, *args, **kwargs):
+        try:
+            shop = self.request.user.userprofile.laundry_shop
+            if shop.status == LaundryShop.ACTIVE:
+                return redirect('shopadmin:menu')
+            else:
+                return super(PendingRegNoticeView, self).get(request, *args, **kwargs)
+        except Exception as e:
+            return redirect('shopadmin:add-shop')
+
 class LaundryMenuView(ShopAdminLoginRequiredMixin, ListView):
     model = Transaction
     context_object_name = 'pending_transaction_list'
@@ -38,8 +52,10 @@ class LaundryMenuView(ShopAdminLoginRequiredMixin, ListView):
     def get(self, request, *args, **kwargs):
         try:
             shop = self.request.user.userprofile.laundry_shop
-            if shop.status == LaundryShop.PENDING:
-                return redirect('shopadmin:list-shops')
+            if (shop.status == LaundryShop.PENDING or
+                shop.status == LaundryShop.INACTIVE or
+                shop.status == LaundryShop.REJECTED):
+                return redirect('shopadmin:pending-registration')
             else:
                 return super(LaundryMenuView, self).get(request, *args, **kwargs)
         except Exception as e:
@@ -162,6 +178,12 @@ class ClientListView(ShopAdminLoginRequiredMixin, ListView):
     context_object_name = 'user_list'
     ordering = ['user__first_name', 'user__last_name']
 
+    def get_queryset(self):
+        queryset = super(ClientListView, self).get_queryset()
+        return queryset.filter(
+                        transactions__order__price__laundry_shop=
+                        self.request.user.userprofile.laundry_shop).distinct()
+
     def get_context_data(self, **kwargs):
         """
         Filters the list of clients to return.
@@ -192,8 +214,8 @@ class ClientListView(ShopAdminLoginRequiredMixin, ListView):
         return context
 
     def get_user_by_name(self, name_query):
-        return UserProfile.objects.filter(Q(user__first_name__icontains=name_query)|
-                                          Q(user__last_name__icontains=name_query))
+        return UserProfile.objects.filter((Q(user__first_name__icontains=name_query)|
+                                          Q(user__last_name__icontains=name_query)))
 
     def get_user_by_city(self, city_query):
         return UserProfile.objects.filter(city__icontains=city_query)

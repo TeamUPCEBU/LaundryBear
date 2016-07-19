@@ -3,10 +3,28 @@
 {% block title %} Thank you | LaundryBear {% endblock %}
 
 {% block body %}
+
+<!-- pending (1)-->
+{% if user.userprofile.laundry_shop.status == 1 %}
   <div align="center">
     <h3>Thank you for partnering with us!</h3>
     <p> Please wait for 24 hours for us to confirm your registration :D</p>
   </div>
+
+<!-- inactive (3)-->
+{% elif user.userprofile.laundry_shop.status == 3 %}
+  <div align="center">
+    <h3>Your account is currently inactive</h3>
+    <p> Please contact Laundry Bear to settle your account.</p>
+  </div>
+
+<!-- rejected (4)-->
+{% elif user.userprofile.laundry_shop.status == 4 %}
+  <div align="center">
+    <h3>Your laundry shop has been rejected</h3>
+    <p> Please contact Laundry Bear to settle your account.</p>
+  </div>
+{% endif %}
 
 
 {% endblock %}

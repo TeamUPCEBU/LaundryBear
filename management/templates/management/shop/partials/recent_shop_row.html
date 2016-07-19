@@ -9,23 +9,25 @@
 			<h5>
 				<a href="#" data-reveal-id="shopmodal{{ shop.pk }}">{{ shop.name}}</a>
 				<div id="shopmodal{{ shop.pk }}" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-					<table style="margin:auto">
-						<thead>
-							<tr>
-								<th>Name of Client</th>
-                                <th>Status</th>
-                                <th>Date Requested</th>
-                                <th>Pickup Location</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>{{ transaction.client }}</td>
-								<td>{{ transaction.status }}</td>
-								<td>{{ transacttion.request_date }}</td>
-								<td>{{ transaction.address}}</td>
-						</tbody>
-					</table>
+					<div class="row" style="overflow-x:auto" align="center">
+						<table style="margin:auto">
+							<thead>
+								<tr>
+									<th>Name of Client</th>
+	                                <th>Status</th>
+	                                <th>Date Requested</th>
+	                                <th>Pickup Location</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>{{ transaction.client }}</td>
+									<td>{{ transaction.status }}</td>
+									<td>{{ transacttion.request_date }}</td>
+									<td>{{ transaction.address}}</td>
+							</tbody>
+						</table>
+					</div>
 					<a class="close-reveal-modal" aria-label="Close">&#215;</a>
 				</div>
 			</h5>

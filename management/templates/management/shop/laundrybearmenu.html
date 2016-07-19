@@ -10,25 +10,30 @@
     <div class="large-2 columns"></div>
     <div class="large-8 large-offset-2 columns">
         <h3 style="text-align: center;"><b>Welcome back, {{request.user}}!</b></h3>
-        {%if pending_transaction_list%}
-        <h5 style="text-align: center;"><b></b>You've got some work to do</h5>
-        <table id="clicky-table" style="margin:auto">
-            <thead>
-            <th>Name of Client</th>
-            <th>Laundry Shop</th>
-            <th>Date Requested</th>
-            <th>Time Requested</th>
-            </thead>
-            <tbody>
-            {% for transaction in pending_transaction_list %}
-            {% include "management/transactions/partials/pending_transaction_row.html" %}
-            {% endfor %}
-            <td colspan="4" style="text-align: center;" onclick="document.location.href='{% url "management:pending-transactions" %}';">Show More</td>
-            </tbody>
-        </table>
-        {%else%}
+        {% if pending_shop_registration_list %}
+        <h5 style="text-align: center;"><b></b>Shops pending approval to operate</h5>
+        <div class="row" style="overflow-x:auto" align="center">
+          <table id="clicky-table" style="margin:auto">
+              <thead>
+              <th>Name of Shop</th>
+              <th>Time Requested</th>
+              <th>Actions</th>
+              </thead>
+              <tbody>
+              {% for shop in pending_shop_registration_list %}
+                <td>{{ shop }}</td>
+                <td>{{ shop.creation_date }}</td>
+                <td>
+              {% endfor %}
+              <tr>
+              <td colspan="3" style="text-align: center;" onclick="document.location.href='{% url "management:pending-transactions" %}';">Show More</td>
+              </tr>
+              </tbody>
+          </table>
+        </div>
+        {% else %}
         <h5 style="text-align: center;"><b></b>No pending requests to review</h5>
-        {%endif%}
+        {% endif %}
     </div>
     <div class="large-2 columns"></div>
 </div>
