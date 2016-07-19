@@ -76,7 +76,7 @@
           <h3></h3>
           <p id="servicePrice"></p>
           <p id="serviceDescription"></p>
-          Number of clothes <input class="input-field num-clothes" type="number" min="1" />
+          Number of clothes <input class="input-field num-clothes" type="number" min="1" value ="0"/>
         </div>
       </div>
   </div>
@@ -88,10 +88,55 @@
   </div>
 </div>
 
+<div class="modal" id="requestModal">
+  <div class="modal-content">
+    <div class="summary-headers">
+      <h3 class="center">Summary</h3>
+      <h5 class="center">{{ shop.name }}</h5>
+      <div class="summary-container">
+        <table class="summary-table centered striped">
+          <thead>
+            <tr>
+              <th data-field="service">Service</th>
+              <th data-field="items">No. of Items</th>
+              <th data-field="eprice">Estimated Price</th>
+            </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
+        <div class="row" style="margin-top: 15px">
+          <div class="col offset-m2 offset-l2 offset-s1">
+            <span>Subtotal: <i class="fa fa-fw fa-pesos"></i></span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col offset-m3 offset-l3 offset-s2">
+            <span class="subtotal-value"></span>
+          </div>
+        </div>
+
+        <div class="row" style="margin-top: 15px">
+          <div class="col offset-m2 offset-l2 offset-s1">
+            <span>Fees: <i class="fa fa-fw fa-pesos"></i></span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col offset-m3 offset-l3 offset-s2">
+            <span>{{fees.service_charge}}</span>
+            <span>{{fees.delivery_fee}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="row">
     <div class="large-12 columns" align="center">
         <a href="{% url "client:view-shops" %}" class="btn light-blue waves-light waves-effect">Back</a>
-        <a href="{% url "client:order-summary" shop.pk %}" class="btn green waves-light waves-effect">Request</a>
+        <a href="#requestModal" class="btn green waves-light waves-effect modal-trigger request-button">Request</a>
     </div>
 </div>
 {% endblock %}

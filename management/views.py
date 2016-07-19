@@ -25,6 +25,16 @@ from django.contrib.auth.forms import PasswordChangeForm
 #You can still add more methods if needed.
 #Check ccbv.co.uk for more information
 
+class ActivateLaundryShopView(AdminLoginRequiredMixin, UpdateView):
+    """ A view to activate a laundry shop """
+    model = Transaction
+    fields = ['status']
+    template_name = ''
+
+    def get_success_url(self):
+        return reverse('management:menu')
+
+
 class LaundryMenuView(AdminLoginRequiredMixin, ListView):
     model = LaundryShop
     context_object_name = 'pending_shop_registration_list'
@@ -32,9 +42,7 @@ class LaundryMenuView(AdminLoginRequiredMixin, ListView):
 
     def get_queryset(self):
         queryset = super(LaundryMenuView, self).get_queryset()
-        
-
-        return queryset
+        return queryset.filter(status=LaundryShop.PENDING)
 
 
 class LaundryUpdateView(AdminLoginRequiredMixin, UpdateView):

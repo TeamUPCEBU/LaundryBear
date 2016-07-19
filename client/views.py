@@ -156,7 +156,6 @@ class ShopsListView(ClientLoginRequiredMixin, ListView):
     template_name="client/viewshops.html"
     context_object_name = 'shop_list'
 
-
     def get_context_data(self, **kwargs):
         context = super(ShopsListView, self).get_context_data(**kwargs)
         shops = context['shop_list']
@@ -179,24 +178,28 @@ class ShopsListView(ClientLoginRequiredMixin, ListView):
 
         context.update({'shop_list': shops})
         context['query_type'] = query_type
-        print query_type
+        context['fees'] = Site.objects.get_current().fees
+        context['delivery_date'] = default_date().strftime('%Y-%m-%d')
+        context['delivery_date_max'] = (default_date() + timedelta(days=7)).strftime('%Y-%m-%d')
+        context['address_form'] = AddressForm(
+            initial=model_to_dict(self.request.user.userprofile))
         return context
 
     #Get data needed by each search
     def get_shops_by_name(self, name_query):
-        return LaundryShop.objects.filter(status=LaundryShop.ACTIVE, name__icontains=name_query)
+        return LaundryShop.objects.filter(name__icontains=name_query)
 
     def get_shops_by_city(self, city_query):
-        return LaundryShop.objects.filter(status=LaundryShop.ACTIVE, admin__city__icontains=city_query)
+        return LaundryShop.objects.filter(admin__city__icontains=city_query)
 
     def get_shops_by_province(self, province_query):
-        return LaundryShop.objects.filter(status=LaundryShop.ACTIVE, admin__province__icontains=province_query)
+        return LaundryShop.objects.filter(admin__province__icontains=province_query)
 
     def get_shops_by_barangay(self, barangay_query):
-        return LaundryShop.objects.filter(status=LaundryShop.ACTIVE, admin__barangay__icontains=barangay_query)
+        return LaundryShop.objects.filter(admin__barangay__icontains=barangay_query)
 
     def get_all_shops(self):
-        return LaundryShop.objects.filter(status=LaundryShop.ACTIVE)
+        return LaundryShop.objects.all()
 
 #Inherits CBV "DetailView"
 class OrderView(ClientLoginRequiredMixin, DetailView):
@@ -207,6 +210,7 @@ class OrderView(ClientLoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(OrderView, self).get_context_data(**kwargs)
         the_shop = context['shop']
+        context['fees'] = Site.objects.get_or_create(domain='laundrybear.pythonanywhere.com')[0].fees
         context['service_list'] = Price.objects.filter(laundry_shop__name=the_shop)
         return context
 
