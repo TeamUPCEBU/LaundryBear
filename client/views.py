@@ -212,6 +212,11 @@ class OrderView(ClientLoginRequiredMixin, DetailView):
         the_shop = context['shop']
         context['fees'] = Site.objects.get_or_create(domain='laundrybear.pythonanywhere.com')[0].fees
         context['service_list'] = Price.objects.filter(laundry_shop__name=the_shop)
+        context['fees'] = Site.objects.get_current().fees
+        context['delivery_date'] = default_date().strftime('%Y-%m-%d')
+        context['delivery_date_max'] = (default_date() + timedelta(days=7)).strftime('%Y-%m-%d')
+        context['address_form'] = AddressForm(
+            initial=model_to_dict(self.request.user.userprofile))
         return context
 
 #Inherits CBV "DetailView"
