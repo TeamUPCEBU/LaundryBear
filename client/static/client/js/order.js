@@ -1,5 +1,6 @@
 $(document).ready(function() {
 	$('.nothing-label').show();
+
 	$('.service-choices').on('change', function(e){
 		var service = e.target;
 		var serviceModal = $('#serviceModal');
@@ -10,7 +11,9 @@ $(document).ready(function() {
 		$('#serviceModal').openModal();
 		return false;
 	})
-	$('.add-to-basket').click(function(){
+
+	$('.add-to-basket').click(function(e){
+		e.preventDefault();
 		$('#serviceModal').closeModal();
 		console.log($('.service-choices').find(":selected").html());
 		var newBasketItem = $("<li>"+
@@ -23,12 +26,19 @@ $(document).ready(function() {
 				"<div class='col s6 center'><span><i class='fa fa-fw fa-money'></i>&nbsp;Estimated Price: "+ parseInt($('.num-clothes').val()) * parseInt($('.service-choices').find(":selected").data('price')) +"</span></div>"+
 			"</div>"+
 			"<div class='row center' style='margin-top:10px'>"+
-				"<a class='btn red waves-effect waves-light' href='#'>Delete</a>"+
+				"<a class='btn delete-service red waves-effect waves-light' href='#'>Delete</a>"+
 			"</div>"+
 		"</div>"+
 		"</li>");
 		$('.service-orders').append(newBasketItem);
 		$('.service-orders').collapsible({accordion:false});
 		$('.nothing-label').hide();
+	})
+
+	$('.service-orders').on('click', '.delete-service',function(e){
+		e.preventDefault();
+		$(e.target).closest('li').fadeOut("slow",function(){
+			$(this).remove();
+		});
 	})
 });
