@@ -187,19 +187,19 @@ class ShopsListView(ClientLoginRequiredMixin, ListView):
 
     #Get data needed by each search
     def get_shops_by_name(self, name_query):
-        return LaundryShop.objects.filter(name__icontains=name_query)
+        return LaundryShop.objects.filter(status=LaundryShop.ACTIVE,name__icontains=name_query)
 
     def get_shops_by_city(self, city_query):
-        return LaundryShop.objects.filter(admin__city__icontains=city_query)
+        return LaundryShop.objects.filter(status=LaundryShop.ACTIVE,admin__city__icontains=city_query)
 
     def get_shops_by_province(self, province_query):
-        return LaundryShop.objects.filter(admin__province__icontains=province_query)
+        return LaundryShop.objects.filter(status=LaundryShop.ACTIVE,admin__province__icontains=province_query)
 
     def get_shops_by_barangay(self, barangay_query):
-        return LaundryShop.objects.filter(admin__barangay__icontains=barangay_query)
+        return LaundryShop.objects.filter(status=LaundryShop.ACTIVE,admin__barangay__icontains=barangay_query)
 
     def get_all_shops(self):
-        return LaundryShop.objects.all()
+        return LaundryShop.objects.filter(status=LaundryShop.ACTIVE)
 
 #Inherits CBV "DetailView"
 class OrderView(ClientLoginRequiredMixin, DetailView):
@@ -259,7 +259,6 @@ class OrderSummaryView(ClientLoginRequiredMixin, DetailView):
 
 #Inherits CBV "View"
 class CreateTransactionView(ClientLoginRequiredMixin, View):
-
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super(CreateTransactionView, self).dispatch(request, *args, **kwargs)
@@ -268,8 +267,11 @@ class CreateTransactionView(ClientLoginRequiredMixin, View):
         return HttpResponse(status=400)
 
     def post(self, request, *args, **kwargs):
-        print '*'*30
+
         if request.is_ajax():
+            aa = request.POST
+            print aa['selectedServices']
+            print '000000000000000000000000000000000000'
             services = request.POST['selectedServices']
             services = json.loads(services)
             transaction_form = TransactionForm(request.POST)

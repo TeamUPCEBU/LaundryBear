@@ -49,8 +49,8 @@
       <div class="input-field s12">
         <select class="service-choices">
           <option value="" disabled selected>Choose your option</option>
-          {% for service in service_list %}
-          <option class="black" value="{{service.pk}}" data-price = "{{service.price}}" data-description="{{service.service.description}}">{{service.service.name}}</option>
+          {% for price in service_list %}
+          <option class="black" value="{{price.pk}}" data-price = "{{price.price}}"  data-description="{{price.service.description}}">{{price.service.name}}</option>
           {% endfor %}
         </select>
       </div>
@@ -134,15 +134,19 @@
             <span><b>Subtotal:</b></span>
           </div>
           <div class="l4 m4 s5">
-            <span><b>Delivery Date: </b></span>
+
           </div>
         </div>
         <div class="row">
           <div class="col offset-m3 offset-l3 offset-s1 l4 m4 s6">
             <span class="subtotal-value"></span>
           </div>
-          <div class="l4 m4 s5">
-            <span class="deli-date" value = "{{delivery_date}}">{{delivery_date}}</span>
+        </div>
+        <div class="row">
+          <div class="col offset-m2 offset-l2">
+          <!--<span class="deli-date" value = "{{delivery_date}}">{{delivery_date}}</span>-->
+          <b>Delivery Date: </b>
+          <span><input type="date" min="{{ delivery_date }}"  value="{{ delivery_date }}" max="{{ delivery_date_max }}" name="delivery_date"></span>
           </div>
         </div>
 
@@ -159,7 +163,7 @@
         </div>
         <div class="row" style="margin-top: 15px">
           <div class="col offset-m2 offset-l2">
-            <h5 class="total-payment"> </h5>
+            <span style="font-size:1.5em" id="total-payment"></span><span style="font-size:1.5em" id="total_value"></span><br><br>
           </div>
         </div>
         <div class="row">
@@ -177,10 +181,9 @@
           </div>
         </div>
         <div class="row">
-        <button class="btn red waves-light waves-effect">Back</button>
-          <button class="btn blue waves-light waves-effect">Accept</button>
+        <button class="modal-action modal-close btn red waves-light waves-effect">Back</button>
+          <a id="confirm" class="btn blue waves-light waves-effect">Order</a>
         </div>
-<!-->>>>>>> Another-UI-Branch-->
       </div>
     </div>
   </div>
@@ -195,5 +198,6 @@
 {% endblock %}
 
 {% block javascripts %}
+<script>var transactionUrl = "{% url "client:create-transaction" %}";</script>
 <script src="{% static "client/js/order.js" %}"></script>
 {% endblock %}

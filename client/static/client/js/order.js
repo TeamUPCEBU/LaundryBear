@@ -15,8 +15,15 @@ $(document).ready(function() {
 	$('.add-to-basket').click(function(e){
 		e.preventDefault();
 		$('#serviceModal').closeModal();
-		console.log($('.service-choices').find(":selected").html());
+		console.log($('.service-choices').find(":selected").text());
 		var serviceOrder = $('.service-orders');
+		var numberOfClothes = parseInt($('.num-clothes').val());
+
+		var chosenService = $('.service-choices').find(":selected");
+
+		var pricepk = chosenService.val();
+		var pieces = parseInt($('.num-clothes').val());
+
 		var estimatedPrice = ((parseInt($('.num-clothes').val()) * parseInt($('.service-choices').find(":selected").data('price')))/7).toFixed(2);
 		// this part adds to basket
 		if ($('.num-clothes').val() == 0){
@@ -39,7 +46,10 @@ $(document).ready(function() {
 			"</div>"+
 			"</li>");
 			// final steps
-			newBasketItem.attr('data-num',$('.num-clothes').val()).attr('data-estimate',estimatedPrice);
+			//"<div hidden class='basketitem' data-pk="+ pricepk + " data-pieces="+ pieces  +"></div>" +
+			newBasketItem.attr('data-num',$('.num-clothes').val())
+									 .attr('data-estimate',estimatedPrice)
+									 .attr('data-pk', pricepk);
 			serviceOrder.append(newBasketItem);
 			serviceOrder.collapsible({accordion:false});
 			$('.num-clothes').val('0');
@@ -58,6 +68,7 @@ $(document).ready(function() {
 		});
 	})
 
+
 	$('.request-button').on('click',function(e){
 		var summaryTable = $('.summary-table').find('tbody');
 		var subTotal = 0;
@@ -69,7 +80,50 @@ $(document).ready(function() {
 			subTotal += $(element).data('estimate');
 		});
 		$('.subtotal-value').text("PHP "+ subTotal);
-		total = (subTotal + parseFloat($('#serviceCharge').data('service')) + parseFloat($('#deliverFee').data('deliver'))).toFixed(2);
-		$('.total-payment').html("Total: PHP "+total);
-	})
+
+		total = total + subTotal;
+		total = total + parseFloat($('#deliverFee').data('deliver'));
+		total = total + (total * parseFloat($('#serviceCharge').data('service')));
+		total = parseFloat(total).toFixed(2);
+		$('#total-payment').text("Total: PHP ");
+		$('#total_value').text(total);
+		})
+
+
+		function collectData() {
+			var csrf = $.cookie('csrftoken');
+			var services = [];
+
+			$('.service-orders li').each(function(index,element){
+				var thePieces = $(this).data('num')
+				var theEstimate = $(this).data('estimate')
+				var thePk = $(this).data('pk')
+				var priceData = {pk:thePk, pieces:thePieces};
+				services.push(priceData);
+			});
+
+			var delivery_date = $("input[name=\"delivery_date\"]").val();
+			var building = $("#id_building").val();
+			var street = $("#id_street").val();
+			var barangay = $("#id_barangay").val();
+			var city = $("#id_city").val();
+			var province = $("#id_province").val();
+			var price = $('#total_value').text();
+
+			return {csrfmiddlewaretoken: csrf, selectedServices: services, delivery_date: delivery_date, building: building, street: street, barangay: barangay, city: city, province: province, price: price};
+		}
+
+
+
+	$("#confirm").on("click", function() {
+
+		var data = JSON.stringify(collectData());
+		$.post(transactionUrl, data, function(response) {
+			Materialize.toast('Request sent!', 2000, '', function(){
+			});
+			$('#requestModal').closeModal();
+		});
+		return false;
+		});
+
 });
