@@ -71,8 +71,8 @@ $(document).ready(function() {
 
 	$('.request-button').on('click',function(e){
 		var summaryTable = $('.summary-table').find('tbody');
-		var subTotal = 0;
-		var total = 0;
+		var subTotal = 0.0;
+		var total = 0.0;
 		summaryTable.html("");
 		$('.service-orders li').each(function(index,element){
 			$("<tr><td>"+$(element).find('.collapsible-header').text()+"</td><td>"+$(element).data('num')+"</td><td>"+$(element).data('estimate')+"</td></tr>")
@@ -82,8 +82,8 @@ $(document).ready(function() {
 		$('.subtotal-value').text("PHP "+ subTotal);
 
 		total = total + subTotal;
-		total = total + parseFloat($('#deliverFee').data('deliver'));
-		total = total + (total * parseFloat($('#serviceCharge').data('service')));
+		total = total + (total * $('#serviceCharge').data('service'));
+		total = total + parseFloat($('#deliverFee').data('deliver'), 10);
 		total = parseFloat(total).toFixed(2);
 		$('#total-payment').text("Total: PHP ");
 		$('#total_value').text(total);
@@ -95,12 +95,15 @@ $(document).ready(function() {
 			var services = [];
 
 			$('.service-orders li').each(function(index,element){
-				var thePieces = $(this).data('num')
-				var theEstimate = $(this).data('estimate')
-				var thePk = $(this).data('pk')
+				var thePieces = $(this).data('num');
+				var theEstimate = $(this).data('estimate');
+				var thePk = $(this).data('pk');
 				var priceData = {pk:thePk, pieces:thePieces};
 				services.push(priceData);
 			});
+
+			services = JSON.stringify(services);
+			//services = services.replace(/\\/g, "");
 
 			var delivery_date = $("input[name=\"delivery_date\"]").val();
 			var building = $("#id_building").val();
@@ -109,15 +112,15 @@ $(document).ready(function() {
 			var city = $("#id_city").val();
 			var province = $("#id_province").val();
 			var price = $('#total_value').text();
-
-			return {csrfmiddlewaretoken: csrf, selectedServices: services, delivery_date: delivery_date, building: building, street: street, barangay: barangay, city: city, province: province, price: price};
+			var fees = $('#serviceCharge').data('pk');
+			return {csrfmiddlewaretoken: csrf, selectedServices: services, delivery_date: delivery_date, building: building, street: street, barangay: barangay, city: city, province: province, price: price, fee: fees};
 		}
 
 
 
 	$("#confirm").on("click", function() {
 
-		var data = JSON.stringify(collectData());
+		var data = collectData();
 		$.post(transactionUrl, data, function(response) {
 			Materialize.toast('Request sent!', 2000, '', function(){
 			});

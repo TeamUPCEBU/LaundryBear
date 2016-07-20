@@ -157,7 +157,7 @@
         </div>
         <div class="row">
           <div class="col offset-m3 offset-l3 offset-s1">
-            <span id="serviceCharge" data-service = "{{fees.service_charge}}">Service Charge: {{fees.service_charge}}</span><br>
+            <span id="serviceCharge" data-service = "{{fees.service_charge}}" data-pk="{{ fees.pk }}">Service Charge: {{fees.service_charge}}</span><br>
             <span id="deliverFee" data-deliver = "{{fees.delivery_fee}}">Delivery Fee: {{fees.delivery_fee}}</span>
           </div>
         </div>
@@ -198,6 +198,8 @@
 {% endblock %}
 
 {% block javascripts %}
-<script>var transactionUrl = "{% url "client:create-transaction" %}";</script>
+<script>
+  var transactionUrl = "{% url "client:create-transaction" %}";
+</script>
 <script src="{% static "client/js/order.js" %}"></script>
 {% endblock %}

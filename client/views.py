@@ -212,7 +212,7 @@ class OrderView(ClientLoginRequiredMixin, DetailView):
         the_shop = context['shop']
         context['fees'] = Site.objects.get_or_create(domain='laundrybear.pythonanywhere.com')[0].fees
         context['service_list'] = Price.objects.filter(laundry_shop__name=the_shop)
-        context['fees'] = Site.objects.get_current().fees
+        # context['fees'] = Site.objects.get_current().fees
         context['delivery_date'] = default_date().strftime('%Y-%m-%d')
         context['delivery_date_max'] = (default_date() + timedelta(days=7)).strftime('%Y-%m-%d')
         context['address_form'] = AddressForm(
@@ -269,15 +269,12 @@ class CreateTransactionView(ClientLoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
 
         if request.is_ajax():
-            aa = request.POST
-            print aa['selectedServices']
-            print '000000000000000000000000000000000000'
             services = request.POST['selectedServices']
             services = json.loads(services)
             transaction_form = TransactionForm(request.POST)
             if transaction_form.is_valid():
                 transaction = transaction_form.save(commit=False)
-                transaction.user = request.user.userprofile
+                transaction.client = request.user.userprofile
                 transaction.save()
             else:
                 print transaction_form.errors
