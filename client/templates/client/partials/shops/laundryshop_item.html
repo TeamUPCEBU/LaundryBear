@@ -8,9 +8,7 @@
      Shop Rating:
      {% if shop.average_rating %}
      <span>
-       {% for i in shop.average_rating%}
-        <i class="fa fa-fw fa-paw"></i>
-       {% endfor %}
+       <div class="paw-container" style="width: {% widthratio shop.average_rating 5 150 %}px; " ><img src="{% static "management/icons/star.png" %}" /></div>
      </span>
      {% else %}
      Be the first to Rate!
