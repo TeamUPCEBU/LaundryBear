@@ -5,10 +5,18 @@
 
 {% block stylesheets %}
 <link rel="stylesheet" href="{% static "client/css/selectshopcontrol.css" %}" media="screen" title="no title" charset="utf-8">
+<link rel="stylesheet" href="{% static "client/css/map.css" %}" title="no title" charset="utf-8">
 <!-- <link rel="stylesheet" type="text/css" href="{% static "LaundryBear/css/clickyTable.css" %}"> -->
 {% endblock %}
 
 {% block body %}
+<div class="row">
+  <div class="container">
+    <div id="mapsDiv">
+    </div>
+  </div>
+</div>
+
 <div class="row">
   <div class="container search-filter-container green lighten-5 z-depth-2">
     <form method="get">
@@ -18,7 +26,7 @@
           <select name="query_type">
             <option value="" disabled>Choose your option</option>
             <option value="name" {% if query_type == 'name'%} selected{% endif %}>Name</option>
-            <option value="city" {% if query_type == 'city'%} selected{% endif %}>City</option>
+            <option value="city" {% if query_type == 'city'%} seap {lected{% endif %}>City</option>
             <option value="barangay" {% if query_type == 'barangay'%} selected{% endif %}>Barangay</option>
             <option value="province" {% if query_type == 'province'%} selected{% endif %}>Province</option>
           </select>
@@ -64,51 +72,13 @@
   </div>
 </div>
 
-<!--
-{% if shop_list %}
-<table style="margin:auto" id="clicky-table">
-    <thead>
-    <tr>
-        <th width="200">Name</th>
-        <th>Address</th>
-        <th>Rating</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for shop in shop_list %}
-    {% include "client/shop/partials/laundry_shop_list_row.html" %}
-    {% endfor %}
-    </tbody>
-</table>
-
-{% else %}
-<div style="text-align:center;">
-    <h1>OOPS!</h1>
-    <h5>Unfortunately, your search did not match any laundry shop.</h5>
-    <h6>Try searching other laundry shops.</h6>
-</div>
-
-{% endif %}
-<br>
-
-{% if query_type != "browse" %}
-<div style="text-align:center;">
-    <a href="{% url 'client:view-shops' %}?browse=all" style="text-decoration: underline; color:#FF9613;">Browse all available laundry shops here</a>
-</div>
-{% endif %}
-
-<div class="row">
-    <div class="small-6 small-centered columns">
-        {% if page_obj.has_next %}
-        <a class="button right" href="?page={{ page_obj.next_page_number }}">Next <i class="fi-arrow-right"></i></a>
-        {% endif %}
-
-        {% if page_obj.has_previous %}
-        <a class="button left" href="?page={{ page_obj.previous_page_number }}">Previous <i class="fi-arrow-left"></i></a>
-        {% endif %}
-    </div>
-</div> -->
 {% endblock %}
-{% block footer %}
-<br>
+
+{% block javascripts %}
+  <script type="text/javascript">
+    // var shopList = JSON.parse({{shop_list}});
+    console.log();
+  </script>
+  <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUuQ0uhe2B03cQFxLKQUJkPWSIRXjRzPg&callback=displayMap"></script>
+  <script src="{% static 'client/js/maps.js' %}"></script>
 {% endblock %}
