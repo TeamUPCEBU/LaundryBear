@@ -25,7 +25,19 @@ function displayMap() {
 
 function markLaundryLocation(geocoder, resultsMap) {
   for(var i = 0 ; i<parsedShopList.length ; i++){
-    var shopL = parsedShopList[i];
+    var infoContent =
+    "<div id='content'>"+
+      "<h5 id='firstHeading' class = 'firstHeading'>"+ parsedShopList[i].name+"</h5>"+
+      "<div id='bodyContent'>"+
+        "<p>" + parsedShopList[i].location + "</p>"+
+      "</div>"+
+    "</div>";
+
+    var infoWindow = new google.maps.InfoWindow({
+      content: infoContent,
+      maxWidth : 200
+    })
+
     geocoder.geocode({'address':parsedShopList[i].location}, function(results, status) {
       if (status === google.maps.GeocoderStatus.OK) {
         console.log(laundryIcon);
@@ -41,8 +53,10 @@ function markLaundryLocation(geocoder, resultsMap) {
         var marker = new google.maps.Marker({
           map: resultsMap,
           position: results[0].geometry.location,
-          title: shopL.name + "\n" + shopL.location,
           icon: laundryMarker
+        });
+        marker.addListener('click',function(){
+          infoWindow.open(resultsMap,marker);
         });
       } else {
         alert('Geocode was not successful for the following reason: ' + status);
