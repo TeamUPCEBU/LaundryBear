@@ -28,10 +28,21 @@ function markLaundryLocation(geocoder, resultsMap) {
     var shopL = parsedShopList[i];
     geocoder.geocode({'address':parsedShopList[i].location}, function(results, status) {
       if (status === google.maps.GeocoderStatus.OK) {
+        console.log(laundryIcon);
+        var laundryMarker = {
+          url: laundryIcon,
+          // This marker is 20 pixels wide by 32 pixels high.
+          size: new google.maps.Size(40, 50),
+          // The origin for this image is (0, 0).
+          origin: new google.maps.Point(0, 0),
+          // The anchor for this image is the base of the flagpole at (0, 32).
+          anchor: new google.maps.Point(0, 32)
+        };
         var marker = new google.maps.Marker({
           map: resultsMap,
           position: results[0].geometry.location,
-          title: shopL.name + "\n" + shopL.location
+          title: shopL.name + "\n" + shopL.location,
+          icon: laundryMarker
         });
       } else {
         alert('Geocode was not successful for the following reason: ' + status);
