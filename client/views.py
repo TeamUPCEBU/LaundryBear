@@ -1,7 +1,7 @@
 import json
 
 from datetime import timedelta
-
+from django.core import serializers
 from django.contrib.auth import authenticate, login
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
@@ -177,6 +177,7 @@ class ShopsListView(ClientLoginRequiredMixin, ListView):
             shops = self.get_all_shops()
 
         context.update({'shop_list': shops})
+        context['json_shops'] = json.dumps(self.generate_shop_list_with_location(shops))
         context['query_type'] = query_type
         context['fees'] = Site.objects.get_current().fees
         context['delivery_date'] = default_date().strftime('%Y-%m-%d')
@@ -184,6 +185,16 @@ class ShopsListView(ClientLoginRequiredMixin, ListView):
         context['address_form'] = AddressForm(
             initial=model_to_dict(self.request.user.userprofile))
         return context
+
+    def generate_shop_list_with_location(self, shop_list):
+        newList = []
+        for shop in shop_list:
+            s = {
+                'name': shop.name,
+                'location': shop.location
+            }
+            newList.append(s)
+        return newList
 
     #Get data needed by each search
     def get_shops_by_name(self, name_query):

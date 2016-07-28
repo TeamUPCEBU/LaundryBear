@@ -75,10 +75,11 @@
 {% endblock %}
 
 {% block javascripts %}
+
   <script type="text/javascript">
-    // var shopList = JSON.parse({{shop_list}});
-    console.log();
+    var shopList = '{{json_shops|safe}}';
+    var parsedShopList = JSON.parse(shopList);
   </script>
-  <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUuQ0uhe2B03cQFxLKQUJkPWSIRXjRzPg&callback=displayMap"></script>
+  <script defer async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUuQ0uhe2B03cQFxLKQUJkPWSIRXjRzPg&callback=displayMap"></script>
   <script src="{% static 'client/js/maps.js' %}"></script>
 {% endblock %}
