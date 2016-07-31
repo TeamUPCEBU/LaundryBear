@@ -11,7 +11,7 @@ class ShopAdminLoginRequiredMixin(LoginRequiredMixin):
             if userprofile.account_type == 2: # shop admin
                 return super(ShopAdminLoginRequiredMixin, self).dispatch(request,
                                                                      *args, **kwargs)
-            elif userprofile.account_type == 1 or userprofile.account_type == 4: #client
+            elif userprofile.account_type == 1: #client
                 return redirect('client:menu')
 
             elif userprofile.account_type == 3: # laundry bear admin (mgt)

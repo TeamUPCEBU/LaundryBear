@@ -23,13 +23,11 @@ class UserProfile(models.Model):
     CUSTOMER = 1
     SHOPADMIN = 2
     LAUNDRYBEARADMIN = 3
-    SUBSCRIBER = 4
 
     ACCOUNT_TYPE_CHOICES = (
         (CUSTOMER, 'Customer: (Pay per transaction)'),
         (SHOPADMIN, 'Shop Administrator: (Got a shop?)'),
-        (LAUNDRYBEARADMIN, 'Laundry Bear Administrator'),
-        (SUBSCRIBER, 'Subscriber: (Just pay every month!)')
+        (LAUNDRYBEARADMIN, 'Laundry Bear Administrator')
     )
 
     account_type = models.IntegerField(choices=ACCOUNT_TYPE_CHOICES, default=1)
@@ -228,3 +226,37 @@ class Fees(models.Model):
 
     def __unicode__(self):
         return 'Regular rate'
+
+
+class Award(models.Model):
+    awardee = models.ForeignKey('UserProfile')
+    reward = models.ForeignKey('Reward')
+    acquired = models.DateTimeField(auto_now_add=True)
+    used = models.BooleanField(default=False)
+    used_on = models.DateField(null=True, blank=True)
+
+
+class Point(models.Model):
+    user = models.ForeignKey('UserProfile')
+    transaction = models.ForeignKey('Transaction', null=True, blank=True)
+    points = models.IntegerField(default=0)
+
+
+class Reward(models.Model):
+    PAPABEAR = 1
+    MAMABEAR = 2
+    BABYBEAR = 3
+    LAUNDRYBEAR = 4
+
+    REWARD_TYPE_CHOICES = (
+        (PAPABEAR, 'Papa Bear'),
+        (MAMABEAR, 'Mama Bear'),
+        (LAUNDRYBEAR, 'Laundry Bear Advocate')
+    )
+
+    reward_type = models.IntegerField(choices=REWARD_TYPE_CHOICES, default=1)
+    service_charge_discount = models.DecimalField(default=0.03, decimal_places=2,
+        max_digits=3)
+    delivery_fee_discount = models.DecimalField(default=5, decimal_places=2,
+        max_digits=4)
+    points = models.IntegerField(default=0)

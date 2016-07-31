@@ -6,7 +6,7 @@ class ClientLoginRequiredMixin(LoginRequiredMixin):
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated():
             userprofile = request.user.userprofile
-            if userprofile.account_type == 1 or userprofile.account_type == 4:
+            if userprofile.account_type == 1:
                 return super(ClientLoginRequiredMixin, self).dispatch(request,
                                                                      *args, **kwargs)
             elif userprofile.account_type == 2:

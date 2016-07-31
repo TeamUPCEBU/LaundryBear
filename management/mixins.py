@@ -13,7 +13,7 @@ class AdminLoginRequiredMixin(LoginRequiredMixin):
 			if userprofile.account_type == 3:
 				return super(AdminLoginRequiredMixin, self).dispatch(request,
 																	 *args, **kwargs)
-			elif userprofile.account_type == 1 or userprofile.account_type == 4:
+			elif userprofile.account_type == 1:
 				return redirect('client:menu')
 
 			elif userprofile.account_type == 2:
