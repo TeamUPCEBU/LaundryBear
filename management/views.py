@@ -27,7 +27,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 
 class ActivateLaundryShopView(AdminLoginRequiredMixin, UpdateView):
     """ A view to activate a laundry shop """
-    model = Transaction
+    model = LaundryShop
     fields = ['status']
     template_name = ''
 

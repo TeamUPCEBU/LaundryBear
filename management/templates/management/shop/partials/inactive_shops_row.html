@@ -1,0 +1,15 @@
+<tr>
+  <td>{{ shop }}</td>
+  <td>{{ shop.creation_date }}</td>
+  <td>
+    <a href="#" data-pk="{{ shop.pk }}"
+      data-done-url="{% url "management:activate-shop" shop.pk %}"
+      data-reveal-id="activate-shop-modal{{ shop.pk }}"
+    class="button secondary tiny activate-shop-button">Activate</a>
+  </td>
+
+  <div id="activate-shop-modal{{ shop.pk }}" class="reveal-modal" data-reveal
+     aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+    <p style="text-align:center;">{{shop}} activated.</p>
+  </div>
+</tr>

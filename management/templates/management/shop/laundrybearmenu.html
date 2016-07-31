@@ -21,12 +21,7 @@
               </thead>
               <tbody>
               {% for shop in pending_shop_registration_list %}
-                <td>{{ shop }}</td>
-                <td>{{ shop.creation_date }}</td>
-                <td>
-                  
-
-                </td>
+                {% include 'management/shop/partials/inactive_shops_row.html' %}
               {% endfor %}
               <tr>
               <td colspan="3" style="text-align: center;" onclick="document.location.href='{% url "management:pending-transactions" %}';">Show More</td>
@@ -44,3 +39,6 @@
 
 
 {%endblock%}
+{% block javascripts %}
+  <script src="{% static "management/js/shops.js" %}"></script>
+{% endblock %}
