@@ -9,54 +9,98 @@
 
 {%block body%}
 <div class="container">
-  <div class="row center">
-    <h4 class="name">{{ userprofile }}</h4>
-    <p>{{ userprofile.location }}</p>
-    <h5 class="phone">{{ userprofile.contact_number }}</h5>
-    <p>{{ userprofile.client.email }}</p>
+  <div class="row" align="center">
+    <h2>Edit Profile</h2>
   </div>
-  <div class="row">
+  <div class="row card-panel">
     <span class="center">Fill any field below to change account information</span></br>
     <form class="round-inputs" method="post">
       {% csrf_token %}
-        <div class="row">
+
+          <!--<hr>
+          <h5>Address </h5>
+          <div class="input-field col s12">
+            <i class="material-icons prefix">my_location</i>
+            {{ userprofileform.barangay }}
+            <label for='id_barangay'>Barangay</label>
+          </div>
+          <div class="input-field col s12">
+            <i class="material-icons prefix">my_location</i>
+            {{ userprofileform.city }}
+            <label for='id_city'>City</label>
+          </div>
+          <div class="input-field col s12">
+            <i class="material-icons prefix">my_location</i>
+            {{ userprofileform.province }}
+            <label for='id_province'>Province</label>
+          </div>-->
           <hr>
-          <h6>Address </h6>
-          <label>Barangay {{ userprofileform.barangay }}</label>
-          <label>City {{ userprofileform.city }} </label>
-          <label>Province {{ userprofileform.province }}</label>
-          <hr>
-        </div>
-        <div class="large-12 columns">
+
           <h6>Name
                 <span data-tooltip aria-haspopup="true" class="warning label has-tip tip-right radius round"
                       title="All two(2) fields must be filled if you wish to change your name">
-                  All fields must be filled</span></h6>
-          <label>First Name {{ userform.first_name }}</label>
-          <label>Last Name {{ userform.last_name }}</label>
+                  All fields must be filled</span>
+          </h6>
+          <div class="input-field col s12">
+            <i class="material-icons prefix">account_circle</i>
+            {{ userform.first_name }}
+            <label for='id_first_name'>First Name</label>
+          </div>
+
+
+          <div class="input-field col s12">
+            <i class="material-icons prefix">account_circle</i>
+            {{ userform.last_name }}
+            <label for='id_last_name'>Last Name</label>
+          </div>
+
           <hr>
+
+
+
+        <div class="input-field col s12">
+          <i class="material-icons prefix">phone</i>
+          {{ userprofileform.contact_number }}
+          <label for='id_contact_number'>Contact Number</label>
         </div>
-        <div class="large-12 columns">
-          <label>Contact number {{ userprofileform.contact_number }}</label>
+
+        <div class="input-field col s12">
+          <i class="material-icons prefix">email</i>
+          {{ userform.email }}
+          <label for='id_email'>Email</label>
         </div>
-        <div class="large-12 columns">
-          <label>Email {{ userform.email }}</label>
+
+
+        <div class="input-field col s12">
+          <i class="material-icons prefix">perm_identity</i>
+          {{ usernameform.username }}
+          <label for='id_username'>Username</label>
         </div>
-        <div class="large-12 columns">
-          <label>Username {{ usernameform.username }}</label>
+
+        <div class="input-field col s12">
+          <i class="material-icons prefix">https</i>
+          {{ passwordform.old_password }}
+          <label for='id_old_password'>Type Old Password</label>
         </div>
-        <div class="large-12 columns">
-          <label>Type Old Password {{ passwordform.old_password }}</label>
+
+
+        <div class="input-field col s12">
+          <i class="material-icons prefix">https</i>
+          {{ passwordform.new_password1 }}
+          <label for='id_new_password1'>Password</label>
         </div>
-        <div class="large-12 columns">
-          <label>Password {{ passwordform.new_password1 }}</label>
+
+
+        <div class="input-field col s12">
+          <i class="material-icons prefix">https</i>
+          {{ passwordform.new_password2 }}
+          <label for='id_new_password2'>Re-type Password</label>
         </div>
-        <div class="large-12 columns">
-          <label>Re-type Password {{ passwordform.new_password2 }}</label>
-        </div>
-        <div class="large-12 columns">
-          <button type="submit" class="success button round">Save Changes</button>
-        </div>
+
+        <button class="btn waves-effect waves-light" type="submit" name="action">Update Profile
+            <i class="material-icons right">send</i>
+        </button>
+
     </form>
   </div>
 </div>

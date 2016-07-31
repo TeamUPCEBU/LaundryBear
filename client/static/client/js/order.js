@@ -91,7 +91,7 @@ $(document).ready(function() {
 
 
 		function collectData() {
-			var csrf = $.cookie('csrftoken');
+			var csrf = document.cookie.replace(/(?:(?:^|.*;\s*)selectedServices\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 			var services = [];
 
 			$('.service-orders li').each(function(index,element){

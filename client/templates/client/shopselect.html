@@ -20,9 +20,14 @@
             {% if shop.average_rating %}
             <h5>
               {{ shop.average_rating }} paws
-              <div class="paw-container" style="width: {% widthratio shop.average_rating 5 150 %}px; margin: auto;" ><img src="{% static "management/icons/star.png" %}" /></div>
-              <br>
-              <span>a total of {{ shop.raters }} reviews</span>
+              <div class="raty-rating" data-value="{{shop.average_rating}}"></div>
+              <span>a total of {{ shop.raters }}
+                {% if shop.raters == 1 %}
+                review
+                {% else %}
+                reviews
+                {% endif %}
+              </span>
             </h5>
             {% else %}
             <h5>This shop has no paws yet.</h5>

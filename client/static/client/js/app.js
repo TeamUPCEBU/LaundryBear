@@ -1,4 +1,4 @@
-$(document).foundation();
+//$(document).foundation();
 
 $(window).bind("load", function () {
    var footer = $("#footer");
@@ -12,7 +12,7 @@ $(window).bind("load", function () {
        });
    }
 });
-
+/*
 $(document).foundation({
     reveal : {
         multiple_opened:true
@@ -23,7 +23,7 @@ $('#drop1 option').click(function(){
   var value = $(this).val();
   $('#selected').html(value);
 });
-
+*/
 
 
 $('#logout_submit').click(function(){$('#logout_form').submit();});
@@ -40,7 +40,7 @@ $(".reveal-modal-button").click(function() {
 	$("#" + modalId + " input").val(0);
 });
 
-
+/*
 $(document).foundation({
     tab: {
       callback : function (tab) {
@@ -48,7 +48,7 @@ $(document).foundation({
       }
     }
 });
-
+*/
 $('#myTabs').on('toggled', function (event, tab) {
     console.log(tab);
 });
