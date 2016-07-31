@@ -100,8 +100,35 @@
                     <div class="large-2 columns"></div>
                 </div>
                 <div class="large-1 columns"></div>
-
             </form>
+            <hr>
+            <br>
+
+
+            <div id="chatfield" hidden>
+              <div class="row">
+                  <div class="large-12 columns">
+                    <div id="chatbox" style="overflow-y:auto;background-color:white;height:300px"></div>
+                  </div>
+              </div>
+
+              <div class="row" id="message-div">
+                  <div class="large-12 columns">
+                    <div class="row collapse">
+                      <div class="small-10 columns">
+                        <input id="message-field" type="text" placeholder="Send Message to {{ transaction.client.user.first_name }}">
+                      </div>
+                      <div class="small-2 columns">
+                        <a href="#" id="send-message" class="button postfix">Send</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+            <div class="row">
+              <a href="#" class="small button" id="chat-trigger">Chat with {{ transaction.client.user.get_full_name }}</a>
+            </div>
         </div>
     </div>
     <div class="large-2 columns"></div>
@@ -110,6 +137,7 @@
 
 {% block javascripts %}
 <script src="{% static "LaundryBear/jquery-ui-1.11.4/jquery-ui.min.js" %}"></script>
+<script src="{% static "shopadmin/js/chat.js"%}"></script>
 <script>
 $("#date").datepicker({dateFormat: "yy-mm-dd", minDate: {{ transaction.order_set.first.price.duration }}, maxDate: {{ transaction.order_set.first.price.duration }} + 7});
 var serviceRate = {{ fees.service_charge }};
