@@ -240,6 +240,7 @@ class Point(models.Model):
     user = models.ForeignKey('UserProfile')
     transaction = models.ForeignKey('Transaction', null=True, blank=True)
     points = models.IntegerField(default=0)
+    cycle = models.IntegerField(default=0)
 
 
 class Reward(models.Model):
@@ -259,4 +260,3 @@ class Reward(models.Model):
         max_digits=3)
     delivery_fee_discount = models.DecimalField(default=5, decimal_places=2,
         max_digits=4)
-    points = models.IntegerField(default=0)
