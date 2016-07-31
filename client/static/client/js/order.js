@@ -123,8 +123,8 @@ $(document).ready(function() {
 		var data = collectData();
 		$.post(transactionUrl, data, function(response) {
 			Materialize.toast('Request sent!', 2000, '', function(){
+				document.location.replace(response);
 			});
-			$('#requestModal').closeModal();
 		});
 		return false;
 		});

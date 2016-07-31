@@ -296,6 +296,6 @@ class CreateTransactionView(ClientLoginRequiredMixin, View):
                 Order.objects.create(price=price, pieces=service['pieces'], transaction=transaction)
             print 'yes'
             # return HttpResponse(status=200)
-            return HttpResponse(reverse('client:view-shops'))
+            return HttpResponse(reverse('client:menu'))
         else:
             return HttpResponse(status=400)
