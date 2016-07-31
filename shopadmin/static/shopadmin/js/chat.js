@@ -15,7 +15,9 @@ $('#send-message').click(function(e){
     $('#message-field').val('');
     $('#chatbox').append(
         "<div class='alert-box succeess round' align='right'>"+
-        message
+        "<span style='font-size:11pt'>" + message + "</span>" +
+        "<br>" +
+        "<span style='font-size:8pt'>" + Date.now() + "</span>"
         + "</div>"
     );
 
