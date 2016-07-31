@@ -191,7 +191,8 @@ class ShopsListView(ClientLoginRequiredMixin, ListView):
         for shop in shop_list:
             s = {
                 'name': shop.name,
-                'location': shop.location
+                'location': shop.location,
+                'id': shop.id
             }
             newList.append(s)
         return newList
