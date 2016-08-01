@@ -139,7 +139,9 @@ class LaundryShop(models.Model):
     def comments(self):
         return Transaction.objects.filter(
                     order__price__laundry_shop=self,
-                    comment__isnull=False).exclude(comment='').values_list('comment')
+                    comment__isnull=False).exclude(comment='').values_list('client__user__first_name',
+                                                                           'client__user__last_name',
+                                                                           'paws', 'comment')
 
     def __unicode__(self):
         return self.name

@@ -12,6 +12,8 @@
 
 {% block body %}
 
+{% include 'client/partials/shops/commentmodal.html' %}
+
 <div class="row">
   <div class="container shop-header green lighten-5 z-depth-2" style="padding-top: 5px; margin-top: 10px">
     <h3 style="text-align:center"> {{ shop.name }} </h3>
@@ -23,9 +25,9 @@
               <div class="raty-rating" data-value="{{shop.average_rating}}"></div>
               <span>a total of {{ shop.raters }}
                 {% if shop.raters == 1 %}
-                review
+                <a href="#comment-modal" id="review">review</a>
                 {% else %}
-                reviews
+                <a href="#comment-modal" id="review">reviews</a>
                 {% endif %}
               </span>
             </h5>
@@ -112,29 +114,6 @@
           </tbody>
         </table>
         <div class="row" style="margin-top: 15px">
-<!--<<<<<< HEAD
-          <div class="col offset-m2 offset-l2 offset-s1">
-            <span>Subtotal: <i class="fa fa-fw fa-pesos"></i></span>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col offset-m3 offset-l3 offset-s2">
-            <span class="subtotal-value"></span>
-          </div>
-        </div>
-
-        <div class="row" style="margin-top: 15px">
-          <div class="col offset-m2 offset-l2 offset-s1">
-            <span>Fees: <i class="fa fa-fw fa-pesos"></i></span>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col offset-m3 offset-l3 offset-s2">
-            <span>{{fees.service_charge}}</span>
-            <span>{{fees.delivery_fee}}</span>
-          </div>
-        </div>
-=======-->
           <div class="col offset-m2 offset-l2 l4 m4 s6">
             <span><b>Subtotal:</b></span>
           </div>

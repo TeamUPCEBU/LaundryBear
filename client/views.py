@@ -60,8 +60,10 @@ class DashView(ClientLoginRequiredMixin, ListView): #Non-users cannot login with
 
     def post(self, request, *args, **kwargs): #sets ratings
         the_post = request.POST
+        print the_post
         transaction = Transaction.objects.get(pk=the_post['id'])
         transaction.paws = the_post['score']
+        transaction.comment = the_post['comment']
         transaction.save()
         return redirect('client:menu') #redirects to 'menu' after rating a transaction from a laundry shop
 

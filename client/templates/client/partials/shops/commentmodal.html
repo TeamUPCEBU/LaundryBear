@@ -1,0 +1,20 @@
+<!-- Comment Modal Structure -->
+<div id="comment-modal" class="modal">
+  <div class="modal-content">
+    <h4>Comments</h4>
+    <ul class="collection">
+      {% for first_name, last_name, paws, comment in shop.comments%}
+        <li class="collection-item avatar">
+          <i class="material-icons circle green">perm_identity</i>
+          <span class="title">{{ first_name }} {{ last_name }}</span>
+          <p><span class="raty-rating" data-value="{{paws}}"></span><br>
+          <i>''{{ comment }}''</i>
+          </p>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="modal-footer">
+    <a href="#!" id="close-comment-modal" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+  </div>
+</div>

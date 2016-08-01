@@ -41,21 +41,43 @@
             <b><i class="fa fa-fw fa-bar-chart"></i>&nbsp;Shop's Paws: </b>
             <div class="raty-rating" data-value="{{transaction.order_set.first.price.laundry_shop.average_rating}}" id="transaction.id"></div>
           </div>
-          <div class="col s6 m6 l6">
-            <b><i class="fa fa-fw fa-paw"></i>&nbsp; Your Rating: </b>
-            {% if transaction.paws %}
-            <div class="raty-rating" data-value={{ transaction.paws }}></div>
-            {% elif transaction.get_choice_name == "Done" or transaction.get_choice_name == "Rejected" %}
-            <form action="{% url "client:rate" transaction.pk %}" method="post" charset="UTF-8">
-            {% csrf_token %}
-            <div id="paws"><a class="raty-click btn pink waves-effect waves-light"
-                              id="{{ transaction.id }}">Imprint</a></div>
-            </form>
-            {% else %}
-              <br>Not yet available
-            {% endif %}
-          </div>
         </div>
+      </div>
+    </div>
+    <div class="row transact-info">
+      <div class="col s12 m12 l12">
+        <b><i class="fa fa-fw fa-paw"></i>&nbsp; Your Rating: </b>
+        {% if transaction.paws %}
+
+        <div class="raty-rating" data-value={{ transaction.paws }}></div>
+        <b><i class="fa fa-fw fa-comment"></i>&nbsp; Your Comment: </b><br>
+        {{transaction.comment}}
+
+
+        {% elif transaction.get_choice_name == "Done" or transaction.get_choice_name == "Rejected" %}
+        <form action="{% url "client:rate" transaction.pk %}" method="post" charset="UTF-8" id="form">
+          {% csrf_token %}
+          <div>
+            <div class="rate" hidden>
+              <div class="raty"></div>
+              <input type="hidden" id="input_id" name="" value=""/>
+              <input type="hidden" id="input_num" name="" value=""/>
+              <div class="input-field col s12">
+                <textarea name="comment" class="materialize-textarea" form="form"></textarea>
+                <label for="comment">Comment</label>
+              </div>
+              <input type="submit" class="submit-feedback disabled btn light-blue waves-effect waves-light" value="Submit"/>
+            </div>
+            <a class="raty-click btn pink waves-effect waves-light" id="{{ transaction.id }}">
+              Imprint
+            </a>
+          </div>
+
+
+        </form>
+        {% else %}
+          <br>Not yet available
+        {% endif %}
       </div>
     </div>
   </div>

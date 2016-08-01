@@ -10,12 +10,8 @@ $('.raty-rating').raty({
 $('.raty-click').click(function() {
 
         var _id = $(this).attr('id');
-        $(this).parent('#paws').replaceWith(
-            '<div class="raty">' + '</div>'+
-            '<input type="hidden" id="input_id" name="" value=""/>'+
-            '<input type="hidden" id="input_num" name="" value=""/>'+
-            '<input type="submit" class="btn light-blue waves-effect waves-light" value="Submit"/>'
-        );
+        $(this).parent().find('.rate').show();
+        $(this).hide();
 
         $('div.raty').raty({
             id: _id,
@@ -28,3 +24,8 @@ $('.raty-click').click(function() {
         });
     }
 );
+
+
+$('.raty').click(function(){
+  $(this).parent().find('.submit-feedback').removeClass('disabled');
+});

@@ -129,4 +129,14 @@ $(document).ready(function() {
 		return false;
 		});
 
+
+	$('#review').on('click', function(e){
+		e.preventDefault();
+		$('#comment-modal').openModal();
+	});
+
+	$('#close-comment-modal').on('click', function(e){
+		e.preventDefault();
+	});
+
 });
