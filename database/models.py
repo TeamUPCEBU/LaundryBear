@@ -228,19 +228,19 @@ class Fees(models.Model):
         return 'Regular rate'
 
 
+class Point(models.Model):
+    user = models.ForeignKey('UserProfile')
+    transaction = models.ForeignKey('Transaction', null=True, blank=True)
+    points = models.IntegerField(default=0)
+
+
+
 class Award(models.Model):
     awardee = models.ForeignKey('UserProfile')
     reward = models.ForeignKey('Reward')
     acquired = models.DateTimeField(auto_now_add=True)
     used = models.BooleanField(default=False)
     used_on = models.DateField(null=True, blank=True)
-
-
-class Point(models.Model):
-    user = models.ForeignKey('UserProfile')
-    transaction = models.ForeignKey('Transaction', null=True, blank=True)
-    points = models.IntegerField(default=0)
-    cycle = models.IntegerField(default=0)
 
 
 class Reward(models.Model):
