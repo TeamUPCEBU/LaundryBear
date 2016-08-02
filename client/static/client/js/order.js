@@ -69,17 +69,17 @@ $(document).ready(function() {
 	})
 
 
-	$('.request-button').on('click',function(e){
+	$('.request-button').on('click', function(e){
 		var summaryTable = $('.summary-table').find('tbody');
-		var subTotal = 0.0;
-		var total = 0.0;
+		var subTotal = parseFloat(0.0);
+		var total = parseFloat(0.0);
 		summaryTable.html("");
 		$('.service-orders li').each(function(index,element){
 			$("<tr><td>"+$(element).find('.collapsible-header').text()+"</td><td>"+$(element).data('num')+"</td><td>"+$(element).data('estimate')+"</td></tr>")
 			.appendTo(summaryTable);
-			subTotal += $(element).data('estimate');
+			subTotal += parseFloat($(element).data('estimate'));
 		});
-		$('.subtotal-value').text("PHP "+ subTotal);
+		$('.subtotal-value').text("PHP "+ subTotal.toFixed(2));
 
 		total = total + subTotal;
 		total = total + (total * $('#serviceCharge').data('service'));
@@ -118,7 +118,7 @@ $(document).ready(function() {
 
 
 
-	$("#confirm").on("click", function() {
+	$("#confirm").one("click", function() {
 
 		var data = collectData();
 		$.post(transactionUrl, data, function(response) {
