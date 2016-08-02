@@ -1,5 +1,6 @@
 $(document).ready(function() {
 	$('.nothing-label').show();
+	$('.request-button').hide();
 
 	$('.service-choices').on('change', function(e){
 		var service = e.target;
@@ -14,9 +15,11 @@ $(document).ready(function() {
 
 	$('.add-to-basket').click(function(e){
 		e.preventDefault();
+
 		$('#serviceModal').closeModal();
-		console.log($('.service-choices').find(":selected").text());
+
 		var serviceOrder = $('.service-orders');
+
 		var numberOfClothes = parseInt($('.num-clothes').val());
 
 		var chosenService = $('.service-choices').find(":selected");
@@ -27,10 +30,13 @@ $(document).ready(function() {
 		var estimatedPrice = ((parseInt($('.num-clothes').val()) * parseInt($('.service-choices').find(":selected").data('price')))/7).toFixed(2);
 		// this part adds to basket
 		if ($('.num-clothes').val() == 0){
-
+			Materialize.toast('Invalid Transaction. Choose Service Again.', 2000, '', function(){
+				document.location.replace(response);
+			});
 			return false;
 		}
 		else {
+			$('.request-button').show();
 			var newBasketItem = $("<li>"+
 			"<div class='collapsible-header'>"+
 				$('.service-choices').find(":selected").html()+
@@ -65,7 +71,11 @@ $(document).ready(function() {
 		e.preventDefault();
 		$(e.target).closest('li').fadeOut("slow",function(){
 			$(this).remove();
+			if ($(this).closest('ul').length== 0){
+					$('.request-button').hide();
+			} ;
 		});
+
 	})
 
 
