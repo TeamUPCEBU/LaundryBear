@@ -50,24 +50,27 @@
         {% if transaction.paws %}
 
         <div class="raty-rating" data-value={{ transaction.paws }}></div>
+
+        {% if transaction.comment %}
         <b><i class="fa fa-fw fa-comment"></i>&nbsp; Your Comment: </b><br>
         {{transaction.comment}}
-
+        {% endif %}
 
         {% elif transaction.get_choice_name == "Done" or transaction.get_choice_name == "Rejected" %}
-        <form action="{% url "client:rate" transaction.pk %}" method="post" charset="UTF-8" id="form">
+        <form action="{% url "client:rate" transaction.pk %}" method="post" charset="UTF-8" id="usrform">
           {% csrf_token %}
           <div>
             <div class="rate" hidden>
-              <div class="raty"></div>
-              <input type="hidden" id="input_id" name="" value=""/>
-              <input type="hidden" id="input_num" name="" value=""/>
+              <div class="raty">
+              </div>
               <div class="input-field col s12">
-                <textarea name="comment" class="materialize-textarea" form="form"></textarea>
+                <textarea name="comment" class="materialize-textarea"></textarea>
                 <label for="comment">Comment</label>
               </div>
+              <input type="hidden" id="transaction_id" name="id" value=""/>
               <input type="submit" class="submit-feedback disabled btn light-blue waves-effect waves-light" value="Submit"/>
             </div>
+
             <a class="raty-click btn pink waves-effect waves-light" id="{{ transaction.id }}">
               Imprint
             </a>

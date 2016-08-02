@@ -14,12 +14,11 @@ $('.raty-click').click(function() {
         $(this).hide();
 
         $('div.raty').raty({
-            id: _id,
             click: function(score, evt) {
-                $('#input_id').attr('name','id');
-                $('#input_id').attr('value',_id);
-                $('#input_num').attr('name','score');
-                $('#input_num').attr('value',score);
+                //$('#input_id').attr('name','id');
+                $(this).parent().find('#transaction_id').attr('value', _id);
+                //$('#input_id').attr('value',_id);
+                //$('#input_num').attr('name','score');
             }
         });
     }
