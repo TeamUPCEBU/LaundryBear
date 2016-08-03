@@ -30,7 +30,7 @@ class LaundryShopForm(forms.ModelForm):
     class Meta:
         model = LaundryShop
         fields = '__all__'# ['days_open', 'opening_time', 'closing_time', 'name', 'website']
-
+        widgets = {'credits': forms.HiddenInput()}
 
 
 class AdminLoginForm(LoginForm):
