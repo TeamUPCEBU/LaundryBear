@@ -47,7 +47,6 @@ INSTALLED_APPS = (
     'client',
     'api',
     'shopadmin',
-    'sslserver'
 )
 
 REST_FRAMEWORK = {
