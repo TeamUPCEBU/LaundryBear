@@ -34,7 +34,7 @@
           </li>
 
           <!-- if laundry shop is active -->
-          {% if user.userprofile.laundry_shop and user.userprofile.laundry_shop.status == 2 %}
+          {% if user.userprofile.laundry_shop and user.userprofile.laundry_shop.status == 2  and user.userprofile.laundry_shop.credits > 0 %}
           <li class="divider"></li>
           <li id="topbar">
             <a href="{% url "shopadmin:list-shops"%}">See All Shops</a>

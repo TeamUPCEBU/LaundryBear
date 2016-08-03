@@ -43,7 +43,7 @@ class PendingRegNoticeView(ShopAdminLoginRequiredMixin, TemplateView):
     def get(self, request, *args, **kwargs):
         try:
             shop = self.request.user.userprofile.laundry_shop
-            if shop.status == LaundryShop.ACTIVE:
+            if shop.status == LaundryShop.ACTIVE and shop.credits > 0:
                 return redirect('shopadmin:menu')
             else:
                 return super(PendingRegNoticeView, self).get(request, *args, **kwargs)
@@ -66,7 +66,8 @@ class LaundryMenuView(ShopAdminLoginRequiredMixin, ListView):
             shop = self.request.user.userprofile.laundry_shop
             if (shop.status == LaundryShop.PENDING or
                 shop.status == LaundryShop.INACTIVE or
-                shop.status == LaundryShop.REJECTED):
+                shop.status == LaundryShop.REJECTED or
+                shop.credits == 0):
                 return redirect('shopadmin:pending-registration')
             else:
                 return super(LaundryMenuView, self).get(request, *args, **kwargs)

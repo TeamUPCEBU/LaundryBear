@@ -12,10 +12,10 @@
   </div>
 
 <!-- inactive (3)-->
-{% elif user.userprofile.laundry_shop.status == 3 %}
+{% elif user.userprofile.laundry_shop.status == 3  or user.userprofile.laundry_shop.credits == 0 %}
   <div align="center">
     <h3>Your account is currently inactive</h3>
-    <p> Please load some credits to activate.</p>
+    <p> Please <a href="{% url 'shopadmin:promos' %}">load some credits</a> to activate.</p>
   </div>
 
 <!-- rejected (4)-->

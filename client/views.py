@@ -201,19 +201,19 @@ class ShopsListView(ClientLoginRequiredMixin, ListView):
 
     #Get data needed by each search
     def get_shops_by_name(self, name_query):
-        return LaundryShop.objects.filter(status=LaundryShop.ACTIVE,name__icontains=name_query)
+        return LaundryShop.objects.filter(status=LaundryShop.ACTIVE,credits__gt=0,name__icontains=name_query)
 
     def get_shops_by_city(self, city_query):
-        return LaundryShop.objects.filter(status=LaundryShop.ACTIVE,admin__city__icontains=city_query)
+        return LaundryShop.objects.filter(status=LaundryShop.ACTIVE,credits__gt=0,admin__city__icontains=city_query)
 
     def get_shops_by_province(self, province_query):
-        return LaundryShop.objects.filter(status=LaundryShop.ACTIVE,admin__province__icontains=province_query)
+        return LaundryShop.objects.filter(status=LaundryShop.ACTIVE,credits__gt=0,admin__province__icontains=province_query)
 
     def get_shops_by_barangay(self, barangay_query):
-        return LaundryShop.objects.filter(status=LaundryShop.ACTIVE,admin__barangay__icontains=barangay_query)
+        return LaundryShop.objects.filter(status=LaundryShop.ACTIVE,credits__gt=0,admin__barangay__icontains=barangay_query)
 
     def get_all_shops(self):
-        return LaundryShop.objects.filter(status=LaundryShop.ACTIVE)
+        return LaundryShop.objects.filter(status=LaundryShop.ACTIVE,credits__gt=0,)
 
 #Inherits CBV "DetailView"
 class OrderView(ClientLoginRequiredMixin, DetailView):
