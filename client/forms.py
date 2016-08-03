@@ -30,8 +30,8 @@ class OrderForm(ModelForm): #Used in creating or modifying an Order
 class TransactionForm(ModelForm): #Used in creating or modifying a transaction
     class Meta:
         model = Transaction
-        exclude = ['status', 'client', 'request_date', 'paws']
-
+        exclude = ['status', 'client', 'request_date', 'paws', 'discount']
+        widgets = {'discount': forms.HiddenInput()}
 
 class AddressForm(Form): #Used in modification of delivery address
     province = forms.CharField(max_length=50)

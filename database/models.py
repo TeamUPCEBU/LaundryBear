@@ -1,6 +1,7 @@
 from decimal import *
 from django.conf import settings
 from django.db import models
+from django.db.models import Sum
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.contrib.sites.models import Site
@@ -209,6 +210,7 @@ class Transaction(models.Model):
     client = models.ForeignKey('UserProfile', related_name='transactions')
     comment = models.TextField(blank=True, null=True)
     fee = models.ForeignKey('Fees', related_name='fees')
+    discount = models.DecimalField(decimal_places=2, default=0.0, max_digits=6)
 
     @property
     def location(self):
@@ -220,6 +222,11 @@ class Transaction(models.Model):
 
     def __unicode__(self):
         return "{0}".format(unicode(self.request_date))
+
+
+    @property
+    def num_of_clothes(self):
+        return Order.objects.filter(transaction__pk=self.pk).values('pieces').aggregate(sum=Sum('pieces'))['sum']
 
 
 class Fees(models.Model):

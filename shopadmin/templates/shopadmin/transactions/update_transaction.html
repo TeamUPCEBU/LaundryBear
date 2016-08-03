@@ -115,4 +115,10 @@ $("#date").datepicker({dateFormat: "yy-mm-dd", minDate: {{ transaction.order_set
 var serviceRate = {{ fees.service_charge }};
 </script>
 <script src="{% static "shopadmin/js/totals.js" %}"></script>
+<script>
+$(document).ready(function(){
+  $("input#id_discount").val('0');
+
+});
+</script>
 {% endblock%}
