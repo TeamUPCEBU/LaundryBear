@@ -1,6 +1,6 @@
 import json
 
-from database.models import LaundryShop, Price, Service, UserProfile, Transaction, Order, Fees
+from database.models import LaundryShop, Price, Service, UserProfile, Transaction, Order, Fees, ReloadRequest
 
 from datetime import timedelta
 
@@ -23,6 +23,18 @@ from database.models import LaundryShop, UserProfile
 #Each class based view has their own methods.
 #You can still add more methods if needed.
 #Check ccbv.co.uk for more information
+
+
+class ReloadCreditsandPromoView(ShopAdminLoginRequiredMixin, CreateView):
+    template_name ='shopadmin/account/promos.html'
+    model = ReloadRequest
+    form_class = forms.ReloadForm
+
+    def get_success_url(self):
+        """
+        Redirect to the list of shops if laundry shop creation was a success.
+        """
+        return reverse('shopadmin:menu')
 
 
 class PendingRegNoticeView(ShopAdminLoginRequiredMixin, TemplateView):

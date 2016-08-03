@@ -77,6 +77,7 @@ class LaundryShop(models.Model):
     opening_time = models.TimeField(blank=False, auto_now=False, auto_now_add=False)
     closing_time = models.TimeField(blank=False, auto_now=False, auto_now_add=False)
     days_open = models.CharField(max_length=100, blank=False)
+    credits = models.PositiveIntegerField(default=50)
     creation_date = models.DateTimeField(auto_now_add=True)
 
     @property
@@ -204,15 +205,15 @@ class Transaction(models.Model):
     street = models.CharField(max_length=50, blank=True)
     building = models.CharField(max_length=50, blank=True)
     price = models.DecimalField(blank=False, default=0, max_digits=8,
-        decimal_places=2)
+                                decimal_places=2)
     client = models.ForeignKey('UserProfile', related_name='transactions')
     comment = models.TextField(blank=True, null=True)
     fee = models.ForeignKey('Fees', related_name='fees')
 
     @property
     def location(self):
-    	address = [self.building, self.street, self.barangay, self.city,
-    		self.province]
+    	address = [self.building, self.street, self.barangay,
+                   self.city, self.province]
         while '' in address:
         	address.remove('')
         return ', '.join(address)
@@ -230,3 +231,11 @@ class Fees(models.Model):
 
     def __unicode__(self):
         return 'Regular rate'
+
+
+class ReloadRequest(models.Model):
+    amount = models.PositiveIntegerField(default=0)
+    requestor = models.ForeignKey('UserProfile')
+
+    def __unicode__(self):
+        return str(self.requestor) + ": " + str(self.amount) + " credits"

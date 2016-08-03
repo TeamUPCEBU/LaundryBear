@@ -1,9 +1,17 @@
 from django import forms
-from database.models import Service, Price, LaundryShop, Transaction, User, UserProfile, Fees
+from database.models import Service, Price, LaundryShop, Transaction, User, UserProfile, Fees, ReloadRequest
 from LaundryBear.forms import LoginForm
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+
+
+class ReloadForm(forms.ModelForm):
+    class Meta:
+        model = ReloadRequest
+        fields = ['amount', 'requestor']
+        widgets = {'requestor': forms.HiddenInput()}
+
 
 class ServiceForm(forms.ModelForm):
     class Meta:

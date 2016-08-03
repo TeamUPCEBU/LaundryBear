@@ -1,6 +1,6 @@
 import json
 
-from database.models import LaundryShop, Price, Service, UserProfile, Transaction, Order, Fees
+from database.models import LaundryShop, Price, Service, UserProfile, Transaction, Order, Fees, ReloadRequest
 
 from datetime import timedelta
 
@@ -44,6 +44,13 @@ class LaundryMenuView(AdminLoginRequiredMixin, ListView):
         queryset = super(LaundryMenuView, self).get_queryset()
         return queryset.filter(status=LaundryShop.PENDING)
 
+
+    def get_context_data(self, **kwargs):
+        context = super(LaundryMenuView, self).get_context_data(**kwargs)
+        context['load_requests_list'] = ReloadRequest.objects.all()
+        print context
+        return context
+        
 
 class LaundryUpdateView(AdminLoginRequiredMixin, UpdateView):
     """

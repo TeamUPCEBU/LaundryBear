@@ -32,6 +32,31 @@
         {% else %}
         <h5 style="text-align: center;"><b></b>No pending requests to review</h5>
         {% endif %}
+
+        {% if load_requests_list%}
+        <hr>
+        <h5 style="text-align: center;"><b></b>Shops pending credits approval</h5>
+        <div class="row" style="overflow-x:auto" align="center">
+          <table id="clicky-table" style="margin:auto">
+              <thead>
+              <th>Name of Shop</th>
+              <th>Shop Administrator</th>
+              <th>Amount</th>
+              <th>Actions</th>
+              </thead>
+              <tbody>
+              {% for request in load_requests_list %}
+                {% include 'management/shop/partials/load_requests_list.html' %}
+              {% endfor %}
+              <tr>
+              <td colspan="3" style="text-align: center;" onclick="document.location.href='{% url "management:pending-transactions" %}';">Show More</td>
+              </tr>
+              </tbody>
+          </table>
+        </div>
+
+        {% endif %}
+
     </div>
     <div class="large-2 columns"></div>
 </div>
@@ -41,4 +66,10 @@
 {%endblock%}
 {% block javascripts %}
   <script src="{% static "management/js/shops.js" %}"></script>
+  <script>
+$(document).ready(function(){
+
+
+});
+  </script>
 {% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'shopadmin/base.html' %}
+
+{% block title %} Promos and Credits | LaundryBear {% endblock %}
+
+
+{% block body %}
+<div class="row">
+    <div class="large-2 columns"></div>
+        <div class="large-8 large-offset-2 columns" align="center">
+            <h3>Reload</h3>
+            <p>Keep your account active</p>
+            <form method="POST">
+            	{% csrf_token %}
+                {{ form.requestor }}
+                
+                <div class="row collapse postfix-round">
+                    <div class="small-3 columns">
+                        <label for="id_amount" class="right inline">Load Amount</label>
+                    </div>
+                    <div class="small-7 columns">
+                        {{ form.amount }}
+                    </div>
+                    <div class="small-2 columns">
+                        <input type="submit" class="button postfix"/>
+                    </div>
+                </div>
+            	
+            </form>
+        </div>
+        <div class="large-2 columns">
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+$(document).ready(function(){
+	var requestor_id = {{ user.userprofile.id }};
+	$('input#id_requestor').val(requestor_id);
+});
+</script>
+
+{% endblock %}

@@ -28,6 +28,11 @@
       <section class="top-bar-section">
 
         <ul id="topbar" class="right">
+          <li class="divider"></li>
+          <li id="topbar">
+            <a href="{% url "shopadmin:promos"%}">Promos and Credits</a>
+          </li>
+
           <!-- if laundry shop is active -->
           {% if user.userprofile.laundry_shop and user.userprofile.laundry_shop.status == 2 %}
           <li class="divider"></li>
