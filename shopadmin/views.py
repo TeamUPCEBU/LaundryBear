@@ -444,7 +444,9 @@ class UpdateTransactionDeliveryDateView(ShopAdminLoginRequiredMixin, UpdateView)
         if request.POST.get('approve', False):
             self.object.status = 2
             self.object.save()
-
+            shop = self.request.user.userprofile.laundry_shop
+            shop.credits -= 5
+            shop.save()
             # DOOOOOOOO SOMETHIIIIIIIIIINNNNNNNGGGGG HEEEEEEEEEEERRRREEEEEEEEEEEEEEEEEEEEEEE
         else:
             self.object.status = 4
