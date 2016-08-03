@@ -12,6 +12,10 @@ from . import views
 #View: Which view to show
 #Name: Used in views and template tags
 urlpatterns = [
+    url(r'delete-load-request/(?P<pk>\d+)$',
+            views.DeleteReloadCreditsRequestView.as_view(), name='delete-load-request'),
+    url(r'reload-credits/(?P<pk>\d+)$',
+            views.ReloadCreditsView.as_view(), name='reload-credits'),
     url(r'^menu$', views.LaundryMenuView.as_view(), name='menu'),
     url(r'^shops/add$', views.LaundryCreateView.as_view(), name='add-shop'),
     url(r'^shops/edit/(?P<pk>\d+)$', views.LaundryUpdateView.as_view(),

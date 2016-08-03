@@ -45,7 +45,7 @@
               <th>Actions</th>
               </thead>
               <tbody>
-              {% for request in load_requests_list %}
+              {% for load_request in load_requests_list %}
                 {% include 'management/shop/partials/load_requests_list.html' %}
               {% endfor %}
               <tr>
@@ -66,10 +66,4 @@
 {%endblock%}
 {% block javascripts %}
   <script src="{% static "management/js/shops.js" %}"></script>
-  <script>
-$(document).ready(function(){
-
-
-});
-  </script>
 {% endblock %}

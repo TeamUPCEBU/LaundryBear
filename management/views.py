@@ -25,6 +25,24 @@ from django.contrib.auth.forms import PasswordChangeForm
 #You can still add more methods if needed.
 #Check ccbv.co.uk for more information
 
+
+class DeleteReloadCreditsRequestView(AdminLoginRequiredMixin, DeleteView):
+    """ A view to delete a laundry shop. """
+    model = ReloadRequest
+
+    def get_success_url(self):
+        return reverse('management:menu')
+
+
+class ReloadCreditsView(AdminLoginRequiredMixin, UpdateView):
+    model = LaundryShop
+    fields = ['credits']
+    template_name = ''
+
+    def get_success_url(self):
+        return reverse('management:menu')
+
+
 class ActivateLaundryShopView(AdminLoginRequiredMixin, UpdateView):
     """ A view to activate a laundry shop """
     model = LaundryShop

@@ -1,6 +1,18 @@
 <tr>
-	<td>{{ request.requestor.laundry_shop }}</td>
-	<td>{{ request.requestor }}</td>
-	<td>{{ request.amount }}</td>
-	<td><a href="#" class="secondary tiny button accept" data-id="{{ request.requestor.laundry_shop }}">Accept</a></td>
+	<td>{{ load_request.requestor.laundry_shop }}</td>
+	<td>{{ load_request.requestor }}</td>
+	<td>{{ load_request.amount }}</td>
+	<td><a href="#" class="secondary tiny button reload-credits"
+		 data-done-url="{% url "management:reload-credits" load_request.requestor.laundry_shop.id %}"
+		 data-delete-load-request-url ="{% url "management:delete-load-request" load_request.pk %}"
+		 data-credits="{{ load_request.requestor.laundry_shop.credits }}"
+		 data-amount="{{ load_request.amount }}"
+		 data-reveal-id="reload-credits{{ load_request.id }}"
+		 >Accept</a></td>
+</tr>
+
+  <div id="reload-credits{{ load_request.id }}" class="reveal-modal" data-reveal
+     aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+    <p style="text-align:center;">Load granted.</p>
+  </div>
 </tr>
